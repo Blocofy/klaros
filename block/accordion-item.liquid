@@ -1,0 +1,20 @@
+{%- liquid
+  assign opened = block.settings.open_by_default | default: false
+-%}
+<details class="accordion-item"{% if opened %} open{% endif %}>
+  <summary class="accordion-item__summary" data-yt-bind="title">{{ block.settings.title | default: 'Başlık' }}</summary>
+  {%- if block.settings.content and block.settings.content != blank -%}
+    <div class="accordion-item__content richtext__body" data-yt-bind="content">{{ block.settings.content | sanitize_html }}</div>
+  {%- endif -%}
+</details>
+
+{% schema %}
+{
+  "name": "Akordeon paneli",
+  "settings": [
+    { "type": "text", "id": "title", "label": "Başlık", "bindable": true, "placeholder": "Panel başlığı" },
+    { "type": "richtext", "id": "content", "label": "İçerik", "bindable": true },
+    { "type": "toggle", "id": "open_by_default", "label": "Varsayılan açık" }
+  ]
+}
+{% endschema %}

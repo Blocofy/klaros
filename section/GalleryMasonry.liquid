@@ -1,0 +1,100 @@
+{%- liquid
+  assign color_scheme = props.color_scheme | default: 'scheme-1'
+  assign align = props.alignment | default: 'left'
+  assign cols = props.columns | default: '4'
+  assign pad_top = props.padding_top | default: 80
+  assign pad_bottom = props.padding_bottom | default: 80
+-%}
+<section
+  class="section color-{{ color_scheme }}"
+  style="--section-padding-top: {{ pad_top }}px; --section-padding-bottom: {{ pad_bottom }}px;"
+>
+  <div class="wrap">
+    {%- if props.eyebrow or props.title or props.description -%}
+      <div class="section__lead{% if align == 'center' %} section__lead--center{% endif %}">
+        {%- if props.eyebrow and props.eyebrow != blank -%}<span class="eyebrow" data-yt-bind="eyebrow">{{ props.eyebrow }}</span>{%- endif -%}
+        {%- if props.title and props.title != blank -%}<h2 data-yt-bind="title">{{ props.title }}</h2>{%- endif -%}
+        {%- if props.description and props.description != blank -%}<p data-yt-bind="description">{{ props.description }}</p>{%- endif -%}
+      </div>
+    {%- endif -%}
+
+    <div class="masonry masonry--cols-{{ cols }}">
+      {%- for block in blocks -%}
+        {%- if block.type == 'gallery-image' -%}
+          {%- assign image = block.settings.image | default: block.settings.imageUrl -%}
+          {%- if image and image != blank -%}
+            {%- assign thumb = image | image_url: 'width=1000,quality=80,format=webp' -%}
+            {%- assign full = image | image_url: 'width=2000,quality=85,format=webp' -%}
+            {%- assign has_video = false -%}
+            {%- if block.settings.video_url and block.settings.video_url != blank -%}{%- assign has_video = true -%}{%- endif -%}
+            <figure class="masonry__item">
+              <a class="glightbox masonry__link{% if has_video %} masonry__link--video{% endif %}"
+                 href="{% if has_video %}{{ block.settings.video_url | escape }}{% else %}{{ full }}{% endif %}"
+                 data-gallery="masonry-{{ section.id }}"
+                 {% if has_video %}data-type="video"{% endif %}
+                 {% if block.settings.caption and block.settings.caption != blank %}data-title="{{ block.settings.caption | escape }}"{% endif %}>
+                <img src="{{ thumb }}" alt="{{ block.settings.alt | default: '' }}" loading="lazy">
+                {%- if has_video -%}<span class="gallery-item__play" aria-hidden="true"></span>{%- endif -%}
+              </a>
+              {%- if block.settings.caption and block.settings.caption != blank -%}
+                <figcaption class="masonry__caption">{{ block.settings.caption }}</figcaption>
+              {%- endif -%}
+            </figure>
+          {%- endif -%}
+        {%- endif -%}
+      {%- endfor -%}
+    </div>
+  </div>
+</section>
+<script>
+(function () {
+  function init() { if (window.GLightbox && !window.__glbInit) { window.__glbInit = GLightbox({ selector: '.glightbox', loop: true, touchNavigation: true }); } }
+  if (window.GLightbox) { init(); return; }
+  if (!document.getElementById('glightbox-css')) {
+    var l = document.createElement('link'); l.id = 'glightbox-css'; l.rel = 'stylesheet';
+    l.href = 'https://cdn.jsdelivr.net/npm/glightbox/dist/css/glightbox.min.css'; document.head.appendChild(l);
+  }
+  var s = document.getElementById('glightbox-js');
+  if (!s) {
+    s = document.createElement('script'); s.id = 'glightbox-js';
+    s.src = 'https://cdn.jsdelivr.net/npm/glightbox/dist/js/glightbox.min.js'; document.head.appendChild(s);
+  }
+  s.addEventListener('load', init);
+  if (window.GLightbox) init();
+})();
+</script>
+
+{% schema %}
+{
+  "name": "Galeri — Masonry",
+  "category": "Görsel",
+  "settings": [
+    { "type": "header", "label": "Başlık (opsiyonel)" },
+    { "type": "text", "id": "eyebrow", "label": "Üst başlık" },
+    { "type": "text", "id": "title", "label": "Başlık" },
+    { "type": "textarea", "id": "description", "label": "Alt metin", "rows": 2 },
+
+    { "type": "header", "label": "Düzen" },
+    { "type": "select", "id": "columns", "label": "Sütun sayısı", "options": [
+      { "label": "2 sütun", "value": "2" },
+      { "label": "3 sütun", "value": "3" },
+      { "label": "4 sütun", "value": "4" }
+    ]},
+    { "type": "alignment", "id": "alignment", "label": "Başlık hizalama" },
+    { "type": "range", "id": "padding_top", "label": "Üst boşluk", "min": 0, "max": 200, "step": 8, "suffix": "px" },
+    { "type": "range", "id": "padding_bottom", "label": "Alt boşluk", "min": 0, "max": 200, "step": 8, "suffix": "px" },
+
+    { "type": "header", "label": "Renk" },
+    { "type": "color_scheme", "id": "color_scheme", "label": "Renk şeması" }
+  ],
+  "blocks": [
+    { "type": "gallery-image", "max": 40 }
+  ],
+  "presets": [
+    {
+      "name": "Masonry galeri",
+      "settings": { "title": "Galeri", "columns": "4", "alignment": "left", "color_scheme": "scheme-1" }
+    }
+  ]
+}
+{% endschema %}

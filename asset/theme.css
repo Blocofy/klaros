@@ -649,6 +649,28 @@ a.marquee__item:hover img { opacity: 1; filter: none; }
 .team-member__link { color: var(--color-primary, #B25334); text-decoration: none; font-size: 0.85rem; margin-top: 0.25rem; }
 .team-member__link:hover { text-decoration: underline; text-underline-offset: 3px; }
 
+/* --- Accordion (açılır paneller) ------------------------------------ */
+.accordion { border-top: var(--klaros-hairline); }
+.accordion-item { border-bottom: var(--klaros-hairline); }
+.accordion-item__summary { cursor: pointer; list-style: none; display: flex; justify-content: space-between; gap: 1rem; align-items: center; padding: 1.4rem 0; font-family: var(--klaros-font-heading, Georgia, serif); font-weight: 500; font-size: 1.2rem; color: var(--color-foreground-heading, #1B1A17); }
+.accordion-item__summary::-webkit-details-marker { display: none; }
+.accordion-item__summary::after { content: "+"; color: var(--color-primary, #B25334); font-size: 1.5rem; line-height: 1; font-family: var(--klaros-font-body, sans-serif); flex: 0 0 auto; }
+.accordion-item[open] .accordion-item__summary::after { content: "–"; }
+.accordion-item__content { color: var(--color-muted, #6E6A60); padding: 0 0 1.4rem; max-width: 44rem; }
+
+/* --- Masonry galeri (düzensiz yükseklikli) -------------------------- */
+.masonry { column-gap: 1rem; }
+.masonry--cols-2 { columns: 2; }
+.masonry--cols-3 { columns: 3; }
+.masonry--cols-4 { columns: 4; }
+.masonry__item { break-inside: avoid; margin: 0 0 1rem; border: var(--klaros-hairline); border-radius: var(--klaros-radius, 6px); overflow: hidden; background: var(--color-surface, #fff); }
+.masonry__link { display: block; position: relative; cursor: zoom-in; }
+.masonry__link--video { cursor: pointer; }
+.masonry__item img { width: 100%; display: block; }
+.masonry__caption { padding: 0.55rem 0.8rem; font-size: 0.8rem; color: var(--color-muted, #6E6A60); }
+@media (max-width: 48rem) { .masonry--cols-3, .masonry--cols-4 { columns: 2; } }
+@media (max-width: 30rem) { .masonry--cols-2, .masonry--cols-3, .masonry--cols-4 { columns: 1; } }
+
 /* ===== Form-builder (hibrit) varyant CSS — section/Form ===== */
 /* Renkler renk-şeması token'larından gelir (--color-*). Varyant YALNIZ şekli/
    düzeni değiştirir; renk şemaya bağlı kalır. Editöryel: hairline border,
