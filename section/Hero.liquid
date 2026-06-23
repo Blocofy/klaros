@@ -1,0 +1,106 @@
+{%- liquid
+  assign color_scheme = props.color_scheme | default: 'scheme-1'
+  assign alignment = props.alignment | default: 'center'
+  assign min_height = props.min_height | default: 28
+  assign pad_top = props.padding_top | default: 96
+  assign pad_bottom = props.padding_bottom | default: 96
+  assign has_media = false
+  if props.image and props.image != blank
+    assign has_media = true
+  endif
+-%}
+<section
+  class="section hero hero--{{ alignment }}{% if has_media %} hero--has-media{% endif %} color-{{ color_scheme }}"
+  style="--section-padding-top: {{ pad_top }}px;
+         --section-padding-bottom: {{ pad_bottom }}px;
+         --hero-min-height: {{ min_height }}rem;"
+>
+  {%- if has_media -%}
+    <div class="hero__media" data-yt-bind="image" style="background-image: url('{{ props.image | image_url: 'width=1920,quality=80,format=webp' }}');"></div>
+    <div class="hero__overlay"></div>
+  {%- endif -%}
+
+  <div class="wrap">
+    <div class="hero__content{% if has_media %} hero__content--on-media{% endif %}">
+      {%- if props.eyebrow and props.eyebrow != blank -%}
+        <span class="eyebrow" data-yt-bind="eyebrow">{{ props.eyebrow }}</span>
+      {%- endif -%}
+
+      <h1 data-yt-bind="heading">{{ props.heading | default: site.name }}</h1>
+
+      {%- if props.subtitle and props.subtitle != blank -%}
+        <p class="hero__subtitle" data-yt-bind="subtitle">{{ props.subtitle }}</p>
+      {%- endif -%}
+
+      {%- if props.primary_button_label and props.primary_button_label != blank -%}
+        <div class="hero__actions">
+          <a class="btn btn--primary" data-yt-bind="primary_button_label" href="{{ props.primary_button_url | default: '#' }}">{{ props.primary_button_label }}</a>
+          {%- if props.secondary_button_label and props.secondary_button_label != blank -%}
+            <a class="btn btn--secondary" data-yt-bind="secondary_button_label" href="{{ props.secondary_button_url | default: '#' }}">{{ props.secondary_button_label }}</a>
+          {%- endif -%}
+        </div>
+      {%- endif -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Hero — Tanıtım",
+  "category": "Banner",
+  "settings": [
+    { "type": "header", "label": "İçerik" },
+    { "type": "text", "id": "eyebrow", "label": "Üst başlık (eyebrow)", "placeholder": "YENİ", "maxLength": 40 },
+    { "type": "text", "id": "heading", "label": "Ana başlık", "bindable": true, "placeholder": "Sitenize hoş geldiniz" },
+    { "type": "textarea", "id": "subtitle", "label": "Alt başlık", "rows": 2, "bindable": true },
+
+    { "type": "header", "label": "Düzen" },
+    { "type": "alignment", "id": "alignment", "label": "Hizalama" },
+    { "type": "range", "id": "min_height", "label": "Minimum yükseklik", "min": 16, "max": 56, "step": 2, "suffix": "rem" },
+    { "type": "range", "id": "padding_top", "label": "Üst boşluk", "min": 0, "max": 240, "step": 8, "suffix": "px" },
+    { "type": "range", "id": "padding_bottom", "label": "Alt boşluk", "min": 0, "max": 240, "step": 8, "suffix": "px" },
+
+    { "type": "header", "label": "Görsel" },
+    { "type": "image", "id": "image", "label": "Arkaplan görseli" },
+    { "type": "paragraph", "content": "Görsel eklenirse otomatik koyu kaplama uygulanır, metin beyaz görünür." },
+
+    { "type": "header", "label": "Butonlar" },
+    { "type": "text", "id": "primary_button_label", "label": "Birincil buton metni", "placeholder": "Keşfet" },
+    { "type": "url", "id": "primary_button_url", "label": "Birincil buton bağlantısı", "visibleIf": "primary_button_label" },
+    { "type": "text", "id": "secondary_button_label", "label": "İkincil buton metni", "placeholder": "Daha fazla", "visibleIf": "primary_button_label" },
+    { "type": "url", "id": "secondary_button_url", "label": "İkincil buton bağlantısı", "visibleIf": "secondary_button_label" },
+
+    { "type": "header", "label": "Renk" },
+    { "type": "color_scheme", "id": "color_scheme", "label": "Renk şeması" }
+  ],
+  "presets": [
+    {
+      "name": "Hero — Ortalı",
+      "settings": {
+        "heading": "Hoş geldiniz",
+        "subtitle": "Sitenizin ana başlığı burada görünür.",
+        "alignment": "center",
+        "min_height": 30,
+        "color_scheme": "scheme-1",
+        "primary_button_label": "Keşfet",
+        "primary_button_url": "/"
+      }
+    },
+    {
+      "name": "Hero — Sola yaslı",
+      "settings": {
+        "eyebrow": "YENİ",
+        "heading": "Daha geniş hikâye",
+        "subtitle": "Sola yaslı düzen, görsel ve metin dengesi için ideal.",
+        "alignment": "left",
+        "min_height": 36,
+        "color_scheme": "scheme-2",
+        "primary_button_label": "İncele",
+        "primary_button_url": "/",
+        "secondary_button_label": "İletişim",
+        "secondary_button_url": "/iletisim"
+      }
+    }
+  ]
+}
+{% endschema %}

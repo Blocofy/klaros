@@ -1,0 +1,25 @@
+{%- liquid
+  assign image = block.settings.image | default: block.settings.imageUrl
+  assign alt = block.settings.alt | default: ''
+  assign caption = block.settings.caption
+-%}
+<figure class="gallery-item">
+  {%- if image and image != blank -%}
+    <img src="{{ image | image_url: 'width=1200,quality=80,format=webp' }}" alt="{{ alt }}" loading="lazy">
+  {%- endif -%}
+  {%- if caption and caption != blank -%}
+    <figcaption style="padding: 0.5rem 0.75rem; font-size: 0.85rem; opacity: 0.75;">{{ caption }}</figcaption>
+  {%- endif -%}
+</figure>
+
+{% schema %}
+{
+  "name": "Galeri görseli",
+  "settings": [
+    { "type": "image", "id": "image", "label": "Görsel" },
+    { "type": "text", "id": "alt", "label": "Alternatif metin", "help": "Ekran okuyucular ve SEO için." },
+    { "type": "text", "id": "caption", "label": "Altyazı" },
+    { "type": "url", "id": "video_url", "label": "Video bağlantısı", "placeholder": "https://youtu.be/… veya Vimeo", "help": "Doldurulursa görsele tıklayınca video lightbox'ta açılır." }
+  ]
+}
+{% endschema %}

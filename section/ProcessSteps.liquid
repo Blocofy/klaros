@@ -1,0 +1,88 @@
+{%- liquid
+  assign color_scheme = props.color_scheme | default: 'scheme-1'
+  assign layout = props.layout | default: 'horizontal'
+  assign alignment = props.alignment | default: 'left'
+  assign pad_top = props.padding_top | default: 80
+  assign pad_bottom = props.padding_bottom | default: 80
+-%}
+<section
+  class="section color-{{ color_scheme }}"
+  style="--section-padding-top: {{ pad_top }}px; --section-padding-bottom: {{ pad_bottom }}px;"
+>
+  <div class="wrap">
+    {%- if props.eyebrow or props.title or props.description -%}
+      <div class="section__lead" style="margin-bottom: 2.5rem; {% if alignment == 'center' %}text-align: center;{% endif %}">
+        {%- if props.eyebrow and props.eyebrow != blank -%}
+          <span class="eyebrow">{{ props.eyebrow }}</span>
+        {%- endif -%}
+        {%- if props.title and props.title != blank -%}
+          <h2>{{ props.title }}</h2>
+        {%- endif -%}
+        {%- if props.description and props.description != blank -%}
+          <p style="margin-top: 0.5rem; opacity: 0.75; max-width: 42rem; {% if alignment == 'center' %}margin-left: auto; margin-right: auto;{% endif %}">{{ props.description }}</p>
+        {%- endif -%}
+      </div>
+    {%- endif -%}
+
+    <div class="process{% if layout == 'horizontal' %} process--horizontal{% endif %}">
+      {%- for block in blocks -%}
+        {%- if block.type == 'process-step' -%}
+          <div class="process__step">
+            {%- if block.settings.title and block.settings.title != blank -%}
+              <h3>{{ block.settings.title }}</h3>
+            {%- endif -%}
+            {%- if block.settings.description and block.settings.description != blank -%}
+              <p>{{ block.settings.description }}</p>
+            {%- endif -%}
+          </div>
+        {%- endif -%}
+      {%- endfor -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Süreç adımları",
+  "category": "İçerik",
+  "settings": [
+    { "type": "header", "label": "Başlık" },
+    { "type": "text", "id": "eyebrow", "label": "Üst başlık" },
+    { "type": "text", "id": "title", "label": "Başlık", "placeholder": "Nasıl çalışıyoruz" },
+    { "type": "textarea", "id": "description", "label": "Alt metin", "rows": 2 },
+
+    { "type": "header", "label": "Düzen" },
+    { "type": "radio", "id": "layout", "label": "Düzen", "options": [
+      { "label": "Yatay (sütun)", "value": "horizontal" },
+      { "label": "Dikey (liste)", "value": "vertical" }
+    ]},
+    { "type": "alignment", "id": "alignment", "label": "Başlık hizalama" },
+    { "type": "range", "id": "padding_top", "label": "Üst boşluk", "min": 0, "max": 200, "step": 8, "suffix": "px" },
+    { "type": "range", "id": "padding_bottom", "label": "Alt boşluk", "min": 0, "max": 200, "step": 8, "suffix": "px" },
+
+    { "type": "header", "label": "Renk" },
+    { "type": "color_scheme", "id": "color_scheme", "label": "Renk şeması" }
+  ],
+  "blocks": [
+    { "type": "process-step", "max": 8 }
+  ],
+  "presets": [
+    {
+      "name": "Süreç — Yatay 3 adım",
+      "settings": {
+        "title": "Nasıl çalışıyoruz",
+        "layout": "horizontal",
+        "color_scheme": "scheme-1"
+      }
+    },
+    {
+      "name": "Süreç — Dikey liste",
+      "settings": {
+        "title": "Süreç adımları",
+        "layout": "vertical",
+        "color_scheme": "scheme-1"
+      }
+    }
+  ]
+}
+{% endschema %}

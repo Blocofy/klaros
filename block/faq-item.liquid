@@ -1,0 +1,20 @@
+{%- liquid
+  assign opened = block.settings.open_by_default | default: false
+-%}
+<details{% if opened or index == 1 %} open{% endif %}>
+  <summary>{{ block.settings.question | default: 'Soru başlığı' }}</summary>
+  {%- if block.settings.answer and block.settings.answer != blank -%}
+    <p>{{ block.settings.answer }}</p>
+  {%- endif -%}
+</details>
+
+{% schema %}
+{
+  "name": "Soru-Cevap",
+  "settings": [
+    { "type": "text", "id": "question", "label": "Soru", "placeholder": "Sıkça sorulan bir soru" },
+    { "type": "textarea", "id": "answer", "label": "Cevap", "rows": 4 },
+    { "type": "toggle", "id": "open_by_default", "label": "Sayfa açıldığında genişletilmiş göster" }
+  ]
+}
+{% endschema %}

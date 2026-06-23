@@ -1,0 +1,58 @@
+{%- liquid
+  assign color_scheme = props.color_scheme | default: 'scheme-1'
+  assign pad_top = props.padding_top | default: 64
+  assign pad_bottom = props.padding_bottom | default: 64
+  assign gap = props.gap | default: 1.5
+  assign max_width = props.max_width | default: 72
+-%}
+<section
+  class="section group-section color-{{ color_scheme }}"
+  style="--section-padding-top: {{ pad_top }}px;
+         --section-padding-bottom: {{ pad_bottom }}px;"
+>
+  <div class="wrap" style="max-width:{{ max_width }}rem">
+    <div class="group-section__stack" style="display:flex;flex-direction:column;gap:{{ gap }}rem">
+      {% content_for 'blocks' %}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Esnek alan",
+  "category": "İçerik",
+  "settings": [
+    { "type": "header", "label": "Düzen" },
+    { "type": "range", "id": "max_width", "label": "Maksimum içerik genişliği",
+      "min": 32, "max": 96, "step": 4, "suffix": "rem" },
+    { "type": "range", "id": "gap", "label": "Blok arası boşluk",
+      "min": 0, "max": 6, "step": 0.5, "suffix": "rem" },
+    { "type": "range", "id": "padding_top", "label": "Üst boşluk",
+      "min": 0, "max": 200, "step": 8, "suffix": "px" },
+    { "type": "range", "id": "padding_bottom", "label": "Alt boşluk",
+      "min": 0, "max": 200, "step": 8, "suffix": "px" },
+    { "type": "header", "label": "Renk" },
+    { "type": "color_scheme", "id": "color_scheme", "label": "Renk şeması" }
+  ],
+  "blocks": [
+    { "type": "text" },
+    { "type": "image" },
+    { "type": "button" },
+    { "type": "icon" },
+    { "type": "divider" },
+    { "type": "spacer" }
+  ],
+  "presets": [
+    {
+      "name": "Esnek alan — Boş",
+      "settings": {
+        "max_width": 72,
+        "gap": 1.5,
+        "padding_top": 64,
+        "padding_bottom": 64,
+        "color_scheme": "scheme-1"
+      }
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,12 @@
+<label class="ff__label" for="ff-{{ field.name }}">{{ field.label }}{% if field.required %} <span class="ff__req">*</span>{% endif %}</label>
+<textarea
+  class="ff__control ff__textarea"
+  id="ff-{{ field.name }}"
+  name="{{ field.name }}"
+  rows="4"
+  {% if field.placeholder %}placeholder="{{ field.placeholder }}"{% endif %}
+  {% if field.required %}required{% endif %}
+  {% if field.validation.minLength %}minlength="{{ field.validation.minLength }}"{% endif %}
+  {% if field.validation.maxLength %}maxlength="{{ field.validation.maxLength }}"{% endif %}
+>{{ field.prefillValue }}</textarea>
+{% if field.help %}<small class="ff__help">{{ field.help }}</small>{% endif %}

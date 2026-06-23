@@ -1,0 +1,14 @@
+<div class="metric">
+  <span class="v">{{ block.settings.value }}</span>
+  <span class="l">{{ block.settings.label }}</span>
+</div>
+
+{% schema %}
+{
+  "name": "Metrik",
+  "settings": [
+    { "type": "text", "id": "value", "label": "Değer", "bindable": true, "placeholder": "250+" },
+    { "type": "text", "id": "label", "label": "Etiket", "bindable": true, "placeholder": "Tamamlanan proje" }
+  ]
+}
+{% endschema %}

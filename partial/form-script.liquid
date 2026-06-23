@@ -1,0 +1,18 @@
+<script>
+(function(){
+  var f=document.getElementById({{ form_id | json }});
+  if(!f)return;
+  var s=f.querySelector(".form-status");
+  f.addEventListener("submit",function(e){
+    e.preventDefault();
+    if(s)s.textContent="Gönderiliyor...";
+    fetch("/api/forms/"+encodeURIComponent({{ form_key | json }})+"/submit",{method:"POST",body:new FormData(f)})
+      .then(function(r){return r.json().catch(function(){return{};});})
+      .then(function(d){
+        if(s)s.textContent=(d&&d.ok)?"Teşekkürler, talebiniz alındı.":("Gönderilemedi: "+((d&&d.error)||"hata"));
+        if(d&&d.ok)f.reset();
+      })
+      .catch(function(){ if(s)s.textContent="Bağlantı hatası, lütfen tekrar deneyin."; });
+  });
+})();
+</script>

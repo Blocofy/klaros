@@ -1,0 +1,26 @@
+{%- liquid
+  assign src = block.settings.image
+  assign size = block.settings.size | default: 48
+  assign align = block.settings.alignment | default: 'left'
+-%}
+{% if src and src != blank %}
+  <div class="block-icon" style="display:flex;justify-content:{% if align == 'center' %}center{% elsif align == 'right' %}flex-end{% else %}flex-start{% endif %}">
+    <img src="{{ src | image_url: 'width=128,height=128,format=webp' }}"
+         alt="{{ block.settings.alt }}"
+         width="{{ size }}" height="{{ size }}"
+         loading="lazy"
+         style="width:{{ size }}px;height:{{ size }}px;object-fit:contain;display:block">
+  </div>
+{% endif %}
+
+{% schema %}
+{
+  "name": "İkon",
+  "settings": [
+    { "type": "image", "id": "image", "label": "İkon görseli", "help": "SVG veya küçük PNG önerilir." },
+    { "type": "text", "id": "alt", "label": "Alternatif metin" },
+    { "type": "range", "id": "size", "label": "Boyut", "min": 16, "max": 128, "step": 4, "suffix": "px" },
+    { "type": "alignment", "id": "alignment", "label": "Hizalama" }
+  ]
+}
+{% endschema %}

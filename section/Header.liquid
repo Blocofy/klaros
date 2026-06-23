@@ -1,0 +1,82 @@
+{%- comment -%}
+  Üstbilgi (logo + menü + buton) — header section grubunun ana parçası
+  (Shopify-tarzı chrome). Logo/buton/sabitlik/menü seçimi bu section'ın
+  ayarlarından (props.*); marka adı globals'tan, menü öğeleri seçili menüden gelir.
+{%- endcomment -%}
+{%- liquid
+  assign logo = props.logo
+  assign logo_w = props.logo_width | default: 150
+  assign brand = globals.site_name | default: site.name
+  assign header_menu = navigations[props.menu] | default: nav
+-%}
+<header class="site-header"{% if props.sticky %} style="position:sticky;top:0;z-index:40"{% endif %}>
+  <div class="wrap header__bar">
+    <a class="brand" href="/">
+      {%- if logo and logo != blank -%}
+        <img class="brand-logo" src="{{ logo }}" alt="{{ brand }}"
+             style="width:{{ logo_w }}px;max-width:55vw;height:auto;max-height:56px;object-fit:contain">
+      {%- else -%}
+        {{ brand }}
+      {%- endif -%}
+    </a>
+    <input type="checkbox" id="nav-toggle" class="nav-toggle">
+    <label for="nav-toggle" class="nav-burger" aria-label="Menüyü aç/kapat" aria-controls="nav-toggle">
+      <span></span><span></span><span></span>
+    </label>
+    <nav class="nav" aria-label="Ana menü">
+      {%- for item in header_menu -%}
+        {%- if item.children and item.children.size > 0 -%}
+          <span class="has-children">
+            <a href="{{ item.url | default: '#' }}">{{ item.label }}</a>
+            <span class="submenu">
+              {%- for child in item.children -%}
+                <a href="{{ child.url | default: '#' }}">{{ child.label }}</a>
+              {%- endfor -%}
+            </span>
+          </span>
+        {%- else -%}
+          <a href="{{ item.url | default: '#' }}">{{ item.label }}</a>
+        {%- endif -%}
+      {%- endfor -%}
+      {%- if locale_alternates and locale_alternates.size > 1 -%}
+        <span class="locale-switcher" aria-label="Dil seçimi">
+          {%- for alt in locale_alternates -%}
+            <a class="locale-switcher__link{% if alt.current %} is-active{% endif %}"
+               href="{{ alt.url }}" hreflang="{{ alt.locale }}"{% if alt.current %} aria-current="true"{% endif %}>{{ alt.locale | split: '-' | first | upcase }}</a>
+          {%- endfor -%}
+        </span>
+      {%- endif -%}
+      {%- if props.cta_label and props.cta_label != blank -%}
+        <a class="btn btn--primary header__cta" href="{{ props.cta_url | default: '#' }}">{{ props.cta_label }}</a>
+      {%- endif -%}
+    </nav>
+  </div>
+</header>
+
+{% schema %}
+{
+  "name": "Üstbilgi (Logo + Menü)",
+  "category": "Üstbilgi",
+  "areas": ["header"],
+  "settings": [
+    { "type": "header", "label": "Logo" },
+    { "type": "image", "id": "logo", "label": "Logo görseli" },
+    { "type": "range", "id": "logo_width", "label": "Logo genişliği", "min": 60, "max": 360, "step": 10, "suffix": "px" },
+
+    { "type": "header", "label": "Menü" },
+    { "type": "menu", "id": "menu", "label": "Menü" },
+
+    { "type": "header", "label": "Buton" },
+    { "type": "text", "id": "cta_label", "label": "Buton metni", "placeholder": "Teklif Al" },
+    { "type": "url", "id": "cta_url", "label": "Buton bağlantısı", "visibleIf": "cta_label" },
+
+    { "type": "header", "label": "Davranış" },
+    { "type": "toggle", "id": "sticky", "label": "Kaydırınca sabit kalsın" },
+
+    { "type": "paragraph", "content": "Firma adı Ayarlar'dan gelir; menü öğeleri Menü bölümünden düzenlenir." }
+  ],
+  "presets": [
+    { "name": "Üstbilgi", "settings": { "logo_width": 150, "sticky": true, "menu": "main" } }
+  ]
+}
+{% endschema %}

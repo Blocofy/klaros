@@ -1,0 +1,64 @@
+{%- comment -%}
+  Üstbilgi duyuru/iletişim çubuğu — header section grubunun bir parçası
+  (Shopify-tarzı chrome). İletişim bilgisi globals'tan, görünürlük editörden
+  (node.hidden) yönetilir.
+{%- endcomment -%}
+{%- liquid
+  assign show_social = props.show_social
+  if props.show_social == nil
+    assign show_social = true
+  endif
+  # Boşsa hiç render etme (eski has_topbar davranışı): mesaj/telefon/e-posta yok
+  # ve (sosyal kapalı ya da sosyal link yok) ise çubuk gizlenir.
+  assign has_content = false
+  if props.message != blank or globals.phone != blank or globals.email != blank
+    assign has_content = true
+  endif
+  if show_social and globals.social_links
+    assign has_content = true
+  endif
+-%}
+{%- if has_content -%}
+<div class="topbar">
+  <div class="wrap">
+    <div class="topbar__contact">
+      {%- if props.message and props.message != blank -%}
+        <span class="topbar__message">{{ props.message }}</span>
+      {%- endif -%}
+      {%- if globals.phone and globals.phone != blank -%}
+        <a href="tel:{{ globals.phone | remove: ' ' }}">{{ globals.phone }}</a>
+      {%- endif -%}
+      {%- if globals.email and globals.email != blank -%}
+        <a href="mailto:{{ globals.email }}">{{ globals.email }}</a>
+      {%- endif -%}
+    </div>
+    {%- if show_social and globals.social_links -%}
+    <div class="topbar__social">
+      {%- for s in globals.social_links -%}
+        {%- unless s[0] == 'whatsapp' or s[0] == 'whatsapp_message' -%}
+          {%- if s[1] and s[1] != blank -%}
+            <a href="{{ s[1] }}" target="_blank" rel="noopener" aria-label="{{ s[0] }}">{{ s[0] | capitalize }}</a>
+          {%- endif -%}
+        {%- endunless -%}
+      {%- endfor -%}
+    </div>
+    {%- endif -%}
+  </div>
+</div>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Duyuru / İletişim Çubuğu",
+  "category": "Üstbilgi",
+  "areas": ["header"],
+  "settings": [
+    { "type": "text", "id": "message", "label": "Duyuru metni", "placeholder": "Ücretsiz keşif için arayın" },
+    { "type": "toggle", "id": "show_social", "label": "Sosyal medya bağlantılarını göster" },
+    { "type": "paragraph", "content": "Telefon, e-posta ve sosyal medya bağlantıları Ayarlar > İletişim ve Sosyal sekmelerinden gelir." }
+  ],
+  "presets": [
+    { "name": "Duyuru çubuğu", "settings": { "show_social": true } }
+  ]
+}
+{% endschema %}

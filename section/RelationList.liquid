@@ -1,0 +1,92 @@
+{%- liquid
+  # Ters ilişki listesi (#79 Faz 2) — bu kaydı REFERANSLAYAN içerikleri gösterir.
+  # `props.entries` platform tarafında doldurulur: reverseCollection ayarı varsa
+  # resolveItemProps content_relations'tan ters-ilişki kayıtlarını enjekte eder
+  # (boş reverseCollection = tüm referanslayanlar). Detay sayfasında `entry` aktif kayıttır.
+  assign color_scheme = props.color_scheme | default: 'scheme-1'
+  assign cols = props.columns | default: 3
+  assign list = props.entries
+
+  if list and props.sort == 'newest'
+    assign list = list | sort: 'id' | reverse
+  elsif list and props.sort == 'title'
+    assign list = list | sort_natural: 'title'
+  endif
+
+  assign total = list | size
+
+  # #281 detay-base: detailBase boşsa referanslanan koleksiyonun /<key>/[slug]
+  # detay sayfasının base'ini (platform `collection_detail_base`) otomatik kullan.
+  # reverseCollection boşsa (karışık koleksiyon) anahtar yok → otomatik link yok.
+  assign detail_base = props.detailBase
+  if detail_base == blank
+    assign detail_base = collection_detail_base[props.reverseCollection]
+  endif
+-%}
+<section class="section color-{{ color_scheme }}">
+  <div class="wrap">
+    {% if props.title and props.title != blank %}
+      <div class="section__lead"><h2>{{ props.title }}</h2></div>
+    {% endif %}
+    {%- if total > 0 -%}
+    <div class="collection-list grid grid--{{ cols }}">
+      {%- for item in list -%}
+        {%- assign card_title = item.data[props.titleField] | default: item.title -%}
+        {%- assign card_sub = item.data[props.subtitleField] -%}
+        {%- assign card_img = item.data[props.imageField] -%}
+        {%- assign has_link = false -%}
+        {%- if detail_base and detail_base != '' and item.slug -%}{%- assign has_link = true -%}{%- endif -%}
+        {%- assign href = detail_base | append: '/' | append: item.slug -%}
+        <article class="collection-entry">
+          {% if card_img and card_img != '' %}
+            {% if has_link %}<a class="collection-entry__media" href="{{ href }}">{% else %}<span class="collection-entry__media">{% endif %}
+              <img src="{{ card_img }}" alt="{{ card_title }}" loading="lazy">
+            {% if has_link %}</a>{% else %}</span>{% endif %}
+          {% endif %}
+          <div class="collection-entry__body">
+            <h3 class="collection-entry__title">
+              {% if has_link %}<a href="{{ href }}">{{ card_title }}</a>{% else %}{{ card_title }}{% endif %}
+            </h3>
+            {% if card_sub and card_sub != '' %}<p class="collection-entry__excerpt">{{ card_sub }}</p>{% endif %}
+            {% if has_link %}<a class="collection-entry__more" href="{{ href }}">Devamını oku →</a>{% endif %}
+          </div>
+        </article>
+      {%- endfor -%}
+    </div>
+    {%- elsif props.emptyText and props.emptyText != blank -%}
+      <p class="collection-empty">{{ props.emptyText }}</p>
+    {%- endif -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Ters ilişki listesi",
+  "category": "İçerik",
+  "settings": [
+    { "type": "header", "label": "İçerik" },
+    { "type": "text", "id": "title", "label": "Bölüm başlığı", "placeholder": "İlgili içerikler" },
+    { "type": "collection", "id": "reverseCollection", "label": "Referanslayan koleksiyon", "help": "Bu kaydı referanslayan hangi koleksiyon listelensin? Boş bırakılırsa tüm referanslayanlar gösterilir. (Detay sayfasında çalışır.)" },
+    { "type": "url", "id": "detailBase", "label": "Detay sayfa öneki", "placeholder": "/projeler", "help": "Boş bırakılırsa, seçili referanslayan koleksiyonun detay sayfası (varsa) otomatik kullanılır." },
+
+    { "type": "header", "label": "Kart alan eşlemesi" },
+    { "type": "collectionField", "id": "titleField", "label": "Kart başlığı", "dependsOn": "reverseCollection", "help": "Boşsa kaydın kendi başlığı kullanılır." },
+    { "type": "collectionField", "id": "subtitleField", "label": "Alt metin / özet", "dependsOn": "reverseCollection" },
+    { "type": "collectionField", "id": "imageField", "label": "Görsel", "dependsOn": "reverseCollection" },
+
+    { "type": "header", "label": "Liste" },
+    { "type": "radio", "id": "columns", "label": "Sütun", "options": [ { "label": "2", "value": "2" }, { "label": "3", "value": "3" }, { "label": "4", "value": "4" } ] },
+    { "type": "select", "id": "sort", "label": "Sıralama", "options": [ { "label": "Varsayılan (manuel sıra)", "value": "default" }, { "label": "En yeni", "value": "newest" }, { "label": "Başlık (A–Z)", "value": "title" } ] },
+    { "type": "text", "id": "emptyText", "label": "Boş durum metni", "placeholder": "Henüz ilgili kayıt yok." },
+
+    { "type": "header", "label": "Renk" },
+    { "type": "color_scheme", "id": "color_scheme", "label": "Renk şeması" }
+  ],
+  "presets": [
+    {
+      "name": "İlgili kayıtlar",
+      "settings": { "title": "İlgili içerikler", "columns": "3", "sort": "default", "reverseCollection": "", "emptyText": "Henüz ilgili kayıt yok." }
+    }
+  ]
+}
+{% endschema %}

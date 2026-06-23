@@ -1,0 +1,18 @@
+{%- liquid
+  assign thickness = block.settings.thickness | default: 1
+  assign width = block.settings.width | default: 100
+  assign color = block.settings.color | default: 'var(--color-border)'
+-%}
+<hr class="block-divider"
+    style="border:0;border-top:{{ thickness }}px solid {{ color }};width:{{ width }}%;margin:0 auto">
+
+{% schema %}
+{
+  "name": "Ayraç",
+  "settings": [
+    { "type": "range", "id": "thickness", "label": "Kalınlık", "min": 1, "max": 8, "step": 1, "suffix": "px" },
+    { "type": "range", "id": "width", "label": "Genişlik", "min": 10, "max": 100, "step": 5, "suffix": "%" },
+    { "type": "color", "id": "color", "label": "Renk" }
+  ]
+}
+{% endschema %}

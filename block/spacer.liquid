@@ -1,0 +1,11 @@
+<div class="block-spacer" aria-hidden="true"
+     style="height:{{ block.settings.height | default: 48 }}px"></div>
+
+{% schema %}
+{
+  "name": "Boşluk",
+  "settings": [
+    { "type": "range", "id": "height", "label": "Yükseklik", "min": 8, "max": 240, "step": 8, "suffix": "px" }
+  ]
+}
+{% endschema %}

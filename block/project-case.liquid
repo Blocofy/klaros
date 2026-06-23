@@ -1,0 +1,25 @@
+<article class="card" style="padding:0;overflow:hidden;background:rgba(255,255,255,.06);border-color:rgba(255,255,255,.12)">
+  {% if block.settings.imageUrl and block.settings.imageUrl != '' %}
+    <img src="{{ block.settings.imageUrl }}" alt="{{ block.settings.title }}" loading="lazy"
+         style="aspect-ratio:16/10;object-fit:cover;width:100%">
+  {% endif %}
+  <div style="padding:1.5rem">
+    {% if block.settings.sector %}<p class="eyebrow">{{ block.settings.sector }}</p>{% endif %}
+    <h3 style="margin-top:.4rem">{{ block.settings.title }}</h3>
+    {% if block.settings.challenge %}<p><strong>Zorluk:</strong> {{ block.settings.challenge }}</p>{% endif %}
+    {% if block.settings.result %}<p><strong>Sonuç:</strong> {{ block.settings.result }}</p>{% endif %}
+  </div>
+</article>
+
+{% schema %}
+{
+  "name": "Proje kartı",
+  "settings": [
+    { "type": "image", "id": "imageUrl", "label": "Görsel", "bindable": true },
+    { "type": "text", "id": "title", "label": "Başlık", "bindable": true, "placeholder": "Proje adı" },
+    { "type": "text", "id": "sector", "label": "Sektör", "bindable": true, "placeholder": "İnşaat" },
+    { "type": "textarea", "id": "challenge", "label": "Zorluk", "bindable": true, "rows": 3 },
+    { "type": "textarea", "id": "result", "label": "Sonuç", "bindable": true, "rows": 3 }
+  ]
+}
+{% endschema %}

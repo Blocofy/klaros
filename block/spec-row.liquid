@@ -1,0 +1,16 @@
+<div class="spec-row">
+  <strong>{{ block.settings.label }}</strong>
+  <span>{{ block.settings.value }}</span>
+  <span style="opacity:.7">{{ block.settings.note }}</span>
+</div>
+
+{% schema %}
+{
+  "name": "Tablo satırı",
+  "settings": [
+    { "type": "text", "id": "label", "label": "Etiket", "bindable": true, "placeholder": "Kalınlık" },
+    { "type": "text", "id": "value", "label": "Değer", "bindable": true, "placeholder": "8 mm" },
+    { "type": "textarea", "id": "note", "label": "Not", "bindable": true, "rows": 2 }
+  ]
+}
+{% endschema %}

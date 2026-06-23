@@ -1,0 +1,22 @@
+{%- comment -%}
+  Counter metric. Rendered inline by section/Counter.liquid; this file carries
+  the schema block that drives the editor fields.
+{%- endcomment -%}
+<div class="counter__item">
+  <div class="counter__value">{{ block.settings.prefix }}{{ block.settings.value }}{{ block.settings.suffix }}</div>
+  {%- if block.settings.label and block.settings.label != blank -%}
+    <div class="counter__label">{{ block.settings.label }}</div>
+  {%- endif -%}
+</div>
+
+{% schema %}
+{
+  "name": "Metrik",
+  "settings": [
+    { "type": "number", "id": "value", "label": "Sayı", "min": 0 },
+    { "type": "text", "id": "prefix", "label": "Ön ek", "placeholder": "₺" },
+    { "type": "text", "id": "suffix", "label": "Son ek", "placeholder": "+ / % / K" },
+    { "type": "text", "id": "label", "label": "Açıklama", "placeholder": "Tamamlanan proje" }
+  ]
+}
+{% endschema %}

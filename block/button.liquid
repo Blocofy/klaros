@@ -1,0 +1,35 @@
+{%- liquid
+  assign label = block.settings.label
+  assign url = block.settings.url | default: '#'
+  assign style = block.settings.style | default: 'primary'
+  assign align = block.settings.alignment | default: 'left'
+-%}
+{% if label and label != blank %}
+  <div class="block-button" style="display:flex;justify-content:{% if align == 'center' %}center{% elsif align == 'right' %}flex-end{% else %}flex-start{% endif %}">
+    <a class="btn btn--{{ style }}" href="{{ url }}"
+       {% if block.settings.new_tab %}target="_blank" rel="noopener"{% endif %}>
+      {{ label }}
+    </a>
+  </div>
+{% endif %}
+
+{% schema %}
+{
+  "name": "Buton",
+  "settings": [
+    { "type": "text", "id": "label", "label": "Metin", "bindable": true, "placeholder": "Daha fazla" },
+    { "type": "url", "id": "url", "label": "Bağlantı" },
+    { "type": "toggle", "id": "new_tab", "label": "Yeni sekmede aç" },
+    {
+      "type": "radio",
+      "id": "style",
+      "label": "Stil",
+      "options": [
+        { "label": "Birincil", "value": "primary" },
+        { "label": "İkincil", "value": "secondary" }
+      ]
+    },
+    { "type": "alignment", "id": "alignment", "label": "Hizalama" }
+  ]
+}
+{% endschema %}

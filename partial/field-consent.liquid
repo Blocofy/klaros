@@ -1,0 +1,9 @@
+{%- comment -%}
+  KVKK/onay alanı. Faz 1: etiket + onay kutusu (+ opsiyonel bağlantı `field.help` URL ise).
+  Tam form-düzeyi rıza yapılandırması (sürümlü, denetim izli) Faz 4'te eklenir.
+{%- endcomment -%}
+<label class="ff-consent">
+  <input type="checkbox" name="{{ field.name }}" value="1"{% if field.required %} required{% endif %}>
+  <span class="ff-consent__text">{{ field.label }}{% if field.required %} <span class="ff__req">*</span>{% endif %}</span>
+</label>
+{% if field.help %}<small class="ff__help">{{ field.help }}</small>{% endif %}

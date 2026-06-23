@@ -1,0 +1,68 @@
+{%- liquid
+  assign color_scheme = props.color_scheme | default: 'scheme-1'
+  assign home_label = props.home_label | default: 'Anasayfa'
+  assign clean = path | default: page.slug | remove_first: '/'
+  assign segs = clean | split: '/'
+  assign origin = page.canonical | split: '/' | slice: 0, 3 | join: '/'
+-%}
+{%- if clean != blank and segs.size > 0 -%}
+<nav class="section breadcrumb color-{{ color_scheme }}" aria-label="Breadcrumb"
+     style="--section-padding-top: 16px; --section-padding-bottom: 0;">
+  <div class="wrap">
+    <ol>
+      <li><a href="/">{{ home_label }}</a></li>
+      {%- assign acc = '' -%}
+      {%- for seg in segs -%}
+        {%- assign acc = acc | append: '/' | append: seg -%}
+        {%- if forloop.last -%}
+          {%- if page.title and page.title != blank -%}
+            {%- assign label = page.title -%}
+          {%- else -%}
+            {%- assign label = seg | replace: '-', ' ' | capitalize -%}
+          {%- endif -%}
+          <li aria-current="page"><span aria-hidden="true">/</span> {{ label }}</li>
+        {%- else -%}
+          {%- assign label = seg | replace: '-', ' ' | capitalize -%}
+          <li><span aria-hidden="true">/</span> <a href="{{ acc }}">{{ label }}</a></li>
+        {%- endif -%}
+      {%- endfor -%}
+    </ol>
+  </div>
+</nav>
+{%- if origin != blank -%}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    { "@type": "ListItem", "position": 1, "name": {{ home_label | json }}, "item": {{ origin | append: '/' | json }} }
+    {%- assign acc2 = '' -%}
+    {%- for seg in segs -%}
+      {%- assign acc2 = acc2 | append: '/' | append: seg -%}
+      {%- if forloop.last and page.title and page.title != blank -%}
+        {%- assign label = page.title -%}
+      {%- else -%}
+        {%- assign label = seg | replace: '-', ' ' | capitalize -%}
+      {%- endif -%}
+      ,{ "@type": "ListItem", "position": {{ forloop.index | plus: 1 }}, "name": {{ label | json }}, "item": {{ origin | append: acc2 | json }} }
+    {%- endfor -%}
+  ]
+}
+</script>
+{%- endif -%}
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Breadcrumb — Yol göstergesi",
+  "category": "Navigasyon",
+  "settings": [
+    { "type": "paragraph", "content": "Bulunduğun sayfanın URL'inden otomatik üretilir; son adım sayfa başlığıdır. Ana sayfada görünmez." },
+    { "type": "text", "id": "home_label", "label": "Ana sayfa etiketi", "placeholder": "Anasayfa" },
+    { "type": "color_scheme", "id": "color_scheme", "label": "Renk şeması" }
+  ],
+  "presets": [
+    { "name": "Breadcrumb", "settings": { "home_label": "Anasayfa", "color_scheme": "scheme-1" } }
+  ]
+}
+{% endschema %}

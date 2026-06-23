@@ -1,0 +1,106 @@
+{%- liquid
+  assign color_scheme = props.color_scheme | default: 'scheme-1'
+  assign alignment = props.alignment | default: 'left'
+  assign columns = props.columns | default: '3'
+  assign pad_top = props.padding_top | default: 80
+  assign pad_bottom = props.padding_bottom | default: 80
+-%}
+<section
+  class="section color-{{ color_scheme }}"
+  style="--section-padding-top: {{ pad_top }}px; --section-padding-bottom: {{ pad_bottom }}px;"
+>
+  <div class="wrap">
+    {%- if props.eyebrow or props.title or props.subtitle -%}
+      <div class="section__lead{% if alignment == 'center' %} section__lead--center{% endif %}" style="{% if alignment == 'center' %}text-align: center; margin: 0 auto 2.5rem;{% else %}margin-bottom: 2.5rem;{% endif %}">
+        {%- if props.eyebrow and props.eyebrow != blank -%}
+          <span class="eyebrow" data-yt-bind="eyebrow">{{ props.eyebrow }}</span>
+        {%- endif -%}
+        {%- if props.title and props.title != blank -%}
+          <h2 data-yt-bind="title">{{ props.title }}</h2>
+        {%- endif -%}
+        {%- if props.subtitle and props.subtitle != blank -%}
+          <p style="margin-top: 0.5rem; opacity: 0.75;" data-yt-bind="subtitle">{{ props.subtitle }}</p>
+        {%- endif -%}
+      </div>
+    {%- endif -%}
+
+    <div class="grid grid--{{ columns }}">
+      {%- for block in blocks -%}
+        {%- if block.type == 'card' -%}
+          {%- assign idx = forloop.index -%}
+          <article class="card">
+            {%- liquid
+              assign media_type = block.settings.media_type | default: 'none'
+            -%}
+            {%- if media_type == 'number' -%}
+              <div class="card__num">{% if idx < 10 %}0{% endif %}{{ idx }}</div>
+            {%- elsif media_type == 'icon' and block.settings.icon and block.settings.icon != blank -%}
+              <img class="card__icon" src="{{ block.settings.icon | image_url: 'width=64,height=64,format=webp' }}" alt="" width="40" height="40">
+            {%- elsif media_type == 'image' and block.settings.image and block.settings.image != blank -%}
+              <img class="card__image" src="{{ block.settings.image | image_url: 'width=640,format=webp' }}" alt="{{ block.settings.image_alt | default: block.settings.title }}">
+            {%- endif -%}
+            {%- if block.settings.title and block.settings.title != blank -%}
+              <h3>{{ block.settings.title }}</h3>
+            {%- endif -%}
+            {%- if block.settings.description and block.settings.description != blank -%}
+              <p>{{ block.settings.description }}</p>
+            {%- endif -%}
+            {%- if block.settings.cta_label and block.settings.cta_label != blank -%}
+              <a class="card__link" href="{{ block.settings.cta_url | default: '#' }}" style="margin-top: 0.5rem; color: var(--color-primary); font-weight: 500; text-decoration: none;">{{ block.settings.cta_label }} →</a>
+            {%- endif -%}
+          </article>
+        {%- endif -%}
+      {%- endfor -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Öne çıkan kartlar",
+  "category": "İçerik",
+  "settings": [
+    { "type": "header", "label": "Başlık" },
+    { "type": "text", "id": "eyebrow", "label": "Üst başlık" },
+    { "type": "text", "id": "title", "label": "Bölüm başlığı", "bindable": true },
+    { "type": "text", "id": "subtitle", "label": "Alt metin" },
+
+    { "type": "header", "label": "Düzen" },
+    { "type": "select", "id": "columns", "label": "Sütun sayısı", "options": [
+      { "label": "2 sütun", "value": "2" },
+      { "label": "3 sütun", "value": "3" },
+      { "label": "4 sütun", "value": "4" }
+    ]},
+    { "type": "alignment", "id": "alignment", "label": "Başlık hizalama" },
+    { "type": "range", "id": "padding_top", "label": "Üst boşluk", "min": 0, "max": 200, "step": 8, "suffix": "px" },
+    { "type": "range", "id": "padding_bottom", "label": "Alt boşluk", "min": 0, "max": 200, "step": 8, "suffix": "px" },
+
+    { "type": "header", "label": "Renk" },
+    { "type": "color_scheme", "id": "color_scheme", "label": "Renk şeması" }
+  ],
+  "blocks": [
+    { "type": "card", "max": 12 }
+  ],
+  "presets": [
+    {
+      "name": "Hizmetler — 3 kolon",
+      "settings": {
+        "title": "Hizmetlerimiz",
+        "columns": "3",
+        "alignment": "left",
+        "color_scheme": "scheme-1"
+      }
+    },
+    {
+      "name": "Özellikler — 4 kolon",
+      "settings": {
+        "eyebrow": "ÖZELLİKLER",
+        "title": "Neden bizi seçmelisiniz",
+        "columns": "4",
+        "alignment": "center",
+        "color_scheme": "scheme-1"
+      }
+    }
+  ]
+}
+{% endschema %}

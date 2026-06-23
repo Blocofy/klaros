@@ -1,0 +1,81 @@
+{%- liquid
+  assign color_scheme = props.color_scheme | default: 'scheme-1'
+  assign alignment = props.alignment | default: 'center'
+  assign pad_top = props.padding_top | default: 80
+  assign pad_bottom = props.padding_bottom | default: 80
+-%}
+<section
+  class="section color-{{ color_scheme }}"
+  style="--section-padding-top: {{ pad_top }}px; --section-padding-bottom: {{ pad_bottom }}px;"
+>
+  <div class="wrap">
+    {%- if props.eyebrow or props.title or props.description -%}
+      <div class="section__lead" style="margin-bottom: 2.5rem; {% if alignment == 'center' %}text-align: center; max-width: 42rem; margin-left: auto; margin-right: auto;{% endif %}">
+        {%- if props.eyebrow and props.eyebrow != blank -%}
+          <span class="eyebrow">{{ props.eyebrow }}</span>
+        {%- endif -%}
+        {%- if props.title and props.title != blank -%}
+          <h2>{{ props.title }}</h2>
+        {%- endif -%}
+        {%- if props.description and props.description != blank -%}
+          <p style="margin-top: 0.5rem; opacity: 0.75;">{{ props.description }}</p>
+        {%- endif -%}
+      </div>
+    {%- endif -%}
+
+    <div class="testimonials">
+      {%- for block in blocks -%}
+        {%- if block.type == 'testimonial' -%}
+          <figure class="testimonial">
+            {%- if block.settings.quote and block.settings.quote != blank -%}
+              <blockquote class="testimonial__quote">{{ block.settings.quote }}</blockquote>
+            {%- endif -%}
+            <figcaption class="testimonial__author">
+              {%- if block.settings.avatar and block.settings.avatar != blank -%}
+                <img class="testimonial__avatar" src="{{ block.settings.avatar | image_url: 'width=80,height=80,format=webp' }}" alt="">
+              {%- endif -%}
+              <div>
+                {%- if block.settings.name -%}<div class="testimonial__name">{{ block.settings.name }}</div>{%- endif -%}
+                {%- if block.settings.role -%}<div class="testimonial__role">{{ block.settings.role }}</div>{%- endif -%}
+              </div>
+            </figcaption>
+          </figure>
+        {%- endif -%}
+      {%- endfor -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Müşteri yorumları",
+  "category": "Sosyal kanıt",
+  "settings": [
+    { "type": "header", "label": "Başlık" },
+    { "type": "text", "id": "eyebrow", "label": "Üst başlık" },
+    { "type": "text", "id": "title", "label": "Bölüm başlığı", "placeholder": "Müşterilerimiz ne diyor?" },
+    { "type": "textarea", "id": "description", "label": "Alt metin", "rows": 2 },
+
+    { "type": "header", "label": "Düzen" },
+    { "type": "alignment", "id": "alignment", "label": "Başlık hizalama" },
+    { "type": "range", "id": "padding_top", "label": "Üst boşluk", "min": 0, "max": 200, "step": 8, "suffix": "px" },
+    { "type": "range", "id": "padding_bottom", "label": "Alt boşluk", "min": 0, "max": 200, "step": 8, "suffix": "px" },
+
+    { "type": "header", "label": "Renk" },
+    { "type": "color_scheme", "id": "color_scheme", "label": "Renk şeması" }
+  ],
+  "blocks": [
+    { "type": "testimonial", "max": 12 }
+  ],
+  "presets": [
+    {
+      "name": "Yorumlar — 3'lü grid",
+      "settings": {
+        "title": "Müşterilerimiz ne diyor?",
+        "alignment": "center",
+        "color_scheme": "scheme-1"
+      }
+    }
+  ]
+}
+{% endschema %}

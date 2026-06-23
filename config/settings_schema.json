@@ -1,0 +1,73 @@
+[
+  {
+    "id": "typography",
+    "name": "Tipografi",
+    "fields": {
+      "heading_font": {
+        "type": "select",
+        "label": "Başlık fontu",
+        "help": "Başlıklarda kullanılan font ailesi.",
+        "options": [
+          { "label": "Newsreader (serif)", "value": "newsreader" },
+          { "label": "Playfair Display (serif)", "value": "playfair" },
+          { "label": "Fraunces (serif)", "value": "fraunces" },
+          { "label": "Lora (serif)", "value": "lora" },
+          { "label": "Inter (sans)", "value": "inter" }
+        ]
+      },
+      "body_font": {
+        "type": "select",
+        "label": "Gövde fontu",
+        "help": "Paragraf ve arayüz metinlerinde kullanılan font ailesi.",
+        "options": [
+          { "label": "Inter (sans)", "value": "inter" },
+          { "label": "Manrope (sans)", "value": "manrope" },
+          { "label": "Newsreader (serif)", "value": "newsreader" },
+          { "label": "Source Serif (serif)", "value": "source-serif" }
+        ]
+      },
+      "font_size_base": {
+        "type": "range",
+        "label": "Temel font boyutu",
+        "min": 15,
+        "max": 20,
+        "step": 1,
+        "suffix": "px"
+      }
+    }
+  },
+  {
+    "id": "layout",
+    "name": "Düzen ve genişlik",
+    "fields": {
+      "content_width": {
+        "type": "range",
+        "label": "İçerik genişliği",
+        "help": "Sayfa içeriğinin maksimum genişliği.",
+        "min": 60,
+        "max": 88,
+        "step": 2,
+        "suffix": "rem"
+      },
+      "section_rhythm": {
+        "type": "select",
+        "label": "Bölüm boşluğu (yoğunluk)",
+        "help": "Bölümler arası dikey boşluk ritmi.",
+        "options": [
+          { "label": "Sıkı", "value": "compact" },
+          { "label": "Normal", "value": "normal" },
+          { "label": "Ferah", "value": "spacious" }
+        ]
+      },
+      "corner_radius": {
+        "type": "range",
+        "label": "Köşe yuvarlaklığı",
+        "help": "Kart, buton ve görsel köşelerinin yuvarlaklığı.",
+        "min": 0,
+        "max": 16,
+        "step": 1,
+        "suffix": "px"
+      }
+    }
+  }
+]

@@ -1,0 +1,91 @@
+{%- liquid
+  assign color_scheme = props.color_scheme | default: 'scheme-1'
+  assign alignment = props.alignment | default: 'left'
+  assign max_width = props.max_width | default: 48
+  assign pad_top = props.padding_top | default: 80
+  assign pad_bottom = props.padding_bottom | default: 80
+-%}
+<section
+  class="section color-{{ color_scheme }}"
+  style="--section-padding-top: {{ pad_top }}px; --section-padding-bottom: {{ pad_bottom }}px;"
+>
+  <div class="wrap">
+    <div class="faq-wrapper" style="max-width: {{ max_width }}rem; {% if alignment == 'center' %}margin: 0 auto;{% endif %}">
+      {%- if props.eyebrow or props.title or props.description -%}
+        <div class="section__lead" style="margin-bottom: 2rem; {% if alignment == 'center' %}text-align: center;{% endif %}">
+          {%- if props.eyebrow and props.eyebrow != blank -%}
+            <span class="eyebrow">{{ props.eyebrow }}</span>
+          {%- endif -%}
+          {%- if props.title and props.title != blank -%}
+            <h2>{{ props.title }}</h2>
+          {%- endif -%}
+          {%- if props.description and props.description != blank -%}
+            <p style="margin-top: 0.5rem; opacity: 0.75;">{{ props.description }}</p>
+          {%- endif -%}
+        </div>
+      {%- endif -%}
+
+      <div class="faq">
+        {%- for block in blocks -%}
+          {%- if block.type == 'faq-item' -%}
+            {%- assign idx = forloop.index -%}
+            {%- assign opened = block.settings.open_by_default | default: false -%}
+            <details{% if opened or idx == 1 %} open{% endif %} itemscope itemtype="https://schema.org/Question">
+              <summary itemprop="name">{{ block.settings.question | default: 'Soru başlığı' }}</summary>
+              {%- if block.settings.answer and block.settings.answer != blank -%}
+                <div itemscope itemtype="https://schema.org/Answer" itemprop="acceptedAnswer">
+                  <p itemprop="text">{{ block.settings.answer }}</p>
+                </div>
+              {%- endif -%}
+            </details>
+          {%- endif -%}
+        {%- endfor -%}
+      </div>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Sıkça Sorulan Sorular",
+  "category": "İçerik",
+  "settings": [
+    { "type": "header", "label": "Başlık" },
+    { "type": "text", "id": "eyebrow", "label": "Üst başlık" },
+    { "type": "text", "id": "title", "label": "Bölüm başlığı", "placeholder": "Sıkça sorulan sorular" },
+    { "type": "textarea", "id": "description", "label": "Alt metin", "rows": 2 },
+
+    { "type": "header", "label": "Düzen" },
+    { "type": "alignment", "id": "alignment", "label": "Hizalama" },
+    { "type": "range", "id": "max_width", "label": "Maksimum genişlik", "min": 32, "max": 72, "step": 2, "suffix": "rem" },
+    { "type": "range", "id": "padding_top", "label": "Üst boşluk", "min": 0, "max": 200, "step": 8, "suffix": "px" },
+    { "type": "range", "id": "padding_bottom", "label": "Alt boşluk", "min": 0, "max": 200, "step": 8, "suffix": "px" },
+
+    { "type": "header", "label": "Renk" },
+    { "type": "color_scheme", "id": "color_scheme", "label": "Renk şeması" }
+  ],
+  "blocks": [
+    { "type": "faq-item", "max": 24 }
+  ],
+  "presets": [
+    {
+      "name": "SSS — Standart",
+      "settings": {
+        "title": "Sıkça sorulan sorular",
+        "alignment": "left",
+        "color_scheme": "scheme-1"
+      }
+    },
+    {
+      "name": "SSS — Ortalı dar",
+      "settings": {
+        "title": "Aklınızdakiler",
+        "description": "Müşterilerimizin en çok sorduğu sorular ve cevapları.",
+        "alignment": "center",
+        "max_width": 40,
+        "color_scheme": "scheme-1"
+      }
+    }
+  ]
+}
+{% endschema %}

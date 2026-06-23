@@ -1,0 +1,22 @@
+{%- assign opts = field.resolvedOptions | default: field.options -%}
+{%- if opts -%}
+  {%- comment -%} Çoklu seçim: seçenekli checkbox grubu (name="x[]" → sunucu dizi olarak alır). {%- endcomment -%}
+  <fieldset class="ff__fieldset ff-check ff-check--{{ field.variant | default: 'classic' }}">
+    <legend class="ff__label">{{ field.label }}{% if field.required %} <span class="ff__req">*</span>{% endif %}</legend>
+    <div class="ff-check__opts">
+      {%- for opt in opts -%}
+        <label class="ff-check__opt">
+          <input type="checkbox" name="{{ field.name }}[]" value="{{ opt.value }}"{% if field.prefillValue and opt.value == field.prefillValue %} checked{% endif %}>
+          <span class="ff-check__face">{{ opt.label }}</span>
+        </label>
+      {%- endfor -%}
+    </div>
+  </fieldset>
+{%- else -%}
+  {%- comment -%} Tekil boolean checkbox. {%- endcomment -%}
+  <label class="ff-check ff-check--{{ field.variant | default: 'classic' }} ff-check__single">
+    <input type="checkbox" name="{{ field.name }}" value="1"{% if field.prefillValue %} checked{% endif %}{% if field.required %} required{% endif %}>
+    <span class="ff-check__face">{{ field.label }}{% if field.required %} <span class="ff__req">*</span>{% endif %}</span>
+  </label>
+{%- endif -%}
+{% if field.help %}<small class="ff__help">{{ field.help }}</small>{% endif %}

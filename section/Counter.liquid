@@ -1,0 +1,101 @@
+{%- liquid
+  assign color_scheme = props.color_scheme | default: 'scheme-1'
+  assign columns = props.columns | default: '3'
+  assign alignment = props.alignment | default: 'center'
+  assign pad_top = props.padding_top | default: 80
+  assign pad_bottom = props.padding_bottom | default: 80
+  assign sid = 'ct-' | append: section.id
+-%}
+<section
+  class="section counter color-{{ color_scheme }}"
+  style="--section-padding-top: {{ pad_top }}px; --section-padding-bottom: {{ pad_bottom }}px;"
+>
+  <div class="wrap">
+    {%- if props.eyebrow or props.title or props.description -%}
+      <div class="section__lead" style="margin-bottom: 2rem; {% if alignment == 'center' %}text-align: center;{% endif %}">
+        {%- if props.eyebrow and props.eyebrow != blank -%}<span class="eyebrow">{{ props.eyebrow }}</span>{%- endif -%}
+        {%- if props.title and props.title != blank -%}<h2>{{ props.title }}</h2>{%- endif -%}
+        {%- if props.description and props.description != blank -%}<p style="margin-top:0.5rem;opacity:0.75;">{{ props.description }}</p>{%- endif -%}
+      </div>
+    {%- endif -%}
+
+    <div class="counter__grid counter__grid--{{ columns }}" id="{{ sid }}">
+      {%- for block in blocks -%}
+        {%- if block.type == 'counter-item' -%}
+          <div class="counter__item" style="{% if alignment == 'center' %}text-align:center;{% endif %}">
+            <div class="counter__value"
+                 data-target="{{ block.settings.value | default: 0 }}"
+                 data-prefix="{{ block.settings.prefix | escape }}"
+                 data-suffix="{{ block.settings.suffix | escape }}">{{ block.settings.prefix }}0{{ block.settings.suffix }}</div>
+            {%- if block.settings.label and block.settings.label != blank -%}
+              <div class="counter__label">{{ block.settings.label }}</div>
+            {%- endif -%}
+          </div>
+        {%- endif -%}
+      {%- endfor -%}
+    </div>
+  </div>
+</section>
+<script>
+(function(){
+  var root = document.getElementById({{ sid | json }});
+  if(!root) return;
+  var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  function fmt(el, n){ return (el.dataset.prefix||'') + Math.round(n).toLocaleString('tr-TR') + (el.dataset.suffix||''); }
+  function run(el){
+    var target = parseFloat(el.dataset.target) || 0;
+    if(reduce){ el.textContent = fmt(el, target); return; }
+    var start = null, dur = 1400;
+    function step(t){ if(!start) start = t; var p = Math.min((t-start)/dur, 1);
+      el.textContent = fmt(el, target * (1 - Math.pow(1-p, 3)));
+      if(p < 1) requestAnimationFrame(step); }
+    requestAnimationFrame(step);
+  }
+  var items = root.querySelectorAll('.counter__value');
+  if(!('IntersectionObserver' in window)){ items.forEach(run); return; }
+  var io = new IntersectionObserver(function(entries){
+    entries.forEach(function(e){ if(e.isIntersecting){ run(e.target); io.unobserve(e.target); } });
+  }, { threshold: 0.4 });
+  items.forEach(function(el){ io.observe(el); });
+})();
+</script>
+
+{% schema %}
+{
+  "name": "Sayaç / istatistik",
+  "category": "İçerik",
+  "settings": [
+    { "type": "header", "label": "Başlık" },
+    { "type": "text", "id": "eyebrow", "label": "Üst başlık" },
+    { "type": "text", "id": "title", "label": "Başlık" },
+    { "type": "textarea", "id": "description", "label": "Alt metin", "rows": 2 },
+
+    { "type": "header", "label": "Düzen" },
+    { "type": "select", "id": "columns", "label": "Sütun sayısı", "options": [
+      { "label": "2 sütun", "value": "2" },
+      { "label": "3 sütun", "value": "3" },
+      { "label": "4 sütun", "value": "4" }
+    ]},
+    { "type": "alignment", "id": "alignment", "label": "Hizalama" },
+    { "type": "range", "id": "padding_top", "label": "Üst boşluk", "min": 0, "max": 200, "step": 8, "suffix": "px" },
+    { "type": "range", "id": "padding_bottom", "label": "Alt boşluk", "min": 0, "max": 200, "step": 8, "suffix": "px" },
+
+    { "type": "header", "label": "Renk" },
+    { "type": "color_scheme", "id": "color_scheme", "label": "Renk şeması" }
+  ],
+  "blocks": [
+    { "type": "counter-item", "max": 8 }
+  ],
+  "presets": [
+    {
+      "name": "Sayaç — 3 metrik",
+      "settings": { "title": "Rakamlarla biz", "columns": "3", "color_scheme": "scheme-1" },
+      "blocks": [
+        { "type": "counter-item", "settings": { "value": 100, "suffix": "+", "label": "Tamamlanan proje" } },
+        { "type": "counter-item", "settings": { "value": 15, "label": "Yıllık tecrübe" } },
+        { "type": "counter-item", "settings": { "value": 98, "suffix": "%", "label": "Müşteri memnuniyeti" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

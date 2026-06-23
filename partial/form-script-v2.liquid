@@ -1,0 +1,123 @@
+<script>
+(function () {
+  var f = document.getElementById('{{ form_id }}');
+  if (!f) return;
+  var status = f.querySelector('.form-status');
+  function say(msg, isError) {
+    if (!status) return;
+    status.textContent = msg;
+    if (isError) status.setAttribute('data-error', '1');
+    else status.removeAttribute('data-error');
+  }
+
+  // ── Koşullu mantık (data-bcf-conditions) ──────────────────────────────
+  // Semantik platform conditions.ts ile BİREBİR aynı. Devre dışı (gizli) alanlar
+  // FormData'ya girmez → sunucu onları "gönderilmemiş" görür (nihai otorite sunucu).
+  var conds = [];
+  Array.prototype.forEach.call(f.querySelectorAll('[data-bcf-conditions]'), function (el) {
+    try {
+      var rules = JSON.parse(el.getAttribute('data-bcf-conditions'));
+      if (rules && rules.length) conds.push({ el: el, rules: rules });
+    } catch (e) {}
+  });
+
+  // Bir kontrol alanının değeri — yalnız ETKİN (disabled olmayan) kontrolleri okur,
+  // böylece gizlenmiş bir kaynak alan sunucudaki gibi "boş/yok" görünür.
+  function fieldValue(name) {
+    var multi = f.querySelectorAll('[name="' + name + '[]"]');
+    if (multi.length) {
+      var arr = [];
+      Array.prototype.forEach.call(multi, function (el) { if (el.checked && !el.disabled) arr.push(el.value); });
+      return arr;
+    }
+    var els = f.querySelectorAll('[name="' + name + '"]');
+    if (!els.length) return '';
+    if (els[0].type === 'radio') {
+      for (var i = 0; i < els.length; i++) if (els[i].checked && !els[i].disabled) return els[i].value;
+      return '';
+    }
+    if (els[0].type === 'checkbox') return (els[0].checked && !els[0].disabled) ? els[0].value : '';
+    return els[0].disabled ? '' : (els[0].value || '');
+  }
+
+  function ruleMatch(r) {
+    var raw = fieldValue(r.field);
+    var arr = Array.isArray(raw) ? raw : [raw];
+    var target = r.value == null ? '' : r.value;
+    switch (r.op) {
+      case 'is_set': return arr.some(function (v) { return String(v).trim() !== ''; });
+      case 'equals': return arr.indexOf(target) !== -1;
+      case 'not_equals': return arr.indexOf(target) === -1;
+      case 'contains': return arr.some(function (v) { return String(v).indexOf(target) !== -1; });
+      default: return false;
+    }
+  }
+
+  function evalVisible(rules) {
+    var visible = true;
+    var show = rules.filter(function (r) { return r.effect === 'show'; });
+    if (show.length) visible = show.some(ruleMatch);
+    if (rules.some(function (r) { return r.effect === 'hide' && ruleMatch(r); })) visible = false;
+    return visible;
+  }
+
+  function setDisabled(el, disabled) {
+    Array.prototype.forEach.call(el.querySelectorAll('input,select,textarea'), function (ctl) {
+      ctl.disabled = disabled;
+    });
+  }
+
+  function applyConditions() {
+    // İç içe koşullar için sabit-noktaya kadar yinele (bir alanı gizlemek bağımlıyı etkiler).
+    for (var pass = 0; pass < 6; pass++) {
+      var changed = false;
+      conds.forEach(function (c) {
+        var visible = evalVisible(c.rules);
+        var newHidden = !visible;
+        if (c.el.hidden !== newHidden) {
+          c.el.hidden = newHidden;
+          setDisabled(c.el, newHidden);
+          changed = true;
+        }
+        // `require` etkisi (UX): görünür + eşleşince ilk kontrole required ekle.
+        if (c.rules.some(function (r) { return r.effect === 'require'; })) {
+          var first = c.el.querySelector('input,select,textarea');
+          if (first) {
+            var req = visible && c.rules.some(function (r) { return r.effect === 'require' && ruleMatch(r); });
+            if (req) first.setAttribute('required', '');
+            else first.removeAttribute('required');
+          }
+        }
+      });
+      if (!changed) break;
+    }
+  }
+
+  if (conds.length) {
+    f.addEventListener('input', applyConditions);
+    f.addEventListener('change', applyConditions);
+    applyConditions();
+  }
+
+  f.addEventListener('submit', function (e) {
+    e.preventDefault();
+    var btn = f.querySelector('button[type=submit]');
+    if (btn) btn.disabled = true;
+    say('', false);
+    fetch(f.getAttribute('action'), { method: 'POST', body: new FormData(f) })
+      .then(function (r) { return r.json().catch(function () { return {}; }); })
+      .then(function (d) {
+        if (d && d.ok) {
+          f.reset();
+          if (conds.length) applyConditions();
+          say(f.getAttribute('data-success') || 'Teşekkürler.', false);
+        } else {
+          var base = f.getAttribute('data-error') || 'Gönderilemedi.';
+          say(base + (d && d.error ? ' (' + d.error + ')' : ''), true);
+        }
+      })
+      .catch(function () { say(f.getAttribute('data-error') || 'Gönderilemedi.', true); })
+      .finally(function () { if (btn) btn.disabled = false; });
+  });
+})();
+</script>

@@ -1,0 +1,72 @@
+{%- liquid
+  assign ftype = block.settings.type | default: 'text'
+  assign req = block.settings.required
+-%}
+{%- if ftype == 'consent' -%}
+  <label class="form-consent" style="display:flex;gap:.5rem;align-items:flex-start">
+    <input type="checkbox" name="{{ block.settings.name }}" value="1"{% if req %} required{% endif %}>
+    <span>{{ block.settings.label }}{% if block.settings.consent_url and block.settings.consent_url != blank %} <a href="{{ block.settings.consent_url }}" target="_blank" rel="noopener">aydınlatma metni</a>{% endif %}{% if req %} *{% endif %}</span>
+  </label>
+{%- else -%}
+  <label class="form-field">
+    <span>{{ block.settings.label }}{% if req %} *{% endif %}</span>
+    {%- case ftype -%}
+      {%- when 'textarea' -%}
+        <textarea name="{{ block.settings.name }}"{% if req %} required{% endif %}></textarea>
+      {%- when 'file' -%}
+        <input type="file" name="{{ block.settings.name }}"{% if req %} required{% endif %}>
+      {%- when 'select' -%}
+        <select name="{{ block.settings.name }}"{% if req %} required{% endif %}>
+          <option value="">Seçiniz…</option>
+          {%- assign opts = block.settings.options | newline_to_br | split: '<br />' -%}
+          {%- for opt in opts -%}
+            {%- assign o = opt | strip -%}
+            {%- if o != blank %}<option value="{{ o }}">{{ o }}</option>{% endif -%}
+          {%- endfor -%}
+        </select>
+      {%- when 'radio' -%}
+        <span class="form-radios" style="display:flex;flex-direction:column;gap:.35rem">
+          {%- assign opts = block.settings.options | newline_to_br | split: '<br />' -%}
+          {%- for opt in opts -%}
+            {%- assign o = opt | strip -%}
+            {%- if o != blank -%}
+              <label style="display:flex;gap:.5rem;align-items:center;font-weight:400">
+                <input type="radio" name="{{ block.settings.name }}" value="{{ o }}"{% if req and forloop.first %} required{% endif %}> {{ o }}
+              </label>
+            {%- endif -%}
+          {%- endfor -%}
+        </span>
+      {%- else -%}
+        <input type="{{ ftype }}" name="{{ block.settings.name }}"{% if req %} required{% endif %}>
+    {%- endcase -%}
+  </label>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Form alanı",
+  "settings": [
+    { "type": "text", "id": "name", "label": "Alan adı", "placeholder": "email", "help": "Form gönderildiğinde bu isimle kayıt edilir." },
+    { "type": "text", "id": "label", "label": "Etiket", "placeholder": "E-posta" },
+    {
+      "type": "select",
+      "id": "type",
+      "label": "Tip",
+      "options": [
+        { "label": "Metin", "value": "text" },
+        { "label": "E-posta", "value": "email" },
+        { "label": "Telefon", "value": "tel" },
+        { "label": "Tarih", "value": "date" },
+        { "label": "Uzun metin", "value": "textarea" },
+        { "label": "Açılır liste", "value": "select" },
+        { "label": "Seçenekler (radio)", "value": "radio" },
+        { "label": "Onay kutusu (KVKK)", "value": "consent" },
+        { "label": "Dosya", "value": "file" }
+      ]
+    },
+    { "type": "textarea", "id": "options", "label": "Seçenekler", "rows": 4, "help": "Her satıra bir seçenek. Yalnızca açılır liste / radio için.", "visibleIf": "type == 'select' || type == 'radio'" },
+    { "type": "url", "id": "consent_url", "label": "Aydınlatma metni bağlantısı", "help": "KVKK / gizlilik metnine bağlantı.", "visibleIf": "type == 'consent'" },
+    { "type": "toggle", "id": "required", "label": "Zorunlu" }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,14 @@
+{% for field in fields %}
+  <label>
+    <span>{{ field.label }}{% if field.required %} *{% endif %}</span>
+    {% if field.type == 'textarea' %}
+      <textarea name="{{ field.name }}"{% if field.required %} required{% endif %}></textarea>
+    {% elsif field.type == 'file' %}
+      <input type="file" name="{{ field.name }}"{% if field.required %} required{% endif %}>
+    {% else %}
+      <input type="{{ field.type | default: 'text' }}" name="{{ field.name }}"{% if field.required %} required{% endif %}>
+    {% endif %}
+  </label>
+{% endfor %}
+<input type="text" name="_hp" tabindex="-1" autocomplete="off" aria-hidden="true"
+       style="position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden">

@@ -1,0 +1,72 @@
+{%- liquid
+  assign logo = settings.logo
+  assign logo_w = settings.logo_width | default: 150
+  assign brand = globals.site_name | default: site.name
+  assign has_topbar = false
+  if globals.phone != blank or globals.email != blank or globals.social_links
+    assign has_topbar = true
+  endif
+-%}
+<header class="site-header">
+  {%- if has_topbar -%}
+  <div class="topbar">
+    <div class="wrap">
+      <div class="topbar__contact">
+        {%- if globals.phone and globals.phone != blank -%}
+          <a href="tel:{{ globals.phone | remove: ' ' }}">{{ globals.phone }}</a>
+        {%- endif -%}
+        {%- if globals.email and globals.email != blank -%}
+          <a href="mailto:{{ globals.email }}">{{ globals.email }}</a>
+        {%- endif -%}
+      </div>
+      {%- if globals.social_links -%}
+      <div class="topbar__social">
+        {%- for s in globals.social_links -%}
+          {%- if s[1] and s[1] != blank -%}
+            <a href="{{ s[1] }}" target="_blank" rel="noopener" aria-label="{{ s[0] }}">{{ s[0] | capitalize }}</a>
+          {%- endif -%}
+        {%- endfor -%}
+      </div>
+      {%- endif -%}
+    </div>
+  </div>
+  {%- endif -%}
+  <div class="wrap header__bar">
+    <a class="brand" href="/">
+      {%- if logo and logo != blank -%}
+        <img class="brand-logo" src="{{ logo }}" alt="{{ brand }}"
+             style="width:{{ logo_w }}px;max-width:55vw;height:auto;max-height:56px;object-fit:contain">
+      {%- else -%}
+        {{ brand }}
+      {%- endif -%}
+    </a>
+    <input type="checkbox" id="nav-toggle" class="nav-toggle">
+    <label for="nav-toggle" class="nav-burger" aria-label="Menüyü aç/kapat" aria-controls="nav-toggle">
+      <span></span><span></span><span></span>
+    </label>
+    <nav class="nav" aria-label="Ana menü">
+      {%- for item in nav -%}
+        {%- if item.children and item.children.size > 0 -%}
+          <span class="has-children">
+            <a href="{{ item.url | default: '#' }}">{{ item.label }}</a>
+            <span class="submenu">
+              {%- for child in item.children -%}
+                <a href="{{ child.url | default: '#' }}">{{ child.label }}</a>
+              {%- endfor -%}
+            </span>
+          </span>
+        {%- else -%}
+          <a href="{{ item.url | default: '#' }}">{{ item.label }}</a>
+        {%- endif -%}
+      {%- endfor -%}
+      {%- if locale_alternates and locale_alternates.size > 1 -%}
+        <span class="locale-switcher" aria-label="Dil seçimi">
+          {%- for alt in locale_alternates -%}
+            <a class="locale-switcher__link{% if alt.current %} is-active{% endif %}"
+               href="{{ alt.url }}" hreflang="{{ alt.locale }}"{% if alt.current %} aria-current="true"{% endif %}>{{ alt.locale | split: '-' | first | upcase }}</a>
+          {%- endfor -%}
+        </span>
+      {%- endif -%}
+    </nav>
+  </div>
+</header>

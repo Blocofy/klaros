@@ -1,0 +1,64 @@
+{%- liquid
+  assign color_scheme = props.color_scheme | default: 'scheme-1'
+  assign height = props.height | default: 420
+  assign alignment = props.alignment | default: 'left'
+  assign pad_top = props.padding_top | default: 80
+  assign pad_bottom = props.padding_bottom | default: 80
+  assign embed = props.embed_url | default: globals.map_url
+-%}
+<section
+  class="section map-embed color-{{ color_scheme }}"
+  style="--section-padding-top: {{ pad_top }}px; --section-padding-bottom: {{ pad_bottom }}px;"
+>
+  <div class="wrap">
+    {%- if props.eyebrow or props.title or props.description -%}
+      <div class="section__lead" style="margin-bottom: 1.5rem; {% if alignment == 'center' %}text-align: center;{% endif %}">
+        {%- if props.eyebrow and props.eyebrow != blank -%}<span class="eyebrow">{{ props.eyebrow }}</span>{%- endif -%}
+        {%- if props.title and props.title != blank -%}<h2>{{ props.title }}</h2>{%- endif -%}
+        {%- if props.description and props.description != blank -%}<p style="margin-top:0.5rem;opacity:0.75;">{{ props.description }}</p>{%- endif -%}
+      </div>
+    {%- endif -%}
+
+    {%- if embed and embed != blank -%}
+      <div class="map-embed__frame" style="--map-height: {{ height }}px;">
+        <iframe src="{{ embed | escape }}" title="{{ props.title | default: 'Harita' | escape }}"
+                loading="lazy" referrerpolicy="no-referrer-when-downgrade" allowfullscreen></iframe>
+      </div>
+    {%- elsif preview -%}
+      <p style="opacity:0.6;padding:2rem;border:1px dashed var(--color-border,#ccc);border-radius:.5rem;text-align:center;">
+        Harita URL'i girilmedi. Bu bölümde özel embed URL girin ya da <strong>Ayarlar → İletişim → Google Haritalar embed URL'i</strong>'ni doldurun.
+      </p>
+    {%- endif -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Harita",
+  "category": "İletişim",
+  "settings": [
+    { "type": "header", "label": "Başlık" },
+    { "type": "text", "id": "eyebrow", "label": "Üst başlık" },
+    { "type": "text", "id": "title", "label": "Başlık" },
+    { "type": "textarea", "id": "description", "label": "Alt metin", "rows": 2 },
+
+    { "type": "header", "label": "Harita" },
+    { "type": "url", "id": "embed_url", "label": "Google Haritalar embed URL'i", "placeholder": "https://www.google.com/maps/embed?…", "help": "Boş bırakılırsa Ayarlar → İletişim'deki harita URL'i kullanılır." },
+    { "type": "range", "id": "height", "label": "Yükseklik", "min": 240, "max": 720, "step": 20, "suffix": "px" },
+
+    { "type": "header", "label": "Düzen" },
+    { "type": "alignment", "id": "alignment", "label": "Başlık hizalama" },
+    { "type": "range", "id": "padding_top", "label": "Üst boşluk", "min": 0, "max": 200, "step": 8, "suffix": "px" },
+    { "type": "range", "id": "padding_bottom", "label": "Alt boşluk", "min": 0, "max": 200, "step": 8, "suffix": "px" },
+
+    { "type": "header", "label": "Renk" },
+    { "type": "color_scheme", "id": "color_scheme", "label": "Renk şeması" }
+  ],
+  "presets": [
+    {
+      "name": "Harita",
+      "settings": { "title": "Bize ulaşın", "height": 420, "color_scheme": "scheme-1" }
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,50 @@
+{%- liquid
+  assign show_number = block.settings.show_number | default: false
+  assign cta_label = block.settings.cta_label
+  assign cta_url = block.settings.cta_url | default: '#'
+  assign media_type = block.settings.media_type | default: 'none'
+-%}
+<article class="card">
+  {%- if show_number or media_type == 'number' -%}
+    <div class="card__num">{{ index | default: 1 }}</div>
+  {%- elsif media_type == 'icon' and block.settings.icon and block.settings.icon != blank -%}
+    <img class="card__icon" src="{{ block.settings.icon | image_url: 'width=64,height=64,format=webp' }}" alt="" width="40" height="40">
+  {%- elsif media_type == 'image' and block.settings.image and block.settings.image != blank -%}
+    <img class="card__image" src="{{ block.settings.image | image_url: 'width=640,format=webp' }}" alt="{{ block.settings.image_alt | default: block.settings.title }}">
+  {%- endif -%}
+  {%- if block.settings.title and block.settings.title != blank -%}
+    <h3>{{ block.settings.title }}</h3>
+  {%- endif -%}
+  {%- if block.settings.description and block.settings.description != blank -%}
+    <p>{{ block.settings.description }}</p>
+  {%- endif -%}
+  {%- if cta_label and cta_label != blank -%}
+    <a class="card__link" href="{{ cta_url }}">{{ cta_label }} →</a>
+  {%- endif -%}
+</article>
+
+{% schema %}
+{
+  "name": "Kart",
+  "settings": [
+    { "type": "header", "label": "İçerik" },
+    { "type": "text", "id": "title", "label": "Başlık", "placeholder": "Kart başlığı" },
+    { "type": "textarea", "id": "description", "label": "Açıklama", "rows": 3 },
+
+    { "type": "header", "label": "Görsel / İkon" },
+    { "type": "radio", "id": "media_type", "label": "Görsel türü", "options": [
+      { "label": "Yok", "value": "none" },
+      { "label": "Numara", "value": "number" },
+      { "label": "İkon", "value": "icon" },
+      { "label": "Görsel", "value": "image" }
+    ]},
+    { "type": "image", "id": "icon", "label": "İkon görseli", "visibleIf": "media_type == 'icon'" },
+    { "type": "image", "id": "image", "label": "Geniş görsel", "visibleIf": "media_type == 'image'" },
+    { "type": "text", "id": "image_alt", "label": "Alternatif metin", "visibleIf": "media_type == 'image'" },
+
+    { "type": "header", "label": "Aksiyon" },
+    { "type": "text", "id": "cta_label", "label": "Bağlantı metni", "placeholder": "Daha fazla" },
+    { "type": "url", "id": "cta_url", "label": "Bağlantı", "visibleIf": "cta_label" }
+  ]
+}
+{% endschema %}

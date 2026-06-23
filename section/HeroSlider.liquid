@@ -1,0 +1,121 @@
+{%- liquid
+  assign color_scheme = props.color_scheme | default: 'scheme-1'
+  assign min_height = props.min_height | default: 32
+  assign pad_top = props.padding_top | default: 0
+  assign pad_bottom = props.padding_bottom | default: 0
+  assign autoplay = props.autoplay | default: false
+  assign interval = props.interval | default: 6
+  assign show_arrows = props.show_arrows
+  if props.show_arrows == nil
+    assign show_arrows = true
+  endif
+  assign show_dots = props.show_dots
+  if props.show_dots == nil
+    assign show_dots = true
+  endif
+  assign sid = 'hs-' | append: section.id
+-%}
+<section
+  class="section hero-slider color-{{ color_scheme }}"
+  style="--section-padding-top: {{ pad_top }}px; --section-padding-bottom: {{ pad_bottom }}px; --hero-min-height: {{ min_height }}rem;"
+>
+  <div class="swiper hero-slider__swiper" id="{{ sid }}">
+    <div class="swiper-wrapper">
+      {%- for block in blocks -%}
+        {%- if block.type == 'hero-slide' -%}
+          {%- assign img = block.settings.image -%}
+          <div class="swiper-slide hero-slide hero-slide--{{ block.settings.alignment | default: 'center' }}">
+            {%- if img and img != blank -%}
+              <div class="hero-slide__media" style="background-image: url('{{ img | image_url: 'width=1920,quality=80,format=webp' }}');"></div>
+              <div class="hero-slide__overlay"></div>
+            {%- endif -%}
+            <div class="wrap">
+              <div class="hero-slide__content">
+                {%- if block.settings.eyebrow and block.settings.eyebrow != blank -%}
+                  <span class="eyebrow">{{ block.settings.eyebrow }}</span>
+                {%- endif -%}
+                {%- if block.settings.heading and block.settings.heading != blank -%}
+                  <h2>{{ block.settings.heading }}</h2>
+                {%- endif -%}
+                {%- if block.settings.subtitle and block.settings.subtitle != blank -%}
+                  <p class="hero-slide__subtitle">{{ block.settings.subtitle }}</p>
+                {%- endif -%}
+                {%- if block.settings.button_label and block.settings.button_label != blank -%}
+                  <div class="hero-slide__actions">
+                    <a class="btn btn--primary" href="{{ block.settings.button_url | default: '#' }}">{{ block.settings.button_label }}</a>
+                  </div>
+                {%- endif -%}
+              </div>
+            </div>
+          </div>
+        {%- endif -%}
+      {%- endfor -%}
+    </div>
+    {%- if show_dots -%}<div class="swiper-pagination"></div>{%- endif -%}
+    {%- if show_arrows -%}
+      <div class="swiper-button-prev"></div>
+      <div class="swiper-button-next"></div>
+    {%- endif -%}
+  </div>
+</section>
+<script>
+(function(){
+  var id = {{ sid | json }};
+  var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  function init(){
+    if(!window.Swiper || document.getElementById(id).__sw) return;
+    document.getElementById(id).__sw = new Swiper('#'+id, {
+      loop: true,
+      autoHeight: false,
+      pagination: { el: '#'+id+' .swiper-pagination', clickable: true },
+      navigation: { nextEl: '#'+id+' .swiper-button-next', prevEl: '#'+id+' .swiper-button-prev' },
+      autoplay: {{ autoplay }} && !reduce ? { delay: {{ interval }} * 1000, disableOnInteraction: false } : false
+    });
+  }
+  if(window.Swiper){ init(); return; }
+  if(!document.getElementById('swiper-cdn-css')){
+    var l=document.createElement('link'); l.id='swiper-cdn-css'; l.rel='stylesheet';
+    l.href='https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css'; document.head.appendChild(l);
+  }
+  var s=document.getElementById('swiper-cdn-js');
+  if(!s){
+    s=document.createElement('script'); s.id='swiper-cdn-js';
+    s.src='https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js'; document.head.appendChild(s);
+  }
+  s.addEventListener('load', init);
+  if(window.Swiper) init();
+})();
+</script>
+
+{% schema %}
+{
+  "name": "Hero slider",
+  "category": "Banner",
+  "settings": [
+    { "type": "header", "label": "Düzen" },
+    { "type": "range", "id": "min_height", "label": "Yükseklik", "min": 20, "max": 60, "step": 2, "suffix": "rem" },
+    { "type": "toggle", "id": "autoplay", "label": "Otomatik oynat" },
+    { "type": "range", "id": "interval", "label": "Geçiş süresi", "min": 3, "max": 12, "step": 1, "suffix": "sn", "visibleIf": "autoplay" },
+    { "type": "toggle", "id": "show_arrows", "label": "Ok butonları" },
+    { "type": "toggle", "id": "show_dots", "label": "Nokta göstergesi" },
+    { "type": "range", "id": "padding_top", "label": "Üst boşluk", "min": 0, "max": 120, "step": 8, "suffix": "px" },
+    { "type": "range", "id": "padding_bottom", "label": "Alt boşluk", "min": 0, "max": 120, "step": 8, "suffix": "px" },
+
+    { "type": "header", "label": "Renk" },
+    { "type": "color_scheme", "id": "color_scheme", "label": "Renk şeması" }
+  ],
+  "blocks": [
+    { "type": "hero-slide", "max": 8 }
+  ],
+  "presets": [
+    {
+      "name": "Hero slider",
+      "settings": { "min_height": 34, "autoplay": true, "interval": 6, "color_scheme": "scheme-1" },
+      "blocks": [
+        { "type": "hero-slide", "settings": { "heading": "İlk slayt", "subtitle": "Slayt açıklaması burada.", "button_label": "Keşfet", "button_url": "/" } },
+        { "type": "hero-slide", "settings": { "heading": "İkinci slayt", "subtitle": "İkinci slaytın açıklaması." } }
+      ]
+    }
+  ]
+}
+{% endschema %}

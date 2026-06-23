@@ -1,0 +1,129 @@
+{%- liquid
+  assign color_scheme = props.color_scheme | default: 'scheme-1'
+  assign cols = props.columns | default: 3
+  assign per = props.limit | default: 9
+  if per < 1
+    assign per = 9
+  endif
+  assign list = entries[props.collectionKey]
+
+  if list and props.filterField != blank and props.filterValue != blank
+    assign fpath = 'data.' | append: props.filterField
+    assign list = list | where: fpath, props.filterValue
+  endif
+
+  if list
+    case props.sort
+      when 'newest'
+        assign list = list | sort: 'id' | reverse
+      when 'oldest'
+        assign list = list | sort: 'id'
+      when 'title'
+        assign list = list | sort_natural: 'title'
+    endcase
+  endif
+
+  assign total = list | size
+  assign pages = total | times: 1.0 | divided_by: per | ceil
+  assign cur = current_page | default: 1
+  if cur < 1
+    assign cur = 1
+  endif
+  if pages > 0 and cur > pages
+    assign cur = pages
+  endif
+  assign offset = cur | minus: 1 | times: per
+  assign paged = list | slice: offset, per
+
+  # #281 detay-base: detailBase elle girilmemişse koleksiyonun /<key>/[slug] detay
+  # sayfasının base'ini (platform `collection_detail_base`) otomatik kullan.
+  assign detail_base = props.detailBase
+  if detail_base == blank
+    assign detail_base = collection_detail_base[props.collectionKey]
+  endif
+-%}
+<section class="section color-{{ color_scheme }}">
+  <div class="wrap">
+    {% if props.title and props.title != blank %}
+      <div class="section__lead"><h2>{{ props.title }}</h2></div>
+    {% endif %}
+    <div class="collection-list grid grid--{{ cols }}">
+      {%- for item in paged -%}
+        {%- assign card_title = item.data[props.titleField] | default: item.title -%}
+        {%- assign card_sub = item.data[props.subtitleField] -%}
+        {%- assign card_img = item.data[props.imageField] -%}
+        {%- assign card_badge = item.data[props.badgeField] -%}
+        {%- assign card_date = item.data[props.dateField] -%}
+        {%- assign has_link = false -%}
+        {%- if detail_base and detail_base != '' and item.slug -%}{%- assign has_link = true -%}{%- endif -%}
+        {%- assign href = detail_base | append: '/' | append: item.slug -%}
+        <article class="collection-entry">
+          {% if card_img and card_img != '' %}
+            {% if has_link %}<a class="collection-entry__media" href="{{ href }}">{% else %}<span class="collection-entry__media">{% endif %}
+              <img src="{{ card_img }}" alt="{{ card_title }}" loading="lazy">
+            {% if has_link %}</a>{% else %}</span>{% endif %}
+          {% endif %}
+          <div class="collection-entry__body">
+            {% if card_badge and card_badge != '' %}<span class="eyebrow">{{ card_badge }}</span>{% endif %}
+            <h3 class="collection-entry__title">
+              {% if has_link %}<a href="{{ href }}">{{ card_title }}</a>{% else %}{{ card_title }}{% endif %}
+            </h3>
+            {% if card_date and card_date != '' %}<time class="collection-entry__date">{{ card_date }}</time>{% endif %}
+            {% if card_sub and card_sub != '' %}<p class="collection-entry__excerpt">{{ card_sub }}</p>{% endif %}
+            {% if has_link %}<a class="collection-entry__more" href="{{ href }}">Yazıyı oku →</a>{% endif %}
+          </div>
+        </article>
+      {%- else -%}
+        <p class="collection-empty">Bu koleksiyonda henüz kayıt yok.</p>
+      {%- endfor -%}
+    </div>
+
+    {%- if pages > 1 -%}
+    <nav class="pagination" aria-label="Sayfalama">
+      {%- if cur > 1 %}<a href="{{ path }}?page={{ cur | minus: 1 }}" rel="prev" aria-label="Önceki sayfa">‹</a>{% endif -%}
+      {%- for p in (1..pages) -%}
+        {%- if p == cur %}<span aria-current="page">{{ p }}</span>{% else %}<a href="{{ path }}?page={{ p }}">{{ p }}</a>{% endif -%}
+      {%- endfor -%}
+      {%- if cur < pages %}<a href="{{ path }}?page={{ cur | plus: 1 }}" rel="next" aria-label="Sonraki sayfa">›</a>{% endif -%}
+    </nav>
+    {%- endif -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Koleksiyon listesi",
+  "category": "İçerik",
+  "settings": [
+    { "type": "header", "label": "İçerik" },
+    { "type": "text", "id": "title", "label": "Bölüm başlığı", "placeholder": "Yazılar" },
+    { "type": "collection", "id": "collectionKey", "label": "Koleksiyon" },
+    { "type": "url", "id": "detailBase", "label": "Detay sayfa öneki", "placeholder": "/blog", "help": "Boş bırakılırsa koleksiyonun detay sayfası (/<key>/[slug]) varsa otomatik kullanılır." },
+
+    { "type": "header", "label": "Kart alan eşlemesi" },
+    { "type": "collectionField", "id": "titleField", "label": "Kart başlığı", "dependsOn": "collectionKey", "help": "Boşsa kaydın kendi başlığı kullanılır." },
+    { "type": "collectionField", "id": "subtitleField", "label": "Alt metin / özet", "dependsOn": "collectionKey" },
+    { "type": "collectionField", "id": "imageField", "label": "Görsel", "dependsOn": "collectionKey" },
+    { "type": "collectionField", "id": "badgeField", "label": "Üst rozet", "dependsOn": "collectionKey" },
+    { "type": "collectionField", "id": "dateField", "label": "Tarih alanı", "dependsOn": "collectionKey", "help": "Kartta küçük tarih olarak gösterilir." },
+
+    { "type": "header", "label": "Liste" },
+    { "type": "radio", "id": "columns", "label": "Sütun", "options": [ { "label": "2", "value": "2" }, { "label": "3", "value": "3" }, { "label": "4", "value": "4" } ] },
+    { "type": "range", "id": "limit", "label": "Sayfa başına kayıt", "min": 3, "max": 48, "step": 3, "suffix": "adet" },
+    { "type": "select", "id": "sort", "label": "Sıralama", "options": [ { "label": "Varsayılan (manuel sıra)", "value": "default" }, { "label": "En yeni", "value": "newest" }, { "label": "En eski", "value": "oldest" }, { "label": "Başlık (A–Z)", "value": "title" } ] },
+
+    { "type": "header", "label": "Filtre (opsiyonel)" },
+    { "type": "collectionField", "id": "filterField", "label": "Filtre alanı", "dependsOn": "collectionKey", "help": "Örn. kategori alanı." },
+    { "type": "text", "id": "filterValue", "label": "Filtre değeri", "help": "Yalnız bu değere sahip kayıtlar listelenir." },
+
+    { "type": "header", "label": "Renk" },
+    { "type": "color_scheme", "id": "color_scheme", "label": "Renk şeması" }
+  ],
+  "presets": [
+    {
+      "name": "Koleksiyon ızgarası",
+      "settings": { "title": "Yazılar", "detailBase": "/blog", "columns": "3", "limit": 9, "sort": "newest" }
+    }
+  ]
+}
+{% endschema %}

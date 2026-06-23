@@ -1,0 +1,9 @@
+{%- assign opts = field.resolvedOptions | default: field.options -%}
+<label class="ff__label" for="ff-{{ field.name }}">{{ field.label }}{% if field.required %} <span class="ff__req">*</span>{% endif %}</label>
+<select class="ff__control ff__select ff__select--{{ field.variant | default: 'classic' }}" id="ff-{{ field.name }}" name="{{ field.name }}"{% if field.required %} required{% endif %}>
+  {% if field.placeholder %}<option value="">{{ field.placeholder }}</option>{% endif %}
+  {%- for opt in opts -%}
+    <option value="{{ opt.value }}"{% if field.prefillValue and opt.value == field.prefillValue %} selected{% endif %}>{{ opt.label }}</option>
+  {%- endfor -%}
+</select>
+{% if field.help %}<small class="ff__help">{{ field.help }}</small>{% endif %}

@@ -1,0 +1,163 @@
+{%- liquid
+  assign color_scheme = props.color_scheme | default: 'scheme-1'
+  assign pad_top = props.padding_top | default: 64
+  assign pad_bottom = props.padding_bottom | default: 64
+  assign gallery_field = props.gallery_field | default: 'gallery'
+  assign variants_field = props.variants_field | default: 'variants'
+  assign spec_field = props.spec_field | default: 'specs'
+  assign variants_title = props.variants_title | default: 'Varyantlar'
+  assign specs_title = props.specs_title | default: 'Teknik özellikler'
+  assign show_title = props.show_title
+  if props.show_title == nil
+    assign show_title = true
+  endif
+  assign gallery = entry.data[gallery_field]
+  assign variants = entry.data[variants_field]
+  assign specs = entry.data[spec_field]
+  assign sid = 'ed-' | append: section.id
+-%}
+{%- if entry -%}
+  <section
+    class="section entry-detail color-{{ color_scheme }}"
+    style="--section-padding-top: {{ pad_top }}px; --section-padding-bottom: {{ pad_bottom }}px;"
+  >
+    <div class="wrap">
+      {%- if show_title and entry.title and entry.title != blank -%}
+        <h1 class="entry-detail__title">{{ entry.title }}</h1>
+      {%- endif -%}
+
+      {%- if gallery and gallery.size > 0 -%}
+        <div class="swiper entry-detail__gallery" id="{{ sid }}" style="margin-top: 1.25rem;">
+          <div class="swiper-wrapper">
+            {%- for img in gallery -%}
+              {%- if img and img != blank -%}
+                <div class="swiper-slide">
+                  <img src="{{ img }}" alt="{{ entry.title | escape }}" loading="lazy">
+                </div>
+              {%- endif -%}
+            {%- endfor -%}
+          </div>
+          <div class="swiper-pagination"></div>
+          <div class="swiper-button-prev"></div>
+          <div class="swiper-button-next"></div>
+        </div>
+      {%- endif -%}
+
+      {%- if specs and specs != blank -%}
+        <div class="entry-detail__specs">
+          <h2>{{ specs_title }}</h2>
+          <dl>
+            {%- for pair in specs -%}
+              {%- if pair[1] and pair[1] != blank -%}
+                <dt>{{ pair[0] }}</dt>
+                <dd>{{ pair[1] }}</dd>
+              {%- endif -%}
+            {%- endfor -%}
+          </dl>
+        </div>
+      {%- endif -%}
+
+      {%- if variants and variants.size > 0 -%}
+        <div class="entry-detail__variants">
+          <h2>{{ variants_title }}</h2>
+          <table>
+            <thead>
+              <tr>
+                {%- for pair in variants[0] -%}
+                  <th>{{ pair[0] }}</th>
+                {%- endfor -%}
+              </tr>
+            </thead>
+            <tbody>
+              {%- for v in variants -%}
+                <tr>
+                  {%- for pair in variants[0] -%}
+                    <td>{{ v[pair[0]] }}</td>
+                  {%- endfor -%}
+                </tr>
+              {%- endfor -%}
+            </tbody>
+          </table>
+        </div>
+      {%- endif -%}
+    </div>
+  </section>
+
+  {%- if gallery and gallery.size > 0 -%}
+    <script>
+      (function () {
+        var id = {{ sid | json }};
+        function init() {
+          if (!window.Swiper) return;
+          var el = document.getElementById(id);
+          if (!el || el.__sw) return;
+          el.__sw = new Swiper('#' + id, {
+            loop: false,
+            slidesPerView: 1,
+            spaceBetween: 12,
+            pagination: { el: '#' + id + ' .swiper-pagination', clickable: true },
+            navigation: { nextEl: '#' + id + ' .swiper-button-next', prevEl: '#' + id + ' .swiper-button-prev' }
+          });
+        }
+        if (window.Swiper) { init(); return; }
+        if (!document.getElementById('swiper-cdn-css')) {
+          var l = document.createElement('link');
+          l.id = 'swiper-cdn-css';
+          l.rel = 'stylesheet';
+          l.href = 'https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css';
+          document.head.appendChild(l);
+        }
+        var s = document.getElementById('swiper-cdn-js');
+        if (!s) {
+          s = document.createElement('script');
+          s.id = 'swiper-cdn-js';
+          s.src = 'https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js';
+          document.head.appendChild(s);
+        }
+        s.addEventListener('load', init);
+      })();
+    </script>
+  {%- endif -%}
+{%- else -%}
+  <section class="section">
+    <div class="wrap">
+      <p style="opacity: 0.6;">İçerik detayı, sayfaya bir kayıt (entry) bağlı olduğunda görünür.</p>
+    </div>
+  </section>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "İçerik detayı",
+  "category": "İçerik",
+  "settings": [
+    { "type": "header", "label": "Alan eşleme" },
+    { "type": "paragraph", "content": "Detay sayfasındaki aktif kaydın (entry) alanlarını gösterir. Aşağıya içerik modelindeki alan adlarını yaz." },
+    { "type": "toggle", "id": "show_title", "label": "Başlığı göster" },
+    { "type": "text", "id": "gallery_field", "label": "Galeri alanı adı", "placeholder": "gallery" },
+    { "type": "text", "id": "spec_field", "label": "Özellik grubu alanı adı", "placeholder": "specs" },
+    { "type": "text", "id": "variants_field", "label": "Varyant grubu alanı adı", "placeholder": "variants" },
+    { "type": "text", "id": "specs_title", "label": "Özellikler başlığı", "placeholder": "Teknik özellikler" },
+    { "type": "text", "id": "variants_title", "label": "Varyantlar başlığı", "placeholder": "Varyantlar" },
+
+    { "type": "header", "label": "Düzen" },
+    { "type": "range", "id": "padding_top", "label": "Üst boşluk", "min": 0, "max": 120, "step": 8, "suffix": "px" },
+    { "type": "range", "id": "padding_bottom", "label": "Alt boşluk", "min": 0, "max": 120, "step": 8, "suffix": "px" },
+
+    { "type": "header", "label": "Renk" },
+    { "type": "color_scheme", "id": "color_scheme", "label": "Renk şeması" }
+  ],
+  "presets": [
+    {
+      "name": "İçerik detayı",
+      "settings": {
+        "show_title": true,
+        "gallery_field": "gallery",
+        "spec_field": "specs",
+        "variants_field": "variants",
+        "color_scheme": "scheme-1"
+      }
+    }
+  ]
+}
+{% endschema %}

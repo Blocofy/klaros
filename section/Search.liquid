@@ -1,0 +1,83 @@
+{%- liquid
+  # Site içi arama (#61) — input + canlı sonuç (renderer /api/search endpoint'i, tenant-scoped).
+  # Pure-Liquid + inline JS (CLAUDE.md: tarayıcı bileşenleri için JS serbest). Her section
+  # kendi script'iyle scope'lanır (document.currentScript), çoklu kullanım güvenli.
+  assign color_scheme = props.color_scheme | default: 'scheme-1'
+  assign placeholder = props.placeholder | default: 'Sitede ara…'
+  assign button_label = props.button_label | default: 'Ara'
+-%}
+<section class="section color-{{ color_scheme }}">
+  <div class="wrap">
+    {% if props.title and props.title != blank %}
+      <div class="section__lead section__lead--center"><h2>{{ props.title }}</h2></div>
+    {% endif %}
+    <form data-site-search class="site-search" role="search">
+      <input type="search" name="q" placeholder="{{ placeholder }}" aria-label="Sitede ara" autocomplete="off" />
+      <button type="submit">{{ button_label }}</button>
+    </form>
+    <div data-site-search-results class="site-search__results" role="region" aria-live="polite"></div>
+  </div>
+</section>
+<script>
+(function () {
+  var script = document.currentScript;
+  var root = script.previousElementSibling;
+  if (!root) return;
+  var form = root.querySelector('[data-site-search]');
+  var box = root.querySelector('[data-site-search-results]');
+  var input = form && form.querySelector('input[name="q"]');
+  if (!form || !box || !input) return;
+
+  function esc(s) {
+    return String(s).replace(/[&<>"]/g, function (c) {
+      return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c];
+    });
+  }
+  function render(data) {
+    var q = (data.query || '').trim();
+    if (!data.results || !data.results.length) {
+      box.innerHTML = q.length > 1 ? '<p class="site-search__empty">Sonuç bulunamadı.</p>' : '';
+      return;
+    }
+    var html = '<ul>';
+    data.results.forEach(function (r) {
+      html += '<li><a href="' + esc(r.url) + '">' +
+        '<strong>' + esc(r.title) + '</strong>' +
+        '<span class="meta"> · ' + esc(r.type) + '</span></a></li>';
+    });
+    box.innerHTML = html + '</ul>';
+  }
+  var timer;
+  function search() {
+    var q = input.value.trim();
+    if (q.length < 2) { box.innerHTML = ''; return; }
+    fetch('/api/search?q=' + encodeURIComponent(q))
+      .then(function (r) { return r.json(); })
+      .then(render)
+      .catch(function () {});
+  }
+  input.addEventListener('input', function () {
+    clearTimeout(timer);
+    timer = setTimeout(search, 250);
+  });
+  form.addEventListener('submit', function (e) { e.preventDefault(); clearTimeout(timer); search(); });
+})();
+</script>
+
+{% schema %}
+{
+  "name": "Site içi arama",
+  "category": "İçerik",
+  "settings": [
+    { "type": "header", "label": "İçerik" },
+    { "type": "text", "id": "title", "label": "Başlık", "placeholder": "Ne arıyorsunuz?" },
+    { "type": "text", "id": "placeholder", "label": "Arama kutusu metni", "placeholder": "Sitede ara…" },
+    { "type": "text", "id": "button_label", "label": "Buton metni", "placeholder": "Ara" },
+    { "type": "header", "label": "Renk" },
+    { "type": "color_scheme", "id": "color_scheme", "label": "Renk şeması" }
+  ],
+  "presets": [
+    { "name": "Arama", "settings": { "title": "Ne arıyorsunuz?", "placeholder": "Sitede ara…", "button_label": "Ara" } }
+  ]
+}
+{% endschema %}

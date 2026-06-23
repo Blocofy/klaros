@@ -1,0 +1,61 @@
+{%- liquid
+  assign color_scheme = props.color_scheme | default: 'scheme-1'
+  assign pad_top = props.padding_top | default: 48
+  assign pad_bottom = props.padding_bottom | default: 48
+-%}
+<section
+  class="section color-{{ color_scheme }}"
+  style="--section-padding-top: {{ pad_top }}px; --section-padding-bottom: {{ pad_bottom }}px;"
+>
+  <div class="wrap">
+    {%- if props.title and props.title != blank -%}
+      <p class="eyebrow" style="display: block; text-align: center; margin-bottom: 1.25rem;">{{ props.title }}</p>
+    {%- endif -%}
+    <div class="logo-strip">
+      {%- for block in blocks -%}
+        {%- if block.type == 'logo' -%}
+          {%- assign image = block.settings.image -%}
+          {%- if image and image != blank -%}
+            {%- if block.settings.url and block.settings.url != blank -%}
+              <a href="{{ block.settings.url }}" target="_blank" rel="noopener noreferrer">
+                <img src="{{ image | image_url: 'width=320,format=webp' }}" alt="{{ block.settings.alt | default: 'Logo' }}" loading="lazy">
+              </a>
+            {%- else -%}
+              <img src="{{ image | image_url: 'width=320,format=webp' }}" alt="{{ block.settings.alt | default: 'Logo' }}" loading="lazy">
+            {%- endif -%}
+          {%- endif -%}
+        {%- endif -%}
+      {%- endfor -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Logo şeridi",
+  "category": "Sosyal kanıt",
+  "settings": [
+    { "type": "header", "label": "İçerik" },
+    { "type": "text", "id": "title", "label": "Üst başlık", "placeholder": "BİZE GÜVENENLER" },
+
+    { "type": "header", "label": "Düzen" },
+    { "type": "range", "id": "padding_top", "label": "Üst boşluk", "min": 0, "max": 160, "step": 8, "suffix": "px" },
+    { "type": "range", "id": "padding_bottom", "label": "Alt boşluk", "min": 0, "max": 160, "step": 8, "suffix": "px" },
+
+    { "type": "header", "label": "Renk" },
+    { "type": "color_scheme", "id": "color_scheme", "label": "Renk şeması" }
+  ],
+  "blocks": [
+    { "type": "logo", "max": 24 }
+  ],
+  "presets": [
+    {
+      "name": "Logo şeridi",
+      "settings": {
+        "title": "BİZE GÜVENEN MARKALAR",
+        "color_scheme": "scheme-1"
+      }
+    }
+  ]
+}
+{% endschema %}

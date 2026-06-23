@@ -1,0 +1,13 @@
+{%- assign opts = field.resolvedOptions | default: field.options -%}
+<fieldset class="ff__fieldset ff-radio ff-radio--{{ field.variant | default: 'classic' }}">
+  <legend class="ff__label">{{ field.label }}{% if field.required %} <span class="ff__req">*</span>{% endif %}</legend>
+  <div class="ff-radio__opts">
+    {%- for opt in opts -%}
+      <label class="ff-radio__opt">
+        <input type="radio" name="{{ field.name }}" value="{{ opt.value }}"{% if field.prefillValue and opt.value == field.prefillValue %} checked{% endif %}{% if field.required and forloop.first %} required{% endif %}>
+        <span class="ff-radio__face">{{ opt.label }}</span>
+      </label>
+    {%- endfor -%}
+  </div>
+</fieldset>
+{% if field.help %}<small class="ff__help">{{ field.help }}</small>{% endif %}

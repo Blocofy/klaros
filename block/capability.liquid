@@ -1,0 +1,16 @@
+<article class="card" style="background:rgba(255,255,255,.06);border-color:rgba(255,255,255,.12)">
+  {% if block.settings.meta %}<p class="eyebrow">{{ block.settings.meta }}</p>{% endif %}
+  <h3 style="margin-top:.5rem">{{ block.settings.title }}</h3>
+  <p>{{ block.settings.description }}</p>
+</article>
+
+{% schema %}
+{
+  "name": "Kabiliyet",
+  "settings": [
+    { "type": "text", "id": "meta", "label": "Kategori", "bindable": true, "placeholder": "Üretim" },
+    { "type": "text", "id": "title", "label": "Başlık", "bindable": true, "placeholder": "Kabiliyet adı" },
+    { "type": "textarea", "id": "description", "label": "Açıklama", "bindable": true, "rows": 3 }
+  ]
+}
+{% endschema %}

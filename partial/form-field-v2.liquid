@@ -1,0 +1,24 @@
+{%- comment -%}
+  Form-builder alan dağıtıcısı. `field` = kanonik FormField (renderer enjekte eder).
+  Varyant YALNIZ CSS sınıfını değiştirir; renkler renk-şeması token'larından gelir.
+{%- endcomment -%}
+{%- liquid
+  assign ftype = field.type | default: 'text'
+  assign variant = field.variant | default: 'classic'
+  assign width = field.width | default: 'full'
+-%}
+{%- if ftype == 'hidden' -%}
+  <input type="hidden" name="{{ field.name }}" value="{{ field.prefillValue }}">
+{%- else -%}
+  <div class="ff ff--{{ ftype }} ff--{{ ftype }}-{{ variant }} ff--w-{{ width }}" data-ff-name="{{ field.name }}"{% if field.conditionsJson %} data-bcf-conditions="{{ field.conditionsJson | escape }}"{% endif %}>
+    {%- case ftype -%}
+      {%- when 'textarea' -%}{% render 'partial/field-textarea', field: field %}
+      {%- when 'select' -%}{% render 'partial/field-select', field: field %}
+      {%- when 'radio' -%}{% render 'partial/field-radio', field: field %}
+      {%- when 'checkbox' -%}{% render 'partial/field-checkbox', field: field %}
+      {%- when 'consent' -%}{% render 'partial/field-consent', field: field %}
+      {%- when 'file' -%}{% render 'partial/field-file', field: field %}
+      {%- else -%}{% render 'partial/field-input', field: field %}
+    {%- endcase -%}
+  </div>
+{%- endif -%}

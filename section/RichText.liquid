@@ -1,0 +1,70 @@
+{%- liquid
+  assign color_scheme = props.color_scheme | default: 'scheme-1'
+  assign alignment = props.alignment | default: 'left'
+  assign max_width = props.max_width | default: 44
+  assign pad_top = props.padding_top | default: 64
+  assign pad_bottom = props.padding_bottom | default: 64
+-%}
+<section
+  class="section color-{{ color_scheme }}"
+  style="--section-padding-top: {{ pad_top }}px;
+         --section-padding-bottom: {{ pad_bottom }}px;
+         --richtext-max-width: {{ max_width }}rem;"
+>
+  <div class="wrap">
+    <div class="richtext richtext--{{ alignment }}">
+      {%- if props.eyebrow and props.eyebrow != blank -%}
+        <span class="eyebrow" data-yt-bind="eyebrow">{{ props.eyebrow }}</span>
+      {%- endif -%}
+      {%- if props.heading and props.heading != blank -%}
+        <h2 data-yt-bind="heading">{{ props.heading }}</h2>
+      {%- endif -%}
+      {%- if props.content and props.content != blank -%}
+        <div class="richtext__body" data-yt-bind="content">{{ props.content | sanitize_html }}</div>
+      {%- endif -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Zengin metin",
+  "category": "İçerik",
+  "settings": [
+    { "type": "header", "label": "İçerik" },
+    { "type": "text", "id": "eyebrow", "label": "Üst başlık" },
+    { "type": "text", "id": "heading", "label": "Başlık", "bindable": true },
+    { "type": "richtext", "id": "content", "label": "Metin", "placeholder": "Metni biçimlendirerek yazın." },
+
+    { "type": "header", "label": "Düzen" },
+    { "type": "alignment", "id": "alignment", "label": "Hizalama" },
+    { "type": "range", "id": "max_width", "label": "Maksimum genişlik", "min": 28, "max": 72, "step": 2, "suffix": "rem" },
+    { "type": "range", "id": "padding_top", "label": "Üst boşluk", "min": 0, "max": 200, "step": 8, "suffix": "px" },
+    { "type": "range", "id": "padding_bottom", "label": "Alt boşluk", "min": 0, "max": 200, "step": 8, "suffix": "px" },
+
+    { "type": "header", "label": "Renk" },
+    { "type": "color_scheme", "id": "color_scheme", "label": "Renk şeması" }
+  ],
+  "presets": [
+    {
+      "name": "Metin — Standart",
+      "settings": {
+        "heading": "Hakkımızda",
+        "content": "<p>Şirketimizi tanıtan kısa bir paragraf.</p><p>İkinci paragrafı buraya yazın.</p>",
+        "alignment": "left",
+        "color_scheme": "scheme-1"
+      }
+    },
+    {
+      "name": "Metin — Ortalı dar",
+      "settings": {
+        "heading": "Misyonumuz",
+        "content": "<p>Kısa, etkili bir manifesto. Genellikle iki üç paragraftan oluşur.</p>",
+        "alignment": "center",
+        "max_width": 36,
+        "color_scheme": "scheme-1"
+      }
+    }
+  ]
+}
+{% endschema %}

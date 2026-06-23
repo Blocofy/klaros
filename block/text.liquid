@@ -1,0 +1,19 @@
+<div class="block-text block-text--{{ block.settings.alignment | default: 'left' }}"
+     style="{% if block.settings.max_width %}max-width:{{ block.settings.max_width }}rem;{% endif %}">
+  {% if block.settings.body and block.settings.body != blank %}
+    {{ block.settings.body }}
+  {% endif %}
+</div>
+
+{% schema %}
+{
+  "name": "Metin",
+  "settings": [
+    { "type": "textarea", "id": "body", "label": "İçerik", "bindable": true, "rows": 5,
+      "placeholder": "Buraya yazın…", "help": "HTML kullanılabilir." },
+    { "type": "alignment", "id": "alignment", "label": "Hizalama" },
+    { "type": "range", "id": "max_width", "label": "Maksimum genişlik",
+      "min": 16, "max": 80, "step": 2, "suffix": "rem" }
+  ]
+}
+{% endschema %}

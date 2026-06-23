@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="{{ locale | default: 'tr-TR' | split: '-' | first }}">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{{ page.seo_title | default: page.title }}{% if globals.site_name %} · {{ globals.site_name }}{% endif %}</title>
+  {% if page.seo_description %}<meta name="description" content="{{ page.seo_description }}">{% endif %}
+  {% if page.canonical %}<link rel="canonical" href="{{ page.canonical }}">{% endif %}
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="{{ page.seo_title | default: page.title }}">
+  {% if page.seo_description %}<meta property="og:description" content="{{ page.seo_description }}">{% endif %}
+  {% if page.canonical %}<meta property="og:url" content="{{ page.canonical }}">{% endif %}
+  {% if globals.site_name %}<meta property="og:site_name" content="{{ globals.site_name }}">{% endif %}
+  {%- assign og_image = page.og_image | default: globals.og_image -%}
+  {% if og_image and og_image != blank %}
+  <meta property="og:image" content="{{ og_image | image_url: 'width=1200,height=630,fit=cover,format=jpg' }}">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content="{{ og_image | image_url: 'width=1200,height=630,fit=cover,format=jpg' }}">
+  {% else %}
+  <meta name="twitter:card" content="summary">
+  {% endif %}
+  <meta name="twitter:title" content="{{ page.seo_title | default: page.title }}">
+  {% if page.seo_description %}<meta name="twitter:description" content="{{ page.seo_description }}">{% endif %}
+  {% render 'partial/structured-data' %}
+  {%- comment -%}
+    Tema ayarları (config/settings_schema.json → site_themes.settings →
+    {{ settings.x }}) → --klaros-* CSS değişkenlerine eşlenir. Bu eşleme
+    TEMANIN işidir (platform yeni CSS-emit eklemez). Ayar yoksa | default:
+    ile editöryel varsayılan kullanılır → theme.css fallback'leriyle aynı.
+  {%- endcomment -%}
+  {%- liquid
+    assign hf = settings.heading_font | default: 'newsreader'
+    case hf
+      when 'playfair'
+        assign head_stack = "'Playfair Display', Georgia, serif"
+        assign head_param = 'Playfair+Display:wght@400;500;600;700'
+      when 'fraunces'
+        assign head_stack = "'Fraunces', Georgia, serif"
+        assign head_param = 'Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600'
+      when 'lora'
+        assign head_stack = "'Lora', Georgia, serif"
+        assign head_param = 'Lora:wght@400;500;600;700'
+      when 'inter'
+        assign head_stack = "'Inter', system-ui, sans-serif"
+        assign head_param = 'Inter:wght@400;500;600;700'
+      else
+        assign head_stack = "'Newsreader', Georgia, serif"
+        assign head_param = 'Newsreader:opsz,wght@6..72,400;6..72,500;6..72,600'
+    endcase
+    assign bf = settings.body_font | default: 'inter'
+    case bf
+      when 'manrope'
+        assign body_stack = "'Manrope', system-ui, sans-serif"
+        assign body_param = 'Manrope:wght@400;500;600'
+      when 'newsreader'
+        assign body_stack = "'Newsreader', Georgia, serif"
+        assign body_param = 'Newsreader:opsz,wght@6..72,400;6..72,500'
+      when 'source-serif'
+        assign body_stack = "'Source Serif 4', Georgia, serif"
+        assign body_param = 'Source+Serif+4:opsz,wght@8..60,400;8..60,500;8..60,600'
+      else
+        assign body_stack = "'Inter', system-ui, sans-serif"
+        assign body_param = 'Inter:wght@400;500;600'
+    endcase
+    assign font_params = head_param
+    unless body_param == head_param
+      assign font_params = head_param | append: '&family=' | append: body_param
+    endunless
+
+    assign content_width = settings.content_width | default: 72
+    assign font_size = settings.font_size_base | default: 17
+    assign corner_radius = settings.corner_radius | default: 6
+    assign rhythm = settings.section_rhythm | default: 'normal'
+    case rhythm
+      when 'compact'
+        assign rhythm_val = 'clamp(48px, 6vw, 96px)'
+      when 'spacious'
+        assign rhythm_val = 'clamp(96px, 12vw, 200px)'
+      else
+        assign rhythm_val = 'clamp(72px, 9vw, 144px)'
+    endcase
+  -%}
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family={{ font_params }}&display=swap">
+  <style>
+:root{ {{ theme_css }} }
+{% render 'asset/theme.css' %}
+  </style>
+  {%- comment -%} Ayar override'ı theme.css'ten SONRA gelmeli ki --klaros-* varsayılanlarını ezsin. {%- endcomment -%}
+  <style>:root{
+    --klaros-font-heading: {{ head_stack }};
+    --klaros-font-body: {{ body_stack }};
+    --klaros-font-size: {{ font_size }}px;
+    --klaros-content-width: {{ content_width }}rem;
+    --klaros-radius: {{ corner_radius }}px;
+    --klaros-rhythm: {{ rhythm_val }};
+  }</style>
+</head>
+<body>
+  <a class="skip-link" href="#main-content">İçeriğe geç</a>
+  {{ header_html }}
+  <main id="main-content">
+{{ content_html }}
+  </main>
+  {{ footer_html }}
+</body>
+</html>

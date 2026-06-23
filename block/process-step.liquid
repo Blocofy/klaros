@@ -1,0 +1,18 @@
+<div class="process__step">
+  {%- if block.settings.title and block.settings.title != blank -%}
+    <h3>{{ block.settings.title }}</h3>
+  {%- endif -%}
+  {%- if block.settings.description and block.settings.description != blank -%}
+    <p>{{ block.settings.description }}</p>
+  {%- endif -%}
+</div>
+
+{% schema %}
+{
+  "name": "Süreç adımı",
+  "settings": [
+    { "type": "text", "id": "title", "label": "Başlık", "placeholder": "Adım başlığı" },
+    { "type": "textarea", "id": "description", "label": "Açıklama", "rows": 3 }
+  ]
+}
+{% endschema %}
