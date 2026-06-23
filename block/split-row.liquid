@@ -1,0 +1,58 @@
+{%- liquid
+  assign side = block.settings.media_side | default: 'auto'
+  if side == 'auto'
+    assign mod = index | default: 0 | modulo: 2
+    if mod == 0
+      assign side = 'left'
+    else
+      assign side = 'right'
+    endif
+  endif
+  assign has_image = false
+  if block.settings.image and block.settings.image != blank
+    assign has_image = true
+  endif
+-%}
+<div class="split-row split-row--media-{{ side }}{% unless has_image %} split-row--text-only{% endunless %}">
+  {%- if has_image -%}
+    <div class="split-row__media" data-yt-bind="image">
+      <img src="{{ block.settings.image | image_url: 'width=1200,quality=82,format=webp' }}" alt="{{ block.settings.heading | default: block.settings.eyebrow }}" loading="lazy">
+    </div>
+  {%- endif -%}
+  <div class="split-row__body">
+    {%- if block.settings.eyebrow and block.settings.eyebrow != blank -%}
+      <span class="eyebrow" data-yt-bind="eyebrow">{{ block.settings.eyebrow }}</span>
+    {%- endif -%}
+    {%- if block.settings.heading and block.settings.heading != blank -%}
+      <h3 class="split-row__title" data-yt-bind="heading">{{ block.settings.heading }}</h3>
+    {%- endif -%}
+    {%- if block.settings.text and block.settings.text != blank -%}
+      <div class="split-row__text richtext__body" data-yt-bind="text">{{ block.settings.text | sanitize_html }}</div>
+    {%- endif -%}
+    {%- if block.settings.link_label and block.settings.link_label != blank -%}
+      <a class="btn btn--secondary" data-yt-bind="link_label" href="{{ block.settings.link_url | default: '#' }}">{{ block.settings.link_label }}</a>
+    {%- endif -%}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Split satırı",
+  "settings": [
+    { "type": "header", "label": "İçerik" },
+    { "type": "text", "id": "eyebrow", "label": "Üst etiket" },
+    { "type": "text", "id": "heading", "label": "Başlık", "bindable": true },
+    { "type": "richtext", "id": "text", "label": "Metin", "bindable": true },
+    { "type": "image", "id": "image", "label": "Görsel" },
+    { "type": "radio", "id": "media_side", "label": "Görsel tarafı", "options": [
+      { "label": "Otomatik (değişen)", "value": "auto" },
+      { "label": "Sol", "value": "left" },
+      { "label": "Sağ", "value": "right" }
+    ]},
+
+    { "type": "header", "label": "Bağlantı" },
+    { "type": "text", "id": "link_label", "label": "Buton metni", "placeholder": "Daha fazla" },
+    { "type": "url", "id": "link_url", "label": "Bağlantı", "visibleIf": "link_label" }
+  ]
+}
+{% endschema %}

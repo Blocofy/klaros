@@ -1,0 +1,33 @@
+{%- liquid
+  assign has_image = false
+  if block.settings.image and block.settings.image != blank
+    assign has_image = true
+  endif
+  assign has_link = false
+  if block.settings.link_url and block.settings.link_url != blank
+    assign has_link = true
+  endif
+-%}
+{%- capture inner -%}
+  {%- if has_image -%}
+    <img src="{{ block.settings.image | image_url: 'width=320,format=webp' }}" alt="{{ block.settings.text | default: 'logo' }}" loading="lazy">
+  {%- else -%}
+    {{ block.settings.text }}
+  {%- endif -%}
+{%- endcapture -%}
+{%- if has_link -%}
+  <a class="marquee__item" href="{{ block.settings.link_url }}"{% if dup %} aria-hidden="true" tabindex="-1"{% endif %}>{{ inner }}</a>
+{%- else -%}
+  <span class="marquee__item"{% if dup %} aria-hidden="true"{% endif %}>{{ inner }}</span>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Şerit öğesi",
+  "settings": [
+    { "type": "text", "id": "text", "label": "Metin", "placeholder": "Etiket / marka adı" },
+    { "type": "image", "id": "image", "label": "Logo / görsel", "help": "Doldurulursa metin yerine görsel gösterilir." },
+    { "type": "url", "id": "link_url", "label": "Bağlantı (opsiyonel)" }
+  ]
+}
+{% endschema %}

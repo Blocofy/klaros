@@ -1,0 +1,62 @@
+{%- liquid
+  assign color_scheme = props.color_scheme | default: 'scheme-1'
+  assign align = props.alignment | default: 'left'
+  assign pad_top = props.padding_top | default: 80
+  assign pad_bottom = props.padding_bottom | default: 80
+-%}
+<section
+  class="section color-{{ color_scheme }}"
+  style="--section-padding-top: {{ pad_top }}px; --section-padding-bottom: {{ pad_bottom }}px;"
+>
+  <div class="wrap">
+    {%- if props.eyebrow or props.title or props.subtitle -%}
+      <div class="section__lead{% if align == 'center' %} section__lead--center{% endif %}">
+        {%- if props.eyebrow and props.eyebrow != blank -%}<span class="eyebrow" data-yt-bind="eyebrow">{{ props.eyebrow }}</span>{%- endif -%}
+        {%- if props.title and props.title != blank -%}<h2 data-yt-bind="title">{{ props.title }}</h2>{%- endif -%}
+        {%- if props.subtitle and props.subtitle != blank -%}<p data-yt-bind="subtitle">{{ props.subtitle }}</p>{%- endif -%}
+      </div>
+    {%- endif -%}
+
+    <div class="split">
+      {%- for block in blocks -%}
+        {%- if block.type == 'split-row' -%}
+          {% render 'block/split-row', block: block, index: forloop.index0 %}
+        {%- endif -%}
+      {%- endfor -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Split (Metin + Medya)",
+  "category": "İçerik",
+  "settings": [
+    { "type": "header", "label": "Başlık (opsiyonel)" },
+    { "type": "text", "id": "eyebrow", "label": "Üst başlık" },
+    { "type": "text", "id": "title", "label": "Bölüm başlığı", "bindable": true },
+    { "type": "textarea", "id": "subtitle", "label": "Alt metin", "rows": 2 },
+
+    { "type": "header", "label": "Düzen" },
+    { "type": "alignment", "id": "alignment", "label": "Başlık hizalama" },
+    { "type": "range", "id": "padding_top", "label": "Üst boşluk", "min": 0, "max": 200, "step": 8, "suffix": "px" },
+    { "type": "range", "id": "padding_bottom", "label": "Alt boşluk", "min": 0, "max": 200, "step": 8, "suffix": "px" },
+
+    { "type": "header", "label": "Renk" },
+    { "type": "color_scheme", "id": "color_scheme", "label": "Renk şeması" }
+  ],
+  "blocks": [
+    { "type": "split-row", "max": 10 }
+  ],
+  "presets": [
+    {
+      "name": "Split — Değişen satırlar",
+      "settings": { "title": "Nasıl çalışır", "alignment": "left", "color_scheme": "scheme-1" },
+      "blocks": [
+        { "type": "split-row", "settings": { "eyebrow": "ADIM 1", "heading": "İlk satır", "text": "<p>Görsel ve metin yan yana; sıradaki satırda taraf otomatik değişir.</p>", "media_side": "auto", "link_label": "Daha fazla", "link_url": "#" } },
+        { "type": "split-row", "settings": { "eyebrow": "ADIM 2", "heading": "İkinci satır", "text": "<p>Metin solda, görsel sağda.</p>", "media_side": "auto" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

@@ -572,6 +572,53 @@ img { max-width: 100%; display: block; height: auto; }
   .bento, .bento--cols-2, .bento--cols-3, .bento--cols-4 { grid-template-columns: 1fr; }
 }
 
+/* --- Split (metin + medya, değişen) --------------------------------- */
+.split { display: flex; flex-direction: column; gap: clamp(3rem, 6vw, 6rem); }
+.split-row { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(2rem, 5vw, 4.5rem); align-items: center; }
+.split-row--media-right .split-row__media { order: 2; }
+.split-row--text-only { grid-template-columns: 1fr; max-width: 44rem; }
+.split-row__media img { width: 100%; aspect-ratio: 4 / 3; object-fit: cover; border: var(--klaros-hairline); border-radius: var(--klaros-radius, 6px); }
+.split-row__body { display: flex; flex-direction: column; gap: 1rem; align-items: flex-start; }
+.split-row__title { font-size: clamp(1.6rem, 3vw, 2.2rem); }
+.split-row__text { color: var(--color-muted, #6E6A60); }
+@media (max-width: 48rem) {
+  .split-row { grid-template-columns: 1fr; gap: 1.5rem; }
+  .split-row--media-right .split-row__media { order: 0; }
+}
+
+/* --- Tabs (sekmeli içerik) ------------------------------------------- */
+.tabs__bar { display: flex; flex-wrap: wrap; gap: 0.25rem; border-bottom: var(--klaros-hairline); margin-bottom: clamp(1.5rem, 3vw, 2.5rem); }
+.tabs--center .tabs__bar { justify-content: center; }
+.tabs__btn {
+  appearance: none; background: none; border: 0; cursor: pointer;
+  font-family: var(--klaros-font-body, sans-serif); font-size: 0.95rem;
+  color: var(--color-muted, #6E6A60); padding: 0.75rem 1.1rem;
+  border-bottom: 2px solid transparent; margin-bottom: -1px; transition: color 0.18s;
+}
+.tabs__btn:hover { color: var(--color-foreground, #1B1A17); }
+.tabs__btn.is-active { color: var(--color-foreground-heading, #1B1A17); border-bottom-color: var(--color-primary, #B25334); }
+.tabs__panel { animation: tab-fade 0.25s ease; }
+.tabs__panel[hidden] { display: none; }
+.tab-content { display: flex; flex-direction: column; gap: 1rem; align-items: flex-start; max-width: 48rem; }
+.tab-content__title { font-size: 1.5rem; }
+.tab-content__media { width: 100%; border: var(--klaros-hairline); border-radius: var(--klaros-radius, 6px); margin-top: 0.25rem; }
+@keyframes tab-fade { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+
+/* --- Marquee (kayan şerit) ------------------------------------------ */
+.marquee { overflow: hidden; -webkit-mask-image: linear-gradient(90deg, transparent, #000 7%, #000 93%, transparent); mask-image: linear-gradient(90deg, transparent, #000 7%, #000 93%, transparent); }
+.marquee__track { display: flex; align-items: center; gap: clamp(2.5rem, 5vw, 5rem); width: max-content; animation: marquee-scroll var(--mq-dur, 32s) linear infinite; }
+.marquee--slow { --mq-dur: 52s; }
+.marquee--normal { --mq-dur: 32s; }
+.marquee--fast { --mq-dur: 18s; }
+.marquee--right .marquee__track { animation-direction: reverse; }
+.marquee--pause:hover .marquee__track { animation-play-state: paused; }
+.marquee__item { flex: 0 0 auto; color: var(--color-muted, #6E6A60); font-family: var(--klaros-font-heading, Georgia, serif); font-size: clamp(1.1rem, 2vw, 1.6rem); text-decoration: none; white-space: nowrap; }
+a.marquee__item:hover { color: var(--color-primary, #B25334); }
+.marquee__item img { height: 2.25rem; max-width: 9rem; object-fit: contain; opacity: 0.55; filter: grayscale(100%); transition: opacity 0.2s, filter 0.2s; }
+a.marquee__item:hover img { opacity: 1; filter: none; }
+@keyframes marquee-scroll { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+@media (prefers-reduced-motion: reduce) { .marquee__track { animation: none; flex-wrap: wrap; justify-content: center; width: auto; } }
+
 /* ===== Form-builder (hibrit) varyant CSS — section/Form ===== */
 /* Renkler renk-şeması token'larından gelir (--color-*). Varyant YALNIZ şekli/
    düzeni değiştirir; renk şemaya bağlı kalır. Editöryel: hairline border,

@@ -1,0 +1,79 @@
+{%- liquid
+  assign color_scheme = props.color_scheme | default: 'scheme-1'
+  assign speed = props.speed | default: 'normal'
+  assign direction = props.direction | default: 'left'
+  assign pad_top = props.padding_top | default: 48
+  assign pad_bottom = props.padding_bottom | default: 48
+  assign pause = props.pause_on_hover
+  if props.pause_on_hover == nil
+    assign pause = true
+  endif
+-%}
+<section
+  class="section color-{{ color_scheme }}"
+  style="--section-padding-top: {{ pad_top }}px; --section-padding-bottom: {{ pad_bottom }}px;"
+>
+  {%- if props.eyebrow or props.title -%}
+    <div class="wrap">
+      <div class="section__lead section__lead--center">
+        {%- if props.eyebrow and props.eyebrow != blank -%}<span class="eyebrow" data-yt-bind="eyebrow">{{ props.eyebrow }}</span>{%- endif -%}
+        {%- if props.title and props.title != blank -%}<h2 data-yt-bind="title">{{ props.title }}</h2>{%- endif -%}
+      </div>
+    </div>
+  {%- endif -%}
+
+  <div class="marquee marquee--{{ speed }} marquee--{{ direction }}{% if pause %} marquee--pause{% endif %}" role="marquee" aria-label="{{ props.title | default: 'Kayan şerit' }}">
+    <div class="marquee__track">
+      {%- for block in blocks -%}{%- if block.type == 'marquee-item' -%}{% render 'block/marquee-item', block: block %}{%- endif -%}{%- endfor -%}
+      {%- comment -%} Kesintisiz döngü için ikinci kopya (ekran okuyuculardan gizli). {%- endcomment -%}
+      {%- for block in blocks -%}{%- if block.type == 'marquee-item' -%}{% render 'block/marquee-item', block: block, dup: true %}{%- endif -%}{%- endfor -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Marquee (Kayan şerit)",
+  "category": "Görsel",
+  "settings": [
+    { "type": "header", "label": "Başlık (opsiyonel)" },
+    { "type": "text", "id": "eyebrow", "label": "Üst başlık" },
+    { "type": "text", "id": "title", "label": "Bölüm başlığı" },
+
+    { "type": "header", "label": "Hareket" },
+    { "type": "select", "id": "speed", "label": "Hız", "options": [
+      { "label": "Yavaş", "value": "slow" },
+      { "label": "Normal", "value": "normal" },
+      { "label": "Hızlı", "value": "fast" }
+    ]},
+    { "type": "radio", "id": "direction", "label": "Yön", "options": [
+      { "label": "Sola", "value": "left" },
+      { "label": "Sağa", "value": "right" }
+    ]},
+    { "type": "toggle", "id": "pause_on_hover", "label": "Üzerine gelince dursun" },
+
+    { "type": "header", "label": "Düzen" },
+    { "type": "range", "id": "padding_top", "label": "Üst boşluk", "min": 0, "max": 160, "step": 8, "suffix": "px" },
+    { "type": "range", "id": "padding_bottom", "label": "Alt boşluk", "min": 0, "max": 160, "step": 8, "suffix": "px" },
+
+    { "type": "header", "label": "Renk" },
+    { "type": "color_scheme", "id": "color_scheme", "label": "Renk şeması" }
+  ],
+  "blocks": [
+    { "type": "marquee-item", "max": 30 }
+  ],
+  "presets": [
+    {
+      "name": "Marquee — Metin",
+      "settings": { "speed": "normal", "direction": "left", "pause_on_hover": true, "color_scheme": "scheme-1" },
+      "blocks": [
+        { "type": "marquee-item", "settings": { "text": "Tasarım" } },
+        { "type": "marquee-item", "settings": { "text": "Editöryel" } },
+        { "type": "marquee-item", "settings": { "text": "Strateji" } },
+        { "type": "marquee-item", "settings": { "text": "İçerik" } },
+        { "type": "marquee-item", "settings": { "text": "Marka" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

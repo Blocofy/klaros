@@ -1,0 +1,106 @@
+{%- liquid
+  assign color_scheme = props.color_scheme | default: 'scheme-1'
+  assign align = props.alignment | default: 'left'
+  assign pad_top = props.padding_top | default: 80
+  assign pad_bottom = props.padding_bottom | default: 80
+  assign tid = 'tabs-' | append: section.id
+-%}
+<section
+  class="section color-{{ color_scheme }}"
+  style="--section-padding-top: {{ pad_top }}px; --section-padding-bottom: {{ pad_bottom }}px;"
+>
+  <div class="wrap">
+    {%- if props.eyebrow or props.title or props.subtitle -%}
+      <div class="section__lead{% if align == 'center' %} section__lead--center{% endif %}">
+        {%- if props.eyebrow and props.eyebrow != blank -%}<span class="eyebrow" data-yt-bind="eyebrow">{{ props.eyebrow }}</span>{%- endif -%}
+        {%- if props.title and props.title != blank -%}<h2 data-yt-bind="title">{{ props.title }}</h2>{%- endif -%}
+        {%- if props.subtitle and props.subtitle != blank -%}<p data-yt-bind="subtitle">{{ props.subtitle }}</p>{%- endif -%}
+      </div>
+    {%- endif -%}
+
+    <div class="tabs tabs--{{ align }}" data-tabs>
+      <div class="tabs__bar" role="tablist" aria-label="{{ props.title | default: 'Sekmeler' }}">
+        {%- for block in blocks -%}
+          {%- if block.type == 'tab' -%}
+            <button type="button" class="tabs__btn{% if forloop.first %} is-active{% endif %}"
+                    role="tab" data-tab="{{ forloop.index0 }}"
+                    id="{{ tid }}-t{{ forloop.index0 }}" aria-controls="{{ tid }}-p{{ forloop.index0 }}"
+                    aria-selected="{% if forloop.first %}true{% else %}false{% endif %}">{{ block.settings.label | default: 'Sekme' }}</button>
+          {%- endif -%}
+        {%- endfor -%}
+      </div>
+      <div class="tabs__panels">
+        {%- for block in blocks -%}
+          {%- if block.type == 'tab' -%}
+            <div class="tabs__panel{% if forloop.first %} is-active{% endif %}"
+                 role="tabpanel" data-panel="{{ forloop.index0 }}"
+                 id="{{ tid }}-p{{ forloop.index0 }}" aria-labelledby="{{ tid }}-t{{ forloop.index0 }}"{% unless forloop.first %} hidden{% endunless %}>
+              {% render 'block/tab', block: block %}
+            </div>
+          {%- endif -%}
+        {%- endfor -%}
+      </div>
+    </div>
+  </div>
+</section>
+<script>
+(function () {
+  var script = document.currentScript;
+  var root = script.previousElementSibling;
+  if (!root) return;
+  var tabs = root.querySelector('[data-tabs]');
+  if (!tabs) return;
+  var btns = [].slice.call(tabs.querySelectorAll('.tabs__btn'));
+  var panels = [].slice.call(tabs.querySelectorAll('.tabs__panel'));
+  function activate(i) {
+    btns.forEach(function (b) {
+      var on = b.getAttribute('data-tab') === i;
+      b.classList.toggle('is-active', on);
+      b.setAttribute('aria-selected', on ? 'true' : 'false');
+    });
+    panels.forEach(function (p) {
+      var on = p.getAttribute('data-panel') === i;
+      p.classList.toggle('is-active', on);
+      if (on) { p.removeAttribute('hidden'); } else { p.setAttribute('hidden', ''); }
+    });
+  }
+  btns.forEach(function (btn) {
+    btn.addEventListener('click', function () { activate(btn.getAttribute('data-tab')); });
+  });
+})();
+</script>
+
+{% schema %}
+{
+  "name": "Sekmeler (Tabs)",
+  "category": "İçerik",
+  "settings": [
+    { "type": "header", "label": "Başlık (opsiyonel)" },
+    { "type": "text", "id": "eyebrow", "label": "Üst başlık" },
+    { "type": "text", "id": "title", "label": "Bölüm başlığı", "bindable": true },
+    { "type": "textarea", "id": "subtitle", "label": "Alt metin", "rows": 2 },
+
+    { "type": "header", "label": "Düzen" },
+    { "type": "alignment", "id": "alignment", "label": "Sekme çubuğu hizalama" },
+    { "type": "range", "id": "padding_top", "label": "Üst boşluk", "min": 0, "max": 200, "step": 8, "suffix": "px" },
+    { "type": "range", "id": "padding_bottom", "label": "Alt boşluk", "min": 0, "max": 200, "step": 8, "suffix": "px" },
+
+    { "type": "header", "label": "Renk" },
+    { "type": "color_scheme", "id": "color_scheme", "label": "Renk şeması" }
+  ],
+  "blocks": [
+    { "type": "tab", "max": 8 }
+  ],
+  "presets": [
+    {
+      "name": "Sekmeler — 3 sekme",
+      "settings": { "title": "Detaylar", "alignment": "left", "color_scheme": "scheme-1" },
+      "blocks": [
+        { "type": "tab", "settings": { "label": "Genel", "heading": "Genel bakış", "text": "<p>İlk sekmenin içeriği.</p>" } },
+        { "type": "tab", "settings": { "label": "Özellikler", "heading": "Özellikler", "text": "<p>İkinci sekmenin içeriği.</p>" } },
+        { "type": "tab", "settings": { "label": "SSS", "heading": "Sıkça sorulanlar", "text": "<p>Üçüncü sekmenin içeriği.</p>" } }
+      ]
+    }
+  ]
+}
+{% endschema %}
