@@ -26,9 +26,12 @@
   --color-primary: #B25334;           /* clay */
   --color-primary-hover: #9A4329;
   --color-on-primary: #F6F3EC;
-  --color-muted: #6E6A60;             /* soft ink */
+  /* muted + surface foreground/background'dan TÜRETİLİR → color-scheme'den
+     bağımsız okunur kalır (şemalar muted/surface tanımlamaz; Mürekkep/Kil gibi
+     koyu/aksan şemalarda sabit değer düşük kontrast/kırık kart verirdi). */
+  --color-muted: color-mix(in srgb, var(--color-foreground, #1B1A17) 62%, transparent);
   --color-border: #E4DFD4;            /* hairline */
-  --color-surface: #FFFFFF;           /* hafif yükseltilmiş yüzey */
+  --color-surface: color-mix(in srgb, var(--color-foreground, #1B1A17) 5%, var(--color-background, #F6F3EC));
   --color-primary-button-background: #B25334;
   --color-primary-button-text: #F6F3EC;
   --color-primary-button-border: transparent;
@@ -49,6 +52,15 @@
   --klaros-radius: 6px;
   --klaros-rhythm: clamp(72px, 9vw, 144px);
   --klaros-hairline: 0.5px solid var(--color-border, #E4DFD4);
+}
+
+/* muted + surface türevleri color-mix ile :root'ta SABİTLENİR (eager çözülür) →
+   her color-scheme'li bölümde yeniden bildirilir ki o bölümün kendi şema
+   foreground/background'ından yeniden hesaplansın (Kâğıt/Mürekkep/Kil/Adaçayı
+   hepsinde kart yüzeyi + muted metin okunur kalır). */
+[class*="color-scheme-"] {
+  --color-muted: color-mix(in srgb, var(--color-foreground, #1B1A17) 62%, transparent);
+  --color-surface: color-mix(in srgb, var(--color-foreground, #1B1A17) 5%, var(--color-background, #F6F3EC));
 }
 
 /* --- Reset + base ----------------------------------------------------- */
