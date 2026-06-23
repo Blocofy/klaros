@@ -1,0 +1,116 @@
+{%- liquid
+  assign color_scheme = props.color_scheme | default: 'scheme-1'
+  assign width = props.width | default: 'contained'
+  assign ratio = props.ratio | default: '16/9'
+  assign align = props.alignment | default: 'center'
+  assign pad_top = props.padding_top | default: 80
+  assign pad_bottom = props.padding_bottom | default: 80
+  assign url = props.video_url
+  assign yt = ''
+  assign vimeo = ''
+  assign mp4 = ''
+  if url contains 'youtu.be/'
+    assign yt = url | split: 'youtu.be/' | last | split: '?' | first | split: '&' | first
+  elsif url contains 'watch?v='
+    assign yt = url | split: 'watch?v=' | last | split: '&' | first
+  elsif url contains 'youtube.com/embed/'
+    assign yt = url | split: 'embed/' | last | split: '?' | first
+  elsif url contains 'vimeo.com/'
+    assign vimeo = url | split: 'vimeo.com/' | last | split: '?' | first | split: '/' | first
+  elsif url != blank
+    assign mp4 = url
+  endif
+  assign embed = ''
+  if yt != ''
+    assign embed = 'https://www.youtube-nocookie.com/embed/' | append: yt
+  elsif vimeo != ''
+    assign embed = 'https://player.vimeo.com/video/' | append: vimeo
+  endif
+-%}
+<section
+  class="section color-{{ color_scheme }}"
+  style="--section-padding-top: {{ pad_top }}px; --section-padding-bottom: {{ pad_bottom }}px;"
+>
+  <div class="wrap">
+    {%- if props.eyebrow or props.title or props.subtitle -%}
+      <div class="section__lead{% if align == 'center' %} section__lead--center{% endif %}">
+        {%- if props.eyebrow and props.eyebrow != blank -%}<span class="eyebrow" data-yt-bind="eyebrow">{{ props.eyebrow }}</span>{%- endif -%}
+        {%- if props.title and props.title != blank -%}<h2 data-yt-bind="title">{{ props.title }}</h2>{%- endif -%}
+        {%- if props.subtitle and props.subtitle != blank -%}<p data-yt-bind="subtitle">{{ props.subtitle }}</p>{%- endif -%}
+      </div>
+    {%- endif -%}
+
+    <div class="video video--{{ width }}" style="--video-ratio: {{ ratio }};">
+      {%- if mp4 != '' -%}
+        <video class="video__el" controls preload="metadata"{% if props.poster and props.poster != blank %} poster="{{ props.poster | image_url: 'width=1600,format=jpg' }}"{% endif %}>
+          <source src="{{ mp4 }}">
+        </video>
+      {%- elsif embed != '' -%}
+        <button type="button" class="video__facade" data-video-src="{{ embed }}" aria-label="Videoyu oynat"{% if props.poster and props.poster != blank %} style="background-image: url('{{ props.poster | image_url: 'width=1600,format=jpg' }}');"{% endif %}>
+          <span class="video__play" aria-hidden="true"></span>
+        </button>
+      {%- else -%}
+        <p class="video__empty">Geçerli bir video bağlantısı girin (YouTube, Vimeo veya MP4).</p>
+      {%- endif -%}
+    </div>
+  </div>
+</section>
+{%- if embed != '' -%}
+<script>
+(function () {
+  var s = document.currentScript;
+  var root = s.previousElementSibling;
+  var f = root && root.querySelector('.video__facade');
+  if (!f) return;
+  f.addEventListener('click', function () {
+    var src = f.getAttribute('data-video-src');
+    var sep = src.indexOf('?') > -1 ? '&' : '?';
+    var ifr = document.createElement('iframe');
+    ifr.src = src + sep + 'autoplay=1';
+    ifr.title = 'Video';
+    ifr.className = 'video__el';
+    ifr.setAttribute('allow', 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share');
+    ifr.setAttribute('allowfullscreen', '');
+    f.replaceWith(ifr);
+  });
+})();
+</script>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Video",
+  "category": "Görsel",
+  "settings": [
+    { "type": "header", "label": "Video" },
+    { "type": "url", "id": "video_url", "label": "Video bağlantısı", "placeholder": "YouTube / Vimeo / .mp4" },
+    { "type": "image", "id": "poster", "label": "Kapak görseli (poster)" },
+
+    { "type": "header", "label": "Başlık (opsiyonel)" },
+    { "type": "text", "id": "eyebrow", "label": "Üst başlık" },
+    { "type": "text", "id": "title", "label": "Bölüm başlığı" },
+    { "type": "textarea", "id": "subtitle", "label": "Alt metin", "rows": 2 },
+
+    { "type": "header", "label": "Düzen" },
+    { "type": "radio", "id": "width", "label": "Genişlik", "options": [
+      { "label": "Çerçeveli (orta)", "value": "contained" },
+      { "label": "Tam genişlik", "value": "full" }
+    ]},
+    { "type": "select", "id": "ratio", "label": "En-boy oranı", "options": [
+      { "label": "16:9", "value": "16/9" },
+      { "label": "4:3", "value": "4/3" },
+      { "label": "1:1", "value": "1/1" },
+      { "label": "21:9 (sinematik)", "value": "21/9" }
+    ]},
+    { "type": "alignment", "id": "alignment", "label": "Başlık hizalama" },
+    { "type": "range", "id": "padding_top", "label": "Üst boşluk", "min": 0, "max": 200, "step": 8, "suffix": "px" },
+    { "type": "range", "id": "padding_bottom", "label": "Alt boşluk", "min": 0, "max": 200, "step": 8, "suffix": "px" },
+
+    { "type": "header", "label": "Renk" },
+    { "type": "color_scheme", "id": "color_scheme", "label": "Renk şeması" }
+  ],
+  "presets": [
+    { "name": "Video", "settings": { "ratio": "16/9", "width": "contained", "alignment": "center", "color_scheme": "scheme-1" } }
+  ]
+}
+{% endschema %}

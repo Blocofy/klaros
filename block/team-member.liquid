@@ -1,0 +1,33 @@
+<article class="team-member">
+  {%- if block.settings.image and block.settings.image != blank -%}
+    <img class="team-member__photo" src="{{ block.settings.image | image_url: 'width=640,height=800,fit=cover,format=webp' }}" alt="{{ block.settings.name }}" loading="lazy">
+  {%- endif -%}
+  <div class="team-member__body">
+    {%- if block.settings.name and block.settings.name != blank -%}
+      <h3 class="team-member__name" data-yt-bind="name">{{ block.settings.name }}</h3>
+    {%- endif -%}
+    {%- if block.settings.role and block.settings.role != blank -%}
+      <p class="team-member__role" data-yt-bind="role">{{ block.settings.role }}</p>
+    {%- endif -%}
+    {%- if block.settings.bio and block.settings.bio != blank -%}
+      <p class="team-member__bio" data-yt-bind="bio">{{ block.settings.bio }}</p>
+    {%- endif -%}
+    {%- if block.settings.link_url and block.settings.link_url != blank -%}
+      <a class="team-member__link" href="{{ block.settings.link_url }}" rel="noopener" target="_blank">{{ block.settings.link_label | default: 'Profil' }} →</a>
+    {%- endif -%}
+  </div>
+</article>
+
+{% schema %}
+{
+  "name": "Ekip üyesi",
+  "settings": [
+    { "type": "image", "id": "image", "label": "Fotoğraf" },
+    { "type": "text", "id": "name", "label": "Ad Soyad", "bindable": true },
+    { "type": "text", "id": "role", "label": "Ünvan", "bindable": true },
+    { "type": "textarea", "id": "bio", "label": "Kısa biyografi", "rows": 3, "bindable": true },
+    { "type": "text", "id": "link_label", "label": "Bağlantı metni", "placeholder": "LinkedIn" },
+    { "type": "url", "id": "link_url", "label": "Bağlantı", "visibleIf": "link_label" }
+  ]
+}
+{% endschema %}
