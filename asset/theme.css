@@ -534,6 +534,44 @@ img { max-width: 100%; display: block; height: auto; }
 .skip-link { position: absolute; left: -9999px; top: auto; width: 1px; height: 1px; overflow: hidden; }
 .skip-link:focus { left: 8px; top: 8px; width: auto; height: auto; padding: 8px 12px; background: var(--color-primary, #B25334); color: var(--color-on-primary, #F6F3EC); border-radius: var(--klaros-radius, 6px); z-index: 999; }
 
+/* --- Bento ızgara (esnek, yeniden kullanılabilir; her konuda) -------- */
+.bento { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; grid-auto-rows: minmax(12rem, auto); }
+.bento--cols-2 { grid-template-columns: repeat(2, 1fr); }
+.bento--cols-3 { grid-template-columns: repeat(3, 1fr); }
+.bento--cols-4 { grid-template-columns: repeat(4, 1fr); }
+.bento-item {
+  position: relative; isolation: isolate; overflow: hidden;
+  grid-column: span var(--cspan, 1); grid-row: span var(--rspan, 1);
+  display: flex; flex-direction: column;
+  background: var(--color-surface, #fff);
+  border: var(--klaros-hairline);
+  border-radius: var(--klaros-radius, 6px);
+  padding: clamp(1.25rem, 2vw, 1.75rem);
+}
+.bento-item__body { position: relative; z-index: 2; display: flex; flex-direction: column; gap: 0.6rem; height: 100%; }
+.bento-item--center { text-align: center; }
+.bento-item--center .bento-item__body { align-items: center; justify-content: center; }
+.bento-item__title { font-size: 1.3rem; }
+.bento-item__text { color: var(--color-muted, #6E6A60); line-height: 1.6; margin: 0; }
+.bento-item__icon { width: 2.5rem; height: 2.5rem; object-fit: contain; }
+.bento-item__link { margin-top: auto; padding-top: 0.5rem; font-size: 0.85rem; color: var(--color-primary, #B25334); text-decoration: none; width: fit-content; }
+.bento-item__link:hover { text-decoration: underline; text-underline-offset: 3px; }
+.bento-item--media { color: #F6F3EC; }
+.bento-item__media { position: absolute; inset: 0; z-index: 0; background-size: cover; background-position: center; transition: transform 0.5s ease; }
+.bento-item:hover .bento-item__media { transform: scale(1.04); }
+.bento-item__scrim { position: absolute; inset: 0; z-index: 1; background: linear-gradient(180deg, rgba(27,26,23,0.1), rgba(27,26,23,0.62)); }
+.bento-item__body--on-media { justify-content: flex-end; color: #F6F3EC; }
+.bento-item__body--on-media .bento-item__title { color: #F6F3EC; }
+.bento-item__body--on-media .bento-item__text { color: color-mix(in srgb, #F6F3EC 85%, transparent); }
+.bento-item__body--on-media .bento-item__link { color: #F6F3EC; }
+@media (max-width: 46rem) {
+  .bento--cols-3, .bento--cols-4 { grid-template-columns: repeat(2, 1fr); }
+  .bento-item { grid-column: span 1; grid-row: auto; min-height: 11rem; }
+}
+@media (max-width: 30rem) {
+  .bento, .bento--cols-2, .bento--cols-3, .bento--cols-4 { grid-template-columns: 1fr; }
+}
+
 /* ===== Form-builder (hibrit) varyant CSS — section/Form ===== */
 /* Renkler renk-şeması token'larından gelir (--color-*). Varyant YALNIZ şekli/
    düzeni değiştirir; renk şemaya bağlı kalır. Editöryel: hairline border,

@@ -1,0 +1,78 @@
+{%- liquid
+  assign col_span = block.settings.col_span | default: 1
+  assign row_span = block.settings.row_span | default: 1
+  assign align = block.settings.content_align | default: 'left'
+  assign scheme = block.settings.color_scheme | default: 'scheme-1'
+  assign image_mode = block.settings.image_mode | default: 'inline'
+  assign has_image = false
+  if block.settings.image and block.settings.image != blank
+    assign has_image = true
+  endif
+  assign is_bg = false
+  if has_image and image_mode == 'background'
+    assign is_bg = true
+  endif
+-%}
+<article
+  class="bento-item color-{{ scheme }} bento-item--{{ align }}{% if is_bg %} bento-item--media{% endif %}"
+  style="--cspan: {{ col_span }}; --rspan: {{ row_span }};"
+>
+  {%- if is_bg -%}
+    <div class="bento-item__media" data-yt-bind="image" style="background-image: url('{{ block.settings.image | image_url: 'width=1400,quality=80,format=webp' }}');"></div>
+    <div class="bento-item__scrim"></div>
+  {%- endif -%}
+  <div class="bento-item__body{% if is_bg %} bento-item__body--on-media{% endif %}">
+    {%- if block.settings.eyebrow and block.settings.eyebrow != blank -%}
+      <span class="eyebrow" data-yt-bind="eyebrow">{{ block.settings.eyebrow }}</span>
+    {%- endif -%}
+    {%- if has_image and image_mode == 'inline' -%}
+      <img class="bento-item__icon" src="{{ block.settings.image | image_url: 'width=480,format=webp' }}" alt="{{ block.settings.heading | default: block.settings.eyebrow }}" loading="lazy">
+    {%- endif -%}
+    {%- if block.settings.heading and block.settings.heading != blank -%}
+      <h3 class="bento-item__title" data-yt-bind="heading">{{ block.settings.heading }}</h3>
+    {%- endif -%}
+    {%- if block.settings.text and block.settings.text != blank -%}
+      <p class="bento-item__text" data-yt-bind="text">{{ block.settings.text }}</p>
+    {%- endif -%}
+    {%- if block.settings.link_label and block.settings.link_label != blank -%}
+      <a class="bento-item__link" href="{{ block.settings.link_url | default: '#' }}">{{ block.settings.link_label }} →</a>
+    {%- endif -%}
+  </div>
+</article>
+
+{% schema %}
+{
+  "name": "Bento hücre",
+  "settings": [
+    { "type": "header", "label": "Boyut" },
+    { "type": "select", "id": "col_span", "label": "Genişlik (sütun)", "options": [
+      { "label": "1 sütun", "value": "1" },
+      { "label": "2 sütun", "value": "2" },
+      { "label": "3 sütun", "value": "3" },
+      { "label": "4 sütun", "value": "4" }
+    ]},
+    { "type": "select", "id": "row_span", "label": "Yükseklik (satır)", "options": [
+      { "label": "1 satır", "value": "1" },
+      { "label": "2 satır", "value": "2" }
+    ]},
+
+    { "type": "header", "label": "İçerik" },
+    { "type": "text", "id": "eyebrow", "label": "Üst etiket" },
+    { "type": "text", "id": "heading", "label": "Başlık", "bindable": true },
+    { "type": "textarea", "id": "text", "label": "Metin", "rows": 3, "bindable": true },
+    { "type": "image", "id": "image", "label": "Görsel / ikon" },
+    { "type": "radio", "id": "image_mode", "label": "Görsel modu", "options": [
+      { "label": "İçerik (üstte ikon/görsel)", "value": "inline" },
+      { "label": "Arka plan (kaplama + beyaz metin)", "value": "background" }
+    ]},
+
+    { "type": "header", "label": "Bağlantı" },
+    { "type": "text", "id": "link_label", "label": "Bağlantı metni", "placeholder": "Daha fazla" },
+    { "type": "url", "id": "link_url", "label": "Bağlantı", "visibleIf": "link_label" },
+
+    { "type": "header", "label": "Stil" },
+    { "type": "alignment", "id": "content_align", "label": "İçerik hizalama" },
+    { "type": "color_scheme", "id": "color_scheme", "label": "Hücre renk şeması" }
+  ]
+}
+{% endschema %}
