@@ -31,6 +31,98 @@
   ],
   "pages": [
     {
+      "slug": "/",
+      "title": "Ana Sayfa",
+      "template": "home",
+      "seo_title": "Ana Sayfa",
+      "seo_description": "Sözünüzü net ve sakin anlatan editöryel bir başlangıç.",
+      "document": {
+        "version": 2,
+        "sections": [
+          {
+            "id": "home-hero",
+            "type": "Hero",
+            "settings": {
+              "eyebrow": "STÜDYO",
+              "heading": "Sözünüzü net ve sakin anlatın.",
+              "subtitle": "Şirketiniz için ölçülü, editöryel bir başlangıç. Az ama doğru sözcük, bol boşluk ve okumayı kolaylaştıran sade bir düzen.",
+              "alignment": "left",
+              "min_height": 40,
+              "primary_button_label": "Çalışmaları görün",
+              "primary_button_url": "/blog",
+              "secondary_button_label": "İletişime geçin",
+              "secondary_button_url": "/iletisim",
+              "color_scheme": "scheme-1"
+            }
+          },
+          {
+            "id": "home-approach",
+            "type": "Split",
+            "settings": {
+              "eyebrow": "YAKLAŞIM",
+              "title": "Sade bir çerçeve, net bir ses.",
+              "subtitle": "Stüdyonuzun çalışma biçimini birkaç adımda anlatın; her satır kendi başına okunur kalsın.",
+              "alignment": "left",
+              "color_scheme": "scheme-1"
+            },
+            "blocks": [
+              {
+                "id": "approach-row-1",
+                "type": "split-row",
+                "settings": {
+                  "eyebrow": "01",
+                  "heading": "Önce mesaj",
+                  "text": "<p>Söyleyecek şeyi netleştiriyoruz. Tasarım, mesajı taşıyacak en sade biçimi arar; gürültüyü değil.</p>",
+                  "image": "",
+                  "media_side": "auto"
+                }
+              },
+              {
+                "id": "approach-row-2",
+                "type": "split-row",
+                "settings": {
+                  "eyebrow": "02",
+                  "heading": "Sonra biçim",
+                  "text": "<p>Tipografi, boşluk ve ritim. Okuru yormadan, doğru sözcüğü doğru boşlukla buluşturan ölçülü bir düzen.</p>",
+                  "image": "",
+                  "media_side": "auto"
+                }
+              }
+            ]
+          },
+          {
+            "id": "home-journal",
+            "type": "CollectionList",
+            "settings": {
+              "title": "Günlük",
+              "collectionKey": "blog_posts",
+              "detailBase": "/blog",
+              "subtitleField": "excerpt",
+              "imageField": "cover",
+              "dateField": "published_at",
+              "columns": "3",
+              "limit": 3,
+              "sort": "newest",
+              "color_scheme": "scheme-1"
+            }
+          },
+          {
+            "id": "home-cta",
+            "type": "Cta",
+            "settings": {
+              "eyebrow": "BAŞLAYALIM",
+              "heading": "Anlatmaya değer bir hikâyeniz var.",
+              "body": "Birlikte sade ve net bir biçim bulalım. Sorularınız için en kısa sürede dönüş yapıyoruz.",
+              "alignment": "center",
+              "primary_button_label": "İletişime geçin",
+              "primary_button_url": "/iletisim",
+              "color_scheme": "scheme-2"
+            }
+          }
+        ]
+      }
+    },
+    {
       "slug": "/blog",
       "title": "Günlük",
       "template": "page",
