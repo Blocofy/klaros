@@ -8,10 +8,10 @@
    İki katman:
    1. Renkler `--color-*` platform color-scheme sistemine bağlıdır. Bu :root
       bloğu editöryel paleti VARSAYILAN olarak tanımlar; bir site kendi color
-      scheme'ini tanımlarsa renderer onu `</head>` sonrası enjekte eder ve bu
-      varsayılanları ezer (istenen Shopify davranışı).
+      scheme'ini tanımlarsa renderer onu head kapanışından sonra enjekte eder
+      ve bu varsayılanları ezer (istenen Shopify davranışı).
    2. Tema-özel ölçüler `--klaros-*` namespace'inde durur. Bunları Klaros'un
-      kendi `config/settings_schema.json` ayarları (layout `{{ settings.x }}`
+      kendi `config/settings_schema.json` ayarları (layout settings.x
       → :root) besler. Buradaki fallback'ler = Klaros'un kendi kendine yeten
       editöryel görünümü (ayar yokken de doğru görünür). Legacy "appearance"
       (`--font-*`) sistemine bilinçli BAĞLI DEĞİL — o sabit 4 fontla sınırlı
