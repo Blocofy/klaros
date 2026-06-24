@@ -152,7 +152,7 @@
     {
       "slug": "/blog/[slug]",
       "title": "Blog yazısı",
-      "is_template": true,
+      "is_template": false,
       "dynamic_collection_key": "blog_posts",
       "template": "BlogPosting",
       "document": {
