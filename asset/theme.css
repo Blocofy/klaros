@@ -815,3 +815,6 @@ a.marquee__item:hover img { opacity: 1; filter: none; }
 /* --- consent --- */
 .ff-consent { display: flex; align-items: flex-start; gap: .5rem; font-size: .9rem; }
 .ff-consent input { margin-top: .2rem; }
+
+/* Gömülü içerik (Embed) — gömülü iframe taşmasın */
+.embed-section__body iframe { max-width: 100%; }

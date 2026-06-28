@@ -1,0 +1,40 @@
+{%- liquid
+  assign color_scheme = props.color_scheme | default: 'scheme-1'
+  assign max_width = props.max_width | default: 72
+  assign pad_top = props.padding_top | default: 64
+  assign pad_bottom = props.padding_bottom | default: 64
+-%}
+<section
+  class="section embed-section color-{{ color_scheme }}"
+  style="--section-padding-top: {{ pad_top }}px;
+         --section-padding-bottom: {{ pad_bottom }}px;"
+>
+  <div class="wrap" style="max-width:{{ max_width }}rem">
+    {%- if props.embed and props.embed != blank -%}
+      <div class="embed-section__body" data-yt-bind="embed">{{ props.embed | sanitize_embed }}</div>
+    {%- endif -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Gömülü içerik",
+  "category": "İçerik",
+  "settings": [
+    { "type": "header", "label": "İçerik" },
+    { "type": "html", "id": "embed", "label": "Gömme kodu",
+      "placeholder": "Video, harita, takvim vb. <iframe> gömme kodunu yapıştırın." },
+
+    { "type": "header", "label": "Düzen" },
+    { "type": "range", "id": "max_width", "label": "Maksimum genişlik", "min": 32, "max": 96, "step": 4, "suffix": "rem" },
+    { "type": "range", "id": "padding_top", "label": "Üst boşluk", "min": 0, "max": 200, "step": 8, "suffix": "px" },
+    { "type": "range", "id": "padding_bottom", "label": "Alt boşluk", "min": 0, "max": 200, "step": 8, "suffix": "px" },
+
+    { "type": "header", "label": "Renk" },
+    { "type": "color_scheme", "id": "color_scheme", "label": "Renk şeması" }
+  ],
+  "presets": [
+    { "name": "Gömülü içerik", "settings": { "max_width": 72, "padding_top": 64, "padding_bottom": 64, "color_scheme": "scheme-1" } }
+  ]
+}
+{% endschema %}
