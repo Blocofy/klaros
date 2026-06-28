@@ -33,6 +33,25 @@
         "max": 20,
         "step": 1,
         "suffix": "px"
+      },
+      "heading_scale": {
+        "type": "range",
+        "label": "Başlık ölçeği",
+        "help": "Başlıkların boyut çarpanı (tipografik hiyerarşi).",
+        "min": 100,
+        "max": 145,
+        "step": 5,
+        "suffix": "%"
+      },
+      "heading_tracking": {
+        "type": "select",
+        "label": "Başlık harf aralığı",
+        "help": "Başlık karakterleri arası boşluk.",
+        "options": [
+          { "label": "Sıkı", "value": "tight" },
+          { "label": "Normal", "value": "normal" },
+          { "label": "Geniş", "value": "wide" }
+        ]
       }
     }
   },
@@ -67,6 +86,33 @@
         "max": 16,
         "step": 1,
         "suffix": "px"
+      }
+    }
+  },
+  {
+    "id": "surfaces",
+    "name": "Yüzeyler",
+    "fields": {
+      "surface_style": {
+        "type": "select",
+        "label": "Kart yüzeyi",
+        "help": "Kart ve içerik yüzeylerinin editöryel işlenişi.",
+        "options": [
+          { "label": "İnce çizgi (editöryel)", "value": "hairline" },
+          { "label": "Yumuşak gölge", "value": "shadow" },
+          { "label": "Düz (çerçevesiz)", "value": "flat" }
+        ]
+      }
+    }
+  },
+  {
+    "id": "buttons",
+    "name": "Düğmeler",
+    "fields": {
+      "button_uppercase": {
+        "type": "toggle",
+        "label": "Düğme yazısı büyük harf",
+        "help": "CTA düğmelerinde büyük harf + harf aralığı (kurumsal/editöryel)."
       }
     }
   }

@@ -79,6 +79,39 @@
       else
         assign rhythm_val = 'clamp(72px, 9vw, 144px)'
     endcase
+
+    assign heading_scale = settings.heading_scale | default: 115 | divided_by: 100.0
+    assign tracking = settings.heading_tracking | default: 'normal'
+    case tracking
+      when 'tight'
+        assign tracking_val = '-0.03em'
+      when 'wide'
+        assign tracking_val = '0.01em'
+      else
+        assign tracking_val = '-0.015em'
+    endcase
+
+    assign surface = settings.surface_style | default: 'hairline'
+    case surface
+      when 'shadow'
+        assign card_border = 'none'
+        assign card_shadow = '0 6px 28px rgba(27,26,23,0.09)'
+      when 'flat'
+        assign card_border = 'none'
+        assign card_shadow = 'none'
+      else
+        assign card_border = 'var(--klaros-hairline)'
+        assign card_shadow = 'none'
+    endcase
+
+    assign btn_upper = settings.button_uppercase | default: false
+    if btn_upper
+      assign btn_transform = 'uppercase'
+      assign btn_tracking = '0.08em'
+    else
+      assign btn_transform = 'none'
+      assign btn_tracking = '0'
+    endif
   -%}
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -95,6 +128,12 @@
     --klaros-content-width: {{ content_width }}rem;
     --klaros-radius: {{ corner_radius }}px;
     --klaros-rhythm: {{ rhythm_val }};
+    --klaros-heading-scale: {{ heading_scale }};
+    --klaros-heading-tracking: {{ tracking_val }};
+    --klaros-card-border: {{ card_border }};
+    --klaros-card-shadow: {{ card_shadow }};
+    --klaros-btn-transform: {{ btn_transform }};
+    --klaros-btn-tracking: {{ btn_tracking }};
   }</style>
 </head>
 <body>
