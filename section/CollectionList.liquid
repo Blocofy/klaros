@@ -51,7 +51,7 @@
       {%- for item in paged -%}
         {%- assign card_title = item.data[props.titleField] | default: item.title -%}
         {%- assign card_sub = item.data[props.subtitleField] -%}
-        {%- assign card_img = item.data[props.imageField] -%}
+        {%- assign card_img = item.data[props.imageField] | image_url -%}
         {%- assign card_badge = item.data[props.badgeField] -%}
         {%- comment -%} Tarih: eşlenen data alanı; boşsa sistem yayın tarihi. {%- endcomment -%}
         {%- assign card_date = item.data[props.dateField] | default: item.published_at -%}

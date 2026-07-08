@@ -32,7 +32,7 @@
             {%- for img in gallery -%}
               {%- if img and img != blank -%}
                 <div class="swiper-slide">
-                  <img src="{{ img }}" alt="{{ entry.title | escape }}" loading="lazy">
+                  <img src="{{ img | image_url }}" alt="{{ entry.title | escape }}" loading="lazy">
                 </div>
               {%- endif -%}
             {%- endfor -%}
