@@ -5,27 +5,62 @@
       "key": "blog_authors",
       "name": "Yazarlar",
       "fields": [
-        { "name": "bio", "label": "Biyografi", "type": "textarea" },
-        { "name": "avatar", "label": "Avatar", "type": "image" }
+        {
+          "name": "bio",
+          "label": "Biyografi",
+          "type": "textarea"
+        },
+        {
+          "name": "avatar",
+          "label": "Avatar",
+          "type": "image"
+        }
       ]
     },
     {
       "key": "blog_categories",
       "name": "Kategoriler",
       "fields": [
-        { "name": "description", "label": "Açıklama", "type": "textarea" }
+        {
+          "name": "description",
+          "label": "Açıklama",
+          "type": "textarea"
+        }
       ]
     },
     {
       "key": "blog_posts",
       "name": "Blog yazıları",
       "fields": [
-        { "name": "excerpt", "label": "Özet", "type": "textarea" },
-        { "name": "cover", "label": "Kapak görseli", "type": "image" },
-        { "name": "body", "label": "İçerik", "type": "richtext" },
-        { "name": "published_at", "label": "Yayın tarihi", "type": "date" },
-        { "name": "author", "label": "Yazar", "type": "relation", "target_collection_key": "blog_authors", "relation_display_field": "title" },
-        { "name": "categories", "label": "Kategoriler", "type": "multi_relation", "target_collection_key": "blog_categories", "relation_display_field": "title" }
+        {
+          "name": "excerpt",
+          "label": "Özet",
+          "type": "textarea"
+        },
+        {
+          "name": "cover",
+          "label": "Kapak görseli",
+          "type": "image"
+        },
+        {
+          "name": "body",
+          "label": "İçerik",
+          "type": "richtext"
+        },
+        {
+          "name": "author",
+          "label": "Yazar",
+          "type": "relation",
+          "target_collection_key": "blog_authors",
+          "relation_display_field": "title"
+        },
+        {
+          "name": "categories",
+          "label": "Kategoriler",
+          "type": "multi_relation",
+          "target_collection_key": "blog_categories",
+          "relation_display_field": "title"
+        }
       ]
     }
   ],
@@ -99,7 +134,6 @@
               "detailBase": "/blog",
               "subtitleField": "excerpt",
               "imageField": "cover",
-              "dateField": "published_at",
               "columns": "3",
               "limit": 3,
               "sort": "newest",
@@ -140,7 +174,6 @@
               "detailBase": "/blog",
               "subtitleField": "excerpt",
               "imageField": "cover",
-              "dateField": "published_at",
               "columns": "3",
               "limit": 9,
               "sort": "newest"
@@ -161,16 +194,24 @@
           {
             "id": "post-breadcrumb",
             "type": "Breadcrumb",
-            "settings": { "home_label": "Anasayfa" }
+            "settings": {
+              "home_label": "Anasayfa"
+            }
           },
           {
             "id": "post-hero",
             "type": "Hero",
             "settings": {
               "eyebrow": "GÜNLÜK",
-              "heading": { "$bind": "entry.title" },
-              "subtitle": { "$bind": "entry.data.excerpt" },
-              "image": { "$bind": "entry.data.cover" },
+              "heading": {
+                "$bind": "entry.title"
+              },
+              "subtitle": {
+                "$bind": "entry.data.excerpt"
+              },
+              "image": {
+                "$bind": "entry.data.cover"
+              },
               "alignment": "center",
               "min_height": 28
             }
@@ -179,7 +220,9 @@
             "id": "post-body",
             "type": "RichText",
             "settings": {
-              "content": { "$bind": "entry.data.body" },
+              "content": {
+                "$bind": "entry.data.body"
+              },
               "alignment": "left",
               "max_width": 44
             }
@@ -192,15 +235,39 @@
     {
       "collection_key": "blog_authors",
       "entries": [
-        { "title": "Editör", "slug": "editor", "data": { "bio": "Atölyenin editöryel sesi." } }
+        {
+          "title": "Editör",
+          "slug": "editor",
+          "data": {
+            "bio": "Atölyenin editöryel sesi."
+          }
+        }
       ]
     },
     {
       "collection_key": "blog_categories",
       "entries": [
-        { "title": "Tasarım", "slug": "tasarim", "data": { "description": "Tasarım üzerine notlar." } },
-        { "title": "Tipografi", "slug": "tipografi", "data": { "description": "Harfler ve okunabilirlik." } },
-        { "title": "İçerik", "slug": "icerik", "data": { "description": "Yazmak ve düzenlemek." } }
+        {
+          "title": "Tasarım",
+          "slug": "tasarim",
+          "data": {
+            "description": "Tasarım üzerine notlar."
+          }
+        },
+        {
+          "title": "Tipografi",
+          "slug": "tipografi",
+          "data": {
+            "description": "Harfler ve okunabilirlik."
+          }
+        },
+        {
+          "title": "İçerik",
+          "slug": "icerik",
+          "data": {
+            "description": "Yazmak ve düzenlemek."
+          }
+        }
       ]
     },
     {
@@ -211,30 +278,42 @@
           "slug": "boslugun-ritmi",
           "data": {
             "excerpt": "Bir sayfada en güçlü öğe çoğu zaman boşluktur. Onu nasıl kullanıyoruz?",
-            "body": "<p>İyi tasarım gürültü yapmaz. Okuru yormadan, doğru sözcüğü doğru boşlukla buluşturur.</p><p>Boşluk bir eksiklik değil, bir karardır: neyin önemli olduğunu boşluk söyler.</p>",
-            "published_at": "2026-06-12"
+            "body": "<p>İyi tasarım gürültü yapmaz. Okuru yormadan, doğru sözcüğü doğru boşlukla buluşturur.</p><p>Boşluk bir eksiklik değil, bir karardır: neyin önemli olduğunu boşluk söyler.</p>"
           },
-          "relations": { "author": "editor", "categories": ["tasarim"] }
+          "relations": {
+            "author": "editor",
+            "categories": [
+              "tasarim"
+            ]
+          }
         },
         {
           "title": "Serif geri döndü",
           "slug": "serif-geri-dondu",
           "data": {
             "excerpt": "Ekranda serif tipografinin yeniden yükselişi ve okunabilirlik üzerine notlar.",
-            "body": "<p>Yıllarca \"ekranda sans-serif\" dendi. Bugün yüksek çözünürlüklü ekranlar serifin ince detaylarını taşıyabiliyor.</p><p>Newsreader gibi ekran için optik boyutlandırılmış serifler, uzun metni hem okunur hem sıcak kılıyor.</p>",
-            "published_at": "2026-06-03"
+            "body": "<p>Yıllarca \"ekranda sans-serif\" dendi. Bugün yüksek çözünürlüklü ekranlar serifin ince detaylarını taşıyabiliyor.</p><p>Newsreader gibi ekran için optik boyutlandırılmış serifler, uzun metni hem okunur hem sıcak kılıyor.</p>"
           },
-          "relations": { "author": "editor", "categories": ["tipografi"] }
+          "relations": {
+            "author": "editor",
+            "categories": [
+              "tipografi"
+            ]
+          }
         },
         {
           "title": "Az kelimeyle çok şey",
           "slug": "az-kelimeyle",
           "data": {
             "excerpt": "Editöryel yazımda kısalık bir kısıt değil, bir araçtır.",
-            "body": "<p>Her cümleyi savun. Taşımıyorsa çıkar.</p><p>Kısalık, okura saygıdır: ona zamanını geri verir.</p>",
-            "published_at": "2026-05-28"
+            "body": "<p>Her cümleyi savun. Taşımıyorsa çıkar.</p><p>Kısalık, okura saygıdır: ona zamanını geri verir.</p>"
           },
-          "relations": { "author": "editor", "categories": ["icerik"] }
+          "relations": {
+            "author": "editor",
+            "categories": [
+              "icerik"
+            ]
+          }
         }
       ]
     }

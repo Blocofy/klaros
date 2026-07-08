@@ -53,7 +53,8 @@
         {%- assign card_sub = item.data[props.subtitleField] -%}
         {%- assign card_img = item.data[props.imageField] -%}
         {%- assign card_badge = item.data[props.badgeField] -%}
-        {%- assign card_date = item.data[props.dateField] -%}
+        {%- comment -%} Tarih: eşlenen data alanı; boşsa sistem yayın tarihi. {%- endcomment -%}
+        {%- assign card_date = item.data[props.dateField] | default: item.published_at -%}
         {%- assign has_link = false -%}
         {%- if detail_base and detail_base != '' and item.slug -%}{%- assign has_link = true -%}{%- endif -%}
         {%- assign href = detail_base | append: '/' | append: item.slug -%}
@@ -68,7 +69,7 @@
             <h3 class="collection-entry__title">
               {% if has_link %}<a href="{{ href }}">{{ card_title }}</a>{% else %}{{ card_title }}{% endif %}
             </h3>
-            {% if card_date and card_date != '' %}<time class="collection-entry__date">{{ card_date }}</time>{% endif %}
+            {% if card_date and card_date != '' %}<time class="collection-entry__date">{{ card_date | date: "%d.%m.%Y" }}</time>{% endif %}
             {% if card_sub and card_sub != '' %}<p class="collection-entry__excerpt">{{ card_sub }}</p>{% endif %}
             {% if has_link %}<a class="collection-entry__more" href="{{ href }}">Yazıyı oku →</a>{% endif %}
           </div>
