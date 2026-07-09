@@ -15,7 +15,9 @@
       {%- for seg in segs -%}
         {%- assign acc = acc | append: '/' | append: seg -%}
         {%- if forloop.last -%}
-          {%- if page.title and page.title != blank -%}
+          {%- if entry and entry.title != blank -%}
+            {%- assign label = entry.title -%}
+          {%- elsif page.title and page.title != blank -%}
             {%- assign label = page.title -%}
           {%- else -%}
             {%- assign label = seg | replace: '-', ' ' | capitalize -%}
@@ -39,7 +41,9 @@
     {%- assign acc2 = '' -%}
     {%- for seg in segs -%}
       {%- assign acc2 = acc2 | append: '/' | append: seg -%}
-      {%- if forloop.last and page.title and page.title != blank -%}
+      {%- if forloop.last and entry and entry.title != blank -%}
+        {%- assign label = entry.title -%}
+      {%- elsif forloop.last and page.title and page.title != blank -%}
         {%- assign label = page.title -%}
       {%- else -%}
         {%- assign label = seg | replace: '-', ' ' | capitalize -%}
