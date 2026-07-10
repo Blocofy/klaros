@@ -13,9 +13,9 @@
   {% if globals.site_name %}<meta property="og:site_name" content="{{ globals.site_name }}">{% endif %}
   {%- assign og_image = page.og_image | default: globals.og_image -%}
   {% if og_image and og_image != blank %}
-  <meta property="og:image" content="{{ og_image | image_url: 'width=1200,height=630,fit=cover,format=jpg' }}">
+  <meta property="og:image" content="{{ og_image | image_url: 'width=1200&height=630&fit=cover&format=jpg' }}">
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:image" content="{{ og_image | image_url: 'width=1200,height=630,fit=cover,format=jpg' }}">
+  <meta name="twitter:image" content="{{ og_image | image_url: 'width=1200&height=630&fit=cover&format=jpg' }}">
   {% else %}
   <meta name="twitter:card" content="summary">
   {% endif %}

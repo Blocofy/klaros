@@ -4,19 +4,19 @@
   assign align = block.settings.alignment | default: 'center'
 -%}
 {% if src and src != blank %}
-  {%- assign img = '<img src="' | append: src | image_url: 'width=1600,format=webp' | append: '" alt="' | append: block.settings.alt | append: '" loading="lazy" style="width:100%;height:auto;{% if ratio != ' | append: "'auto'" | append: ' %}aspect-ratio:' | append: ratio | append: ';object-fit:cover;{% endif %}">' -%}
+  {%- assign img = '<img src="' | append: src | image_url: 'width=1600&format=webp' | append: '" alt="' | append: block.settings.alt | append: '" loading="lazy" style="width:100%;height:auto;{% if ratio != ' | append: "'auto'" | append: ' %}aspect-ratio:' | append: ratio | append: ';object-fit:cover;{% endif %}">' -%}
   <figure class="block-image block-image--{{ align }}"
           style="margin:0;display:flex;justify-content:{% if align == 'left' %}flex-start{% elsif align == 'right' %}flex-end{% else %}center{% endif %}">
     <div style="max-width:100%;width:{{ block.settings.max_width | default: 100 }}%">
       {% if block.settings.link and block.settings.link != blank %}
         <a href="{{ block.settings.link }}">
-          <img src="{{ src | image_url: 'width=1600,format=webp' }}"
+          <img src="{{ src | image_url: 'width=1600&format=webp' }}"
                alt="{{ block.settings.alt }}"
                loading="lazy"
                style="width:100%;height:auto;{% if ratio != 'auto' %}aspect-ratio:{{ ratio }};object-fit:cover;{% endif %}border-radius:var(--brand-radius,.5rem)">
         </a>
       {% else %}
-        <img src="{{ src | image_url: 'width=1600,format=webp' }}"
+        <img src="{{ src | image_url: 'width=1600&format=webp' }}"
              alt="{{ block.settings.alt }}"
              loading="lazy"
              style="width:100%;height:auto;{% if ratio != 'auto' %}aspect-ratio:{{ ratio }};object-fit:cover;{% endif %}border-radius:var(--brand-radius,.5rem)">

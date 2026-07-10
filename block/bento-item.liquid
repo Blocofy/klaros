@@ -18,7 +18,7 @@
   style="--cspan: {{ col_span }}; --rspan: {{ row_span }};"
 >
   {%- if is_bg -%}
-    <div class="bento-item__media" data-yt-bind="image" style="background-image: url('{{ block.settings.image | image_url: 'width=1400,quality=80,format=webp' }}');"></div>
+    <div class="bento-item__media" data-yt-bind="image" style="background-image: url('{{ block.settings.image | image_url: 'width=1400&quality=80&format=webp' }}');"></div>
     <div class="bento-item__scrim"></div>
   {%- endif -%}
   <div class="bento-item__body{% if is_bg %} bento-item__body--on-media{% endif %}">
@@ -26,7 +26,7 @@
       <span class="eyebrow" data-yt-bind="eyebrow">{{ block.settings.eyebrow }}</span>
     {%- endif -%}
     {%- if has_image and image_mode == 'inline' -%}
-      <img class="bento-item__icon" src="{{ block.settings.image | image_url: 'width=480,format=webp' }}" alt="{{ block.settings.heading | default: block.settings.eyebrow }}" loading="lazy">
+      <img class="bento-item__icon" src="{{ block.settings.image | image_url: 'width=480&format=webp' }}" alt="{{ block.settings.heading | default: block.settings.eyebrow }}" loading="lazy">
     {%- endif -%}
     {%- if block.settings.heading and block.settings.heading != blank -%}
       <h3 class="bento-item__title" data-yt-bind="heading">{{ block.settings.heading }}</h3>

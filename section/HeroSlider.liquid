@@ -26,7 +26,7 @@
           {%- assign img = block.settings.image -%}
           <div class="swiper-slide hero-slide hero-slide--{{ block.settings.alignment | default: 'center' }}">
             {%- if img and img != blank -%}
-              <div class="hero-slide__media" style="background-image: url('{{ img | image_url: 'width=1920,quality=80,format=webp' }}');"></div>
+              <div class="hero-slide__media" style="background-image: url('{{ img | image_url: 'width=1920&quality=80&format=webp' }}');"></div>
               <div class="hero-slide__overlay"></div>
             {%- endif -%}
             <div class="wrap">

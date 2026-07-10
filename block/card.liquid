@@ -8,9 +8,9 @@
   {%- if show_number or media_type == 'number' -%}
     <div class="card__num">{{ index | default: 1 }}</div>
   {%- elsif media_type == 'icon' and block.settings.icon and block.settings.icon != blank -%}
-    <img class="card__icon" src="{{ block.settings.icon | image_url: 'width=64,height=64,format=webp' }}" alt="" width="40" height="40">
+    <img class="card__icon" src="{{ block.settings.icon | image_url: 'width=64&height=64&format=webp' }}" alt="" width="40" height="40">
   {%- elsif media_type == 'image' and block.settings.image and block.settings.image != blank -%}
-    <img class="card__image" src="{{ block.settings.image | image_url: 'width=640,format=webp' }}" alt="{{ block.settings.image_alt | default: block.settings.title }}">
+    <img class="card__image" src="{{ block.settings.image | image_url: 'width=640&format=webp' }}" alt="{{ block.settings.image_alt | default: block.settings.title }}">
   {%- endif -%}
   {%- if block.settings.title and block.settings.title != blank -%}
     <h3>{{ block.settings.title }}</h3>

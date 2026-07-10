@@ -10,7 +10,7 @@
 -%}
 {%- capture inner -%}
   {%- if has_image -%}
-    <img src="{{ block.settings.image | image_url: 'width=320,format=webp' }}" alt="{{ block.settings.text | default: 'logo' }}" loading="lazy">
+    <img src="{{ block.settings.image | image_url: 'width=320&format=webp' }}" alt="{{ block.settings.text | default: 'logo' }}" loading="lazy">
   {%- else -%}
     {{ block.settings.text }}
   {%- endif -%}

@@ -1,6 +1,6 @@
 <article class="team-member">
   {%- if block.settings.image and block.settings.image != blank -%}
-    <img class="team-member__photo" src="{{ block.settings.image | image_url: 'width=640,height=800,fit=cover,format=webp' }}" alt="{{ block.settings.name }}" loading="lazy">
+    <img class="team-member__photo" src="{{ block.settings.image | image_url: 'width=640&height=800&fit=cover&format=webp' }}" alt="{{ block.settings.name }}" loading="lazy">
   {%- endif -%}
   <div class="team-member__body">
     {%- if block.settings.name and block.settings.name != blank -%}
