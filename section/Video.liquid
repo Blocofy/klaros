@@ -42,11 +42,11 @@
 
     <div class="video video--{{ width }}" style="--video-ratio: {{ ratio }};">
       {%- if mp4 != '' -%}
-        <video class="video__el" controls preload="metadata"{% if props.poster and props.poster != blank %} poster="{{ props.poster | image_url: 'width=1600,format=jpg' }}"{% endif %}>
+        <video class="video__el" controls preload="metadata"{% if props.poster and props.poster != blank %} poster="{{ props.poster | image_url: 'width=1600&format=jpg' }}"{% endif %}>
           <source src="{{ mp4 }}">
         </video>
       {%- elsif embed != '' -%}
-        <button type="button" class="video__facade" data-video-src="{{ embed }}" aria-label="Videoyu oynat"{% if props.poster and props.poster != blank %} style="background-image: url('{{ props.poster | image_url: 'width=1600,format=jpg' }}');"{% endif %}>
+        <button type="button" class="video__facade" data-video-src="{{ embed }}" aria-label="Videoyu oynat"{% if props.poster and props.poster != blank %} style="background-image: url('{{ props.poster | image_url: 'width=1600&format=jpg' }}');"{% endif %}>
           <span class="video__play" aria-hidden="true"></span>
         </button>
       {%- else -%}

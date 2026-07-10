@@ -3,7 +3,7 @@
     <h3 class="tab-content__title" data-yt-bind="heading">{{ block.settings.heading }}</h3>
   {%- endif -%}
   {%- if block.settings.image and block.settings.image != blank -%}
-    <img class="tab-content__media" src="{{ block.settings.image | image_url: 'width=1200,format=webp' }}" alt="{{ block.settings.heading | default: block.settings.label }}" loading="lazy">
+    <img class="tab-content__media" src="{{ block.settings.image | image_url: 'width=1200&format=webp' }}" alt="{{ block.settings.heading | default: block.settings.label }}" loading="lazy">
   {%- endif -%}
   {%- if block.settings.text and block.settings.text != blank -%}
     <div class="tab-content__text richtext__body" data-yt-bind="text">{{ block.settings.text | sanitize_html }}</div>

@@ -16,7 +16,7 @@
 <div class="split-row split-row--media-{{ side }}{% unless has_image %} split-row--text-only{% endunless %}">
   {%- if has_image -%}
     <div class="split-row__media" data-yt-bind="image">
-      <img src="{{ block.settings.image | image_url: 'width=1200,quality=82,format=webp' }}" alt="{{ block.settings.heading | default: block.settings.eyebrow }}" loading="lazy">
+      <img src="{{ block.settings.image | image_url: 'width=1200&quality=82&format=webp' }}" alt="{{ block.settings.heading | default: block.settings.eyebrow }}" loading="lazy">
     </div>
   {%- endif -%}
   <div class="split-row__body">

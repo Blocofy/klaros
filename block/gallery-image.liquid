@@ -5,7 +5,7 @@
 -%}
 <figure class="gallery-item">
   {%- if image and image != blank -%}
-    <img src="{{ image | image_url: 'width=1200,quality=80,format=webp' }}" alt="{{ alt }}" loading="lazy">
+    <img src="{{ image | image_url: 'width=1200&quality=80&format=webp' }}" alt="{{ alt }}" loading="lazy">
   {%- endif -%}
   {%- if caption and caption != blank -%}
     <figcaption style="padding: 0.5rem 0.75rem; font-size: 0.85rem; opacity: 0.75;">{{ caption }}</figcaption>

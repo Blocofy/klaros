@@ -16,7 +16,7 @@
          --hero-min-height: {{ min_height }}rem;"
 >
   {%- if has_media -%}
-    <div class="hero__media" data-yt-bind="image" style="background-image: url('{{ props.image | image_url: 'width=1920,quality=80,format=webp' }}');"></div>
+    <div class="hero__media" data-yt-bind="image" style="background-image: url('{{ props.image | image_url: 'width=1920&quality=80&format=webp' }}');"></div>
     <div class="hero__overlay"></div>
   {%- endif -%}
 

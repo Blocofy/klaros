@@ -1,10 +1,10 @@
 {%- if block.settings.image and block.settings.image != blank -%}
   {%- if block.settings.url and block.settings.url != blank -%}
     <a href="{{ block.settings.url }}" target="_blank" rel="noopener noreferrer">
-      <img src="{{ block.settings.image | image_url: 'width=320,format=webp' }}" alt="{{ block.settings.alt | default: 'Logo' }}" loading="lazy">
+      <img src="{{ block.settings.image | image_url: 'width=320&format=webp' }}" alt="{{ block.settings.alt | default: 'Logo' }}" loading="lazy">
     </a>
   {%- else -%}
-    <img src="{{ block.settings.image | image_url: 'width=320,format=webp' }}" alt="{{ block.settings.alt | default: 'Logo' }}" loading="lazy">
+    <img src="{{ block.settings.image | image_url: 'width=320&format=webp' }}" alt="{{ block.settings.alt | default: 'Logo' }}" loading="lazy">
   {%- endif -%}
 {%- endif -%}
 
