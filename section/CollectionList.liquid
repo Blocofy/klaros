@@ -5,25 +5,35 @@
   if per < 1
     assign per = 9
   endif
+  assign server_paged = props.server_pagination
   assign list = entries[props.collectionKey]
 
-  if list and props.filterField != blank and props.filterValue != blank
-    assign fpath = 'data.' | append: props.filterField
-    assign list = list | where: fpath, props.filterValue
+  if server_paged
+    # Sunucu-taraflı sayfalama (#623): entries[key] zaten bu sayfanin bounded dilimi
+    # (offset/limit + sort sunucuda hesaplandi). Filtre server modda yok-sayilir;
+    # in-memory slice yok. Toplam entry_counts'tan (gercek DB kayit sayisi).
+    assign paged = list
+    assign total = entry_counts[props.collectionKey] | default: 0
+  else
+    if list and props.filterField != blank and props.filterValue != blank
+      assign fpath = 'data.' | append: props.filterField
+      assign list = list | where: fpath, props.filterValue
+    endif
+
+    if list
+      case props.sort
+        when 'newest'
+          assign list = list | sort: 'id' | reverse
+        when 'oldest'
+          assign list = list | sort: 'id'
+        when 'title'
+          assign list = list | sort_natural: 'title'
+      endcase
+    endif
+
+    assign total = list | size
   endif
 
-  if list
-    case props.sort
-      when 'newest'
-        assign list = list | sort: 'id' | reverse
-      when 'oldest'
-        assign list = list | sort: 'id'
-      when 'title'
-        assign list = list | sort_natural: 'title'
-    endcase
-  endif
-
-  assign total = list | size
   assign pages = total | times: 1.0 | divided_by: per | ceil
   assign cur = current_page | default: 1
   if cur < 1
@@ -32,8 +42,11 @@
   if pages > 0 and cur > pages
     assign cur = pages
   endif
-  assign offset = cur | minus: 1 | times: per
-  assign paged = list | slice: offset, per
+
+  unless server_paged
+    assign offset = cur | minus: 1 | times: per
+    assign paged = list | slice: offset, per
+  endunless
 
   # #281 detay-base: detailBase elle girilmemişse koleksiyonun /<key>/[slug] detay
   # sayfasının base'ini (platform `collection_detail_base`) otomatik kullan.
@@ -112,6 +125,7 @@
     { "type": "radio", "id": "columns", "label": "Sütun", "options": [ { "label": "2", "value": "2" }, { "label": "3", "value": "3" }, { "label": "4", "value": "4" } ] },
     { "type": "range", "id": "limit", "label": "Sayfa başına kayıt", "min": 3, "max": 48, "step": 3, "suffix": "adet" },
     { "type": "select", "id": "sort", "label": "Sıralama", "options": [ { "label": "Varsayılan (manuel sıra)", "value": "default" }, { "label": "En yeni", "value": "newest" }, { "label": "En eski", "value": "oldest" }, { "label": "Başlık (A–Z)", "value": "title" } ] },
+    { "type": "checkbox", "id": "server_pagination", "label": "Sunucu-taraflı sayfalama (büyük arşiv)", "help": "5000+ kayıtlı koleksiyonlar için: yalnız geçerli sayfa veritabanından çekilir. Açıkken filtre alanı yok-sayılır." },
 
     { "type": "header", "label": "Filtre (opsiyonel)" },
     { "type": "collectionField", "id": "filterField", "label": "Filtre alanı", "dependsOn": "collectionKey", "help": "Örn. kategori alanı." },
