@@ -3,7 +3,7 @@
     <span class="timeline-item__date" data-yt-bind="date">{{ block.settings.date }}</span>
   {%- endif -%}
   {%- if block.settings.heading and block.settings.heading != blank -%}
-    <h3 class="timeline-item__title" data-yt-bind="heading">{{ block.settings.heading }}</h3>
+    <h3 class="timeline-item__title" data-yt-bind="heading">{{ block.settings.heading | escape }}</h3>
   {%- endif -%}
   {%- if block.settings.text and block.settings.text != blank -%}
     <div class="timeline-item__text richtext__body" data-yt-bind="text">{{ block.settings.text | sanitize_html }}</div>

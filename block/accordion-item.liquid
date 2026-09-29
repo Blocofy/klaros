@@ -2,7 +2,7 @@
   assign opened = block.settings.open_by_default | default: false
 -%}
 <details class="accordion-item"{% if opened %} open{% endif %}>
-  <summary class="accordion-item__summary" data-yt-bind="title">{{ block.settings.title | default: 'Başlık' }}</summary>
+  <summary class="accordion-item__summary" data-yt-bind="title">{{ block.settings.title | default: 'Başlık' | escape }}</summary>
   {%- if block.settings.content and block.settings.content != blank -%}
     <div class="accordion-item__content richtext__body" data-yt-bind="content">{{ block.settings.content | sanitize_html }}</div>
   {%- endif -%}

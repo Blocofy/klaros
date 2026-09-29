@@ -6,7 +6,7 @@
 {% if src and src != blank %}
   <div class="block-icon" style="display:flex;justify-content:{% if align == 'center' %}center{% elsif align == 'right' %}flex-end{% else %}flex-start{% endif %}">
     <img src="{{ src | image_url: 'width=128&height=128&format=webp' }}"
-         alt="{{ block.settings.alt }}"
+         alt="{{ block.settings.alt | escape }}"
          width="{{ size }}" height="{{ size }}"
          loading="lazy"
          style="width:{{ size }}px;height:{{ size }}px;object-fit:contain;display:block">

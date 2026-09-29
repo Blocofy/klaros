@@ -12,8 +12,8 @@
   <div class="wrap">
     {%- if props.eyebrow or props.title or props.description -%}
       <div class="section__lead{% if align == 'center' %} section__lead--center{% endif %}">
-        {%- if props.eyebrow and props.eyebrow != blank -%}<span class="eyebrow" data-yt-bind="eyebrow">{{ props.eyebrow }}</span>{%- endif -%}
-        {%- if props.title and props.title != blank -%}<h2 data-yt-bind="title">{{ props.title }}</h2>{%- endif -%}
+        {%- if props.eyebrow and props.eyebrow != blank -%}<span class="eyebrow" data-yt-bind="eyebrow">{{ props.eyebrow | escape }}</span>{%- endif -%}
+        {%- if props.title and props.title != blank -%}<h2 data-yt-bind="title">{{ props.title | escape }}</h2>{%- endif -%}
         {%- if props.description and props.description != blank -%}<p data-yt-bind="description">{{ props.description }}</p>{%- endif -%}
       </div>
     {%- endif -%}
@@ -33,11 +33,11 @@
                  data-gallery="masonry-{{ section.id }}"
                  {% if has_video %}data-type="video"{% endif %}
                  {% if block.settings.caption and block.settings.caption != blank %}data-title="{{ block.settings.caption | escape }}"{% endif %}>
-                <img src="{{ thumb }}" alt="{{ block.settings.alt | default: '' }}" loading="lazy">
+                <img src="{{ thumb }}" alt="{{ block.settings.alt | default: '' | escape }}" loading="lazy">
                 {%- if has_video -%}<span class="gallery-item__play" aria-hidden="true"></span>{%- endif -%}
               </a>
               {%- if block.settings.caption and block.settings.caption != blank -%}
-                <figcaption class="masonry__caption">{{ block.settings.caption }}</figcaption>
+                <figcaption class="masonry__caption">{{ block.settings.caption | escape }}</figcaption>
               {%- endif -%}
             </figure>
           {%- endif -%}

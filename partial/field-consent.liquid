@@ -4,6 +4,6 @@
 {%- endcomment -%}
 <label class="ff-consent">
   <input type="checkbox" name="{{ field.name }}" value="1"{% if field.required %} required{% endif %}>
-  <span class="ff-consent__text">{{ field.label }}{% if field.required %} <span class="ff__req">*</span>{% endif %}</span>
+  <span class="ff-consent__text">{{ field.label | escape }}{% if field.required %} <span class="ff__req">*</span>{% endif %}</span>
 </label>
 {% if field.help %}<small class="ff__help">{{ field.help }}</small>{% endif %}

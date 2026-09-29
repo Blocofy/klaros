@@ -13,10 +13,10 @@
     {%- if props.eyebrow or props.title or props.description -%}
       <div class="section__lead" style="margin-bottom: 2rem; {% if alignment == 'center' %}text-align: center;{% endif %}">
         {%- if props.eyebrow and props.eyebrow != blank -%}
-          <span class="eyebrow">{{ props.eyebrow }}</span>
+          <span class="eyebrow">{{ props.eyebrow | escape }}</span>
         {%- endif -%}
         {%- if props.title and props.title != blank -%}
-          <h2>{{ props.title }}</h2>
+          <h2>{{ props.title | escape }}</h2>
         {%- endif -%}
         {%- if props.description and props.description != blank -%}
           <p style="margin-top: 0.5rem; opacity: 0.75;">{{ props.description }}</p>
@@ -39,11 +39,11 @@
                  data-gallery="gal-{{ section.id }}"
                  {% if has_video %}data-type="video"{% endif %}
                  {% if block.settings.caption and block.settings.caption != blank %}data-title="{{ block.settings.caption | escape }}"{% endif %}>
-                <img src="{{ thumb }}" alt="{{ block.settings.alt | default: '' }}" loading="lazy">
+                <img src="{{ thumb }}" alt="{{ block.settings.alt | default: '' | escape }}" loading="lazy">
                 {%- if has_video -%}<span class="gallery-item__play" aria-hidden="true"></span>{%- endif -%}
               </a>
               {%- if block.settings.caption and block.settings.caption != blank -%}
-                <figcaption style="padding: 0.5rem 0.75rem; font-size: 0.85rem; opacity: 0.75;">{{ block.settings.caption }}</figcaption>
+                <figcaption style="padding: 0.5rem 0.75rem; font-size: 0.85rem; opacity: 0.75;">{{ block.settings.caption | escape }}</figcaption>
               {%- endif -%}
             </figure>
           {%- endif -%}

@@ -13,9 +13,9 @@
     <div style="max-width: {{ max_width }}rem; {% if align == 'center' %}margin: 0 auto;{% endif %}">
       {%- if props.eyebrow or props.title or props.subtitle -%}
         <div class="section__lead{% if align == 'center' %} section__lead--center{% endif %}">
-          {%- if props.eyebrow and props.eyebrow != blank -%}<span class="eyebrow" data-yt-bind="eyebrow">{{ props.eyebrow }}</span>{%- endif -%}
-          {%- if props.title and props.title != blank -%}<h2 data-yt-bind="title">{{ props.title }}</h2>{%- endif -%}
-          {%- if props.subtitle and props.subtitle != blank -%}<p data-yt-bind="subtitle">{{ props.subtitle }}</p>{%- endif -%}
+          {%- if props.eyebrow and props.eyebrow != blank -%}<span class="eyebrow" data-yt-bind="eyebrow">{{ props.eyebrow | escape }}</span>{%- endif -%}
+          {%- if props.title and props.title != blank -%}<h2 data-yt-bind="title">{{ props.title | escape }}</h2>{%- endif -%}
+          {%- if props.subtitle and props.subtitle != blank -%}<p data-yt-bind="subtitle">{{ props.subtitle | escape }}</p>{%- endif -%}
         </div>
       {%- endif -%}
 

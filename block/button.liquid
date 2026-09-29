@@ -8,7 +8,7 @@
   <div class="block-button" style="display:flex;justify-content:{% if align == 'center' %}center{% elsif align == 'right' %}flex-end{% else %}flex-start{% endif %}">
     <a class="btn btn--{{ style }}" href="{{ url }}"
        {% if block.settings.new_tab %}target="_blank" rel="noopener"{% endif %}>
-      {{ label }}
+      {{ label | escape }}
     </a>
   </div>
 {% endif %}

@@ -10,18 +10,18 @@
       {% if block.settings.link and block.settings.link != blank %}
         <a href="{{ block.settings.link }}">
           <img src="{{ src | image_url: 'width=1600&format=webp' }}"
-               alt="{{ block.settings.alt }}"
+               alt="{{ block.settings.alt | escape }}"
                loading="lazy"
                style="width:100%;height:auto;{% if ratio != 'auto' %}aspect-ratio:{{ ratio }};object-fit:cover;{% endif %}border-radius:var(--brand-radius,.5rem)">
         </a>
       {% else %}
         <img src="{{ src | image_url: 'width=1600&format=webp' }}"
-             alt="{{ block.settings.alt }}"
+             alt="{{ block.settings.alt | escape }}"
              loading="lazy"
              style="width:100%;height:auto;{% if ratio != 'auto' %}aspect-ratio:{{ ratio }};object-fit:cover;{% endif %}border-radius:var(--brand-radius,.5rem)">
       {% endif %}
       {% if block.settings.caption and block.settings.caption != blank %}
-        <figcaption style="margin-top:.6rem;font-size:.85rem;opacity:.7;text-align:{{ align }}">{{ block.settings.caption }}</figcaption>
+        <figcaption style="margin-top:.6rem;font-size:.85rem;opacity:.7;text-align:{{ align }}">{{ block.settings.caption | escape }}</figcaption>
       {% endif %}
     </div>
   </figure>

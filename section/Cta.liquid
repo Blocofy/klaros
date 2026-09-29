@@ -12,9 +12,9 @@
     <div class="cta cta--{{ alignment }}">
       <div class="cta__content">
         {%- if props.eyebrow and props.eyebrow != blank -%}
-          <span class="eyebrow" data-yt-bind="eyebrow">{{ props.eyebrow }}</span>
+          <span class="eyebrow" data-yt-bind="eyebrow">{{ props.eyebrow | escape }}</span>
         {%- endif -%}
-        <h2 data-yt-bind="heading">{{ props.heading | default: 'Hadi başlayalım' }}</h2>
+        <h2 data-yt-bind="heading">{{ props.heading | default: 'Hadi başlayalım' | escape }}</h2>
         {%- if props.body and props.body != blank -%}
           <p class="cta__body" data-yt-bind="body">{{ props.body }}</p>
         {%- endif -%}
@@ -22,9 +22,9 @@
 
       {%- if props.primary_button_label and props.primary_button_label != blank -%}
         <div class="cta__actions">
-          <a class="btn btn--primary" data-yt-bind="primary_button_label" href="{{ props.primary_button_url | default: '#' }}">{{ props.primary_button_label }}</a>
+          <a class="btn btn--primary" data-yt-bind="primary_button_label" href="{{ props.primary_button_url | default: '#' }}">{{ props.primary_button_label | escape }}</a>
           {%- if props.secondary_button_label and props.secondary_button_label != blank -%}
-            <a class="btn btn--secondary" data-yt-bind="secondary_button_label" href="{{ props.secondary_button_url | default: '#' }}">{{ props.secondary_button_label }}</a>
+            <a class="btn btn--secondary" data-yt-bind="secondary_button_label" href="{{ props.secondary_button_url | default: '#' }}">{{ props.secondary_button_label | escape }}</a>
           {%- endif -%}
         </div>
       {%- endif -%}

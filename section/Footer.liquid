@@ -15,7 +15,7 @@
 <footer class="site-footer">
   <div class="wrap">
     <div class="footer-col footer-col--brand">
-      <p class="footer-brand">{{ brand }}</p>
+      <p class="footer-brand">{{ brand | escape }}</p>
       {% if globals.tagline %}<p class="footer-tagline">{{ globals.tagline }}</p>{% endif %}
     </div>
 
@@ -28,9 +28,9 @@
       {%- for item in footer_menu -%}
         {%- if item.children and item.children.size > 0 -%}
           <div class="footer-col">
-            <h4>{{ item.label }}</h4>
+            <h4>{{ item.label | escape }}</h4>
             {%- for child in item.children -%}
-              <a href="{{ child.url | default: '#' }}">{{ child.label }}</a>
+              <a href="{{ child.url | default: '#' }}">{{ child.label | escape }}</a>
             {%- endfor -%}
           </div>
         {%- endif -%}
@@ -45,7 +45,7 @@
           <h4>Bağlantılar</h4>
           {%- for item in footer_menu -%}
             {%- unless item.children and item.children.size > 0 -%}
-              <a href="{{ item.url | default: '#' }}">{{ item.label }}</a>
+              <a href="{{ item.url | default: '#' }}">{{ item.label | escape }}</a>
             {%- endunless -%}
           {%- endfor -%}
         </div>
@@ -104,7 +104,7 @@
   </div>
 
   <div class="wrap footer-legal">
-    <span>© {{ 'now' | date: '%Y' }} {{ brand }}</span>
+    <span>© {{ 'now' | date: '%Y' }} {{ brand | escape }}</span>
     {%- if props.note and props.note != blank -%}
       <span class="footer-legal__note">{{ props.note }}</span>
     {%- endif -%}

@@ -1,4 +1,4 @@
-<label class="ff__label" for="ff-{{ field.name }}">{{ field.label }}{% if field.required %} <span class="ff__req">*</span>{% endif %}</label>
+<label class="ff__label" for="ff-{{ field.name }}">{{ field.label | escape }}{% if field.required %} <span class="ff__req">*</span>{% endif %}</label>
 <input
   class="ff__control"
   id="ff-{{ field.name }}"

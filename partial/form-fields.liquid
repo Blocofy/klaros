@@ -1,6 +1,6 @@
 {% for field in fields %}
   <label>
-    <span>{{ field.label }}{% if field.required %} *{% endif %}</span>
+    <span>{{ field.label | escape }}{% if field.required %} *{% endif %}</span>
     {% if field.type == 'textarea' %}
       <textarea name="{{ field.name }}"{% if field.required %} required{% endif %}></textarea>
     {% elsif field.type == 'file' %}

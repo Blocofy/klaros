@@ -32,17 +32,17 @@
             <div class="wrap">
               <div class="hero-slide__content">
                 {%- if block.settings.eyebrow and block.settings.eyebrow != blank -%}
-                  <span class="eyebrow">{{ block.settings.eyebrow }}</span>
+                  <span class="eyebrow">{{ block.settings.eyebrow | escape }}</span>
                 {%- endif -%}
                 {%- if block.settings.heading and block.settings.heading != blank -%}
-                  <h2>{{ block.settings.heading }}</h2>
+                  <h2>{{ block.settings.heading | escape }}</h2>
                 {%- endif -%}
                 {%- if block.settings.subtitle and block.settings.subtitle != blank -%}
-                  <p class="hero-slide__subtitle">{{ block.settings.subtitle }}</p>
+                  <p class="hero-slide__subtitle">{{ block.settings.subtitle | escape }}</p>
                 {%- endif -%}
                 {%- if block.settings.button_label and block.settings.button_label != blank -%}
                   <div class="hero-slide__actions">
-                    <a class="btn btn--primary" href="{{ block.settings.button_url | default: '#' }}">{{ block.settings.button_label }}</a>
+                    <a class="btn btn--primary" href="{{ block.settings.button_url | default: '#' }}">{{ block.settings.button_label | escape }}</a>
                   </div>
                 {%- endif -%}
               </div>

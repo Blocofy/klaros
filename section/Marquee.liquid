@@ -16,13 +16,13 @@
   {%- if props.eyebrow or props.title -%}
     <div class="wrap">
       <div class="section__lead section__lead--center">
-        {%- if props.eyebrow and props.eyebrow != blank -%}<span class="eyebrow" data-yt-bind="eyebrow">{{ props.eyebrow }}</span>{%- endif -%}
-        {%- if props.title and props.title != blank -%}<h2 data-yt-bind="title">{{ props.title }}</h2>{%- endif -%}
+        {%- if props.eyebrow and props.eyebrow != blank -%}<span class="eyebrow" data-yt-bind="eyebrow">{{ props.eyebrow | escape }}</span>{%- endif -%}
+        {%- if props.title and props.title != blank -%}<h2 data-yt-bind="title">{{ props.title | escape }}</h2>{%- endif -%}
       </div>
     </div>
   {%- endif -%}
 
-  <div class="marquee marquee--{{ speed }} marquee--{{ direction }}{% if pause %} marquee--pause{% endif %}" role="marquee" aria-label="{{ props.title | default: 'Kayan şerit' }}">
+  <div class="marquee marquee--{{ speed }} marquee--{{ direction }}{% if pause %} marquee--pause{% endif %}" role="marquee" aria-label="{{ props.title | default: 'Kayan şerit' | escape }}">
     <div class="marquee__track">
       {%- for block in blocks -%}{%- if block.type == 'marquee-item' -%}{% render 'block/marquee-item', block: block %}{%- endif -%}{%- endfor -%}
       {%- comment -%} Kesintisiz döngü için ikinci kopya (ekran okuyuculardan gizli). {%- endcomment -%}

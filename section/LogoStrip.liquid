@@ -9,7 +9,7 @@
 >
   <div class="wrap">
     {%- if props.title and props.title != blank -%}
-      <p class="eyebrow" style="display: block; text-align: center; margin-bottom: 1.25rem;">{{ props.title }}</p>
+      <p class="eyebrow" style="display: block; text-align: center; margin-bottom: 1.25rem;">{{ props.title | escape }}</p>
     {%- endif -%}
     <div class="logo-strip">
       {%- for block in blocks -%}
@@ -18,10 +18,10 @@
           {%- if image and image != blank -%}
             {%- if block.settings.url and block.settings.url != blank -%}
               <a href="{{ block.settings.url }}" target="_blank" rel="noopener noreferrer">
-                <img src="{{ image | image_url: 'width=320&format=webp' }}" alt="{{ block.settings.alt | default: 'Logo' }}" loading="lazy">
+                <img src="{{ image | image_url: 'width=320&format=webp' }}" alt="{{ block.settings.alt | default: 'Logo' | escape }}" loading="lazy">
               </a>
             {%- else -%}
-              <img src="{{ image | image_url: 'width=320&format=webp' }}" alt="{{ block.settings.alt | default: 'Logo' }}" loading="lazy">
+              <img src="{{ image | image_url: 'width=320&format=webp' }}" alt="{{ block.settings.alt | default: 'Logo' | escape }}" loading="lazy">
             {%- endif -%}
           {%- endif -%}
         {%- endif -%}

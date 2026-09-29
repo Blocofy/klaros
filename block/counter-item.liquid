@@ -5,7 +5,7 @@
 <div class="counter__item">
   <div class="counter__value">{{ block.settings.prefix }}{{ block.settings.value }}{{ block.settings.suffix }}</div>
   {%- if block.settings.label and block.settings.label != blank -%}
-    <div class="counter__label">{{ block.settings.label }}</div>
+    <div class="counter__label">{{ block.settings.label | escape }}</div>
   {%- endif -%}
 </div>
 

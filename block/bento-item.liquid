@@ -23,19 +23,19 @@
   {%- endif -%}
   <div class="bento-item__body{% if is_bg %} bento-item__body--on-media{% endif %}">
     {%- if block.settings.eyebrow and block.settings.eyebrow != blank -%}
-      <span class="eyebrow" data-yt-bind="eyebrow">{{ block.settings.eyebrow }}</span>
+      <span class="eyebrow" data-yt-bind="eyebrow">{{ block.settings.eyebrow | escape }}</span>
     {%- endif -%}
     {%- if has_image and image_mode == 'inline' -%}
-      <img class="bento-item__icon" src="{{ block.settings.image | image_url: 'width=480&format=webp' }}" alt="{{ block.settings.heading | default: block.settings.eyebrow }}" loading="lazy">
+      <img class="bento-item__icon" src="{{ block.settings.image | image_url: 'width=480&format=webp' }}" alt="{{ block.settings.heading | default: block.settings.eyebrow | escape }}" loading="lazy">
     {%- endif -%}
     {%- if block.settings.heading and block.settings.heading != blank -%}
-      <h3 class="bento-item__title" data-yt-bind="heading">{{ block.settings.heading }}</h3>
+      <h3 class="bento-item__title" data-yt-bind="heading">{{ block.settings.heading | escape }}</h3>
     {%- endif -%}
     {%- if block.settings.text and block.settings.text != blank -%}
       <p class="bento-item__text" data-yt-bind="text">{{ block.settings.text }}</p>
     {%- endif -%}
     {%- if block.settings.link_label and block.settings.link_label != blank -%}
-      <a class="bento-item__link" href="{{ block.settings.link_url | default: '#' }}">{{ block.settings.link_label }} →</a>
+      <a class="bento-item__link" href="{{ block.settings.link_url | default: '#' }}">{{ block.settings.link_label | escape }} →</a>
     {%- endif -%}
   </div>
 </article>

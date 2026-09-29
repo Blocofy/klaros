@@ -23,7 +23,7 @@
   >
     <div class="wrap">
       {%- if show_title and entry.title and entry.title != blank -%}
-        <h1 class="entry-detail__title">{{ entry.title }}</h1>
+        <h1 class="entry-detail__title">{{ entry.title | escape }}</h1>
       {%- endif -%}
 
       {%- if gallery and gallery.size > 0 -%}
@@ -45,7 +45,7 @@
 
       {%- if specs and specs != blank -%}
         <div class="entry-detail__specs">
-          <h2>{{ specs_title }}</h2>
+          <h2>{{ specs_title | escape }}</h2>
           <dl>
             {%- for pair in specs -%}
               {%- if pair[1] and pair[1] != blank -%}
@@ -59,7 +59,7 @@
 
       {%- if variants and variants.size > 0 -%}
         <div class="entry-detail__variants">
-          <h2>{{ variants_title }}</h2>
+          <h2>{{ variants_title | escape }}</h2>
           <table>
             <thead>
               <tr>
