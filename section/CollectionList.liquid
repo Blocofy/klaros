@@ -74,7 +74,7 @@
         <article class="collection-entry">
           {% if card_img and card_img != '' %}
             {% if has_link %}<a class="collection-entry__media" href="{{ href }}">{% else %}<span class="collection-entry__media">{% endif %}
-              <img src="{{ card_img }}" alt="{{ card_title }}" loading="lazy">
+              <img src="{{ card_img }}" alt="{{ card_title | escape }}" loading="lazy">
             {% if has_link %}</a>{% else %}</span>{% endif %}
           {% endif %}
           <div class="collection-entry__body">

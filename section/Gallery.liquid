@@ -39,11 +39,11 @@
                  data-gallery="gal-{{ section.id }}"
                  {% if has_video %}data-type="video"{% endif %}
                  {% if block.settings.caption and block.settings.caption != blank %}data-title="{{ block.settings.caption | escape }}"{% endif %}>
-                <img src="{{ thumb }}" alt="{{ block.settings.alt | default: '' }}" loading="lazy">
+                <img src="{{ thumb }}" alt="{{ block.settings.alt | default: '' | escape }}" loading="lazy">
                 {%- if has_video -%}<span class="gallery-item__play" aria-hidden="true"></span>{%- endif -%}
               </a>
               {%- if block.settings.caption and block.settings.caption != blank -%}
-                <figcaption style="padding: 0.5rem 0.75rem; font-size: 0.85rem; opacity: 0.75;">{{ block.settings.caption }}</figcaption>
+                <figcaption style="padding: 0.5rem 0.75rem; font-size: 0.85rem; opacity: 0.75;">{{ block.settings.caption | escape }}</figcaption>
               {%- endif -%}
             </figure>
           {%- endif -%}
