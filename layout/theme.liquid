@@ -3,14 +3,14 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>{{ page.seo_title | default: page.title }}{% if globals.site_name %} · {{ globals.site_name }}{% endif %}</title>
-  {% if page.seo_description %}<meta name="description" content="{{ page.seo_description }}">{% endif %}
+  <title>{{ page.seo_title | default: page.title | escape }}{% if globals.site_name %} · {{ globals.site_name | escape }}{% endif %}</title>
+  {% if page.seo_description %}<meta name="description" content="{{ page.seo_description | escape }}">{% endif %}
   {% if page.canonical %}<link rel="canonical" href="{{ page.canonical }}">{% endif %}
   <meta property="og:type" content="website">
-  <meta property="og:title" content="{{ page.seo_title | default: page.title }}">
-  {% if page.seo_description %}<meta property="og:description" content="{{ page.seo_description }}">{% endif %}
+  <meta property="og:title" content="{{ page.seo_title | default: page.title | escape }}">
+  {% if page.seo_description %}<meta property="og:description" content="{{ page.seo_description | escape }}">{% endif %}
   {% if page.canonical %}<meta property="og:url" content="{{ page.canonical }}">{% endif %}
-  {% if globals.site_name %}<meta property="og:site_name" content="{{ globals.site_name }}">{% endif %}
+  {% if globals.site_name %}<meta property="og:site_name" content="{{ globals.site_name | escape }}">{% endif %}
   {%- assign og_image = page.og_image | default: globals.og_image -%}
   {% if og_image and og_image != blank %}
   <meta property="og:image" content="{{ og_image | image_url: 'width=1200&height=630&fit=cover&format=jpg' }}">
@@ -19,8 +19,8 @@
   {% else %}
   <meta name="twitter:card" content="summary">
   {% endif %}
-  <meta name="twitter:title" content="{{ page.seo_title | default: page.title }}">
-  {% if page.seo_description %}<meta name="twitter:description" content="{{ page.seo_description }}">{% endif %}
+  <meta name="twitter:title" content="{{ page.seo_title | default: page.title | escape }}">
+  {% if page.seo_description %}<meta name="twitter:description" content="{{ page.seo_description | escape }}">{% endif %}
   {% render 'partial/structured-data' %}
   {%- comment -%}
     Tema ayarları (config/settings_schema.json → site_themes.settings →

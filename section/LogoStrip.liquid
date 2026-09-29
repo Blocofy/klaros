@@ -9,7 +9,7 @@
 >
   <div class="wrap">
     {%- if props.title and props.title != blank -%}
-      <p class="eyebrow" style="display: block; text-align: center; margin-bottom: 1.25rem;">{{ props.title }}</p>
+      <p class="eyebrow" style="display: block; text-align: center; margin-bottom: 1.25rem;">{{ props.title | escape }}</p>
     {%- endif -%}
     <div class="logo-strip">
       {%- for block in blocks -%}

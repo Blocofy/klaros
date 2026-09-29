@@ -5,7 +5,7 @@
   {% endif %}
   <div style="padding:1.5rem">
     {% if block.settings.sector %}<p class="eyebrow">{{ block.settings.sector }}</p>{% endif %}
-    <h3 style="margin-top:.4rem">{{ block.settings.title }}</h3>
+    <h3 style="margin-top:.4rem">{{ block.settings.title | escape }}</h3>
     {% if block.settings.challenge %}<p><strong>Zorluk:</strong> {{ block.settings.challenge }}</p>{% endif %}
     {% if block.settings.result %}<p><strong>Sonuç:</strong> {{ block.settings.result }}</p>{% endif %}
   </div>

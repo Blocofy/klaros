@@ -7,7 +7,7 @@
 <section class="section color-{{ color_scheme }}">
   <div class="wrap">
     {%- if props.heading and props.heading != blank -%}
-      <div class="section__lead"><h2 data-yt-bind="heading">{{ props.heading }}</h2></div>
+      <div class="section__lead"><h2 data-yt-bind="heading">{{ props.heading | escape }}</h2></div>
     {%- endif -%}
 
     {%- if total > 0 -%}
@@ -25,8 +25,8 @@
             <div style="padding:1.5rem">
               <h3 style="margin-top:.4rem">
                 {%- if props.show_link and r.url and r.url != '' -%}
-                  <a href="{{ r.url }}">{{ card_title }}</a>
-                {%- else -%}{{ card_title }}{%- endif -%}
+                  <a href="{{ r.url }}">{{ card_title | escape }}</a>
+                {%- else -%}{{ card_title | escape }}{%- endif -%}
               </h3>
               {%- if card_excerpt and card_excerpt != '' -%}<p>{{ card_excerpt }}</p>{%- endif -%}
             </div>

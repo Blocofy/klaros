@@ -13,10 +13,10 @@
     {%- if props.eyebrow or props.title or props.description -%}
       <div class="section__lead" style="margin-bottom: 2.5rem; {% if alignment == 'center' %}text-align: center;{% endif %}">
         {%- if props.eyebrow and props.eyebrow != blank -%}
-          <span class="eyebrow">{{ props.eyebrow }}</span>
+          <span class="eyebrow">{{ props.eyebrow | escape }}</span>
         {%- endif -%}
         {%- if props.title and props.title != blank -%}
-          <h2>{{ props.title }}</h2>
+          <h2>{{ props.title | escape }}</h2>
         {%- endif -%}
         {%- if props.description and props.description != blank -%}
           <p style="margin-top: 0.5rem; opacity: 0.75; max-width: 42rem; {% if alignment == 'center' %}margin-left: auto; margin-right: auto;{% endif %}">{{ props.description }}</p>
@@ -29,7 +29,7 @@
         {%- if block.type == 'process-step' -%}
           <div class="process__step">
             {%- if block.settings.title and block.settings.title != blank -%}
-              <h3>{{ block.settings.title }}</h3>
+              <h3>{{ block.settings.title | escape }}</h3>
             {%- endif -%}
             {%- if block.settings.description and block.settings.description != blank -%}
               <p>{{ block.settings.description }}</p>

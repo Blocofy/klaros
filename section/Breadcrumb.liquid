@@ -10,7 +10,7 @@
      style="--section-padding-top: 16px; --section-padding-bottom: 0;">
   <div class="wrap">
     <ol>
-      <li><a href="/">{{ home_label }}</a></li>
+      <li><a href="/">{{ home_label | escape }}</a></li>
       {%- assign acc = '' -%}
       {%- for seg in segs -%}
         {%- assign acc = acc | append: '/' | append: seg -%}
@@ -22,10 +22,10 @@
           {%- else -%}
             {%- assign label = seg | replace: '-', ' ' | capitalize -%}
           {%- endif -%}
-          <li aria-current="page"><span aria-hidden="true">/</span> {{ label }}</li>
+          <li aria-current="page"><span aria-hidden="true">/</span> {{ label | escape }}</li>
         {%- else -%}
           {%- assign label = seg | replace: '-', ' ' | capitalize -%}
-          <li><span aria-hidden="true">/</span> <a href="{{ acc }}">{{ label }}</a></li>
+          <li><span aria-hidden="true">/</span> <a href="{{ acc }}">{{ label | escape }}</a></li>
         {%- endif -%}
       {%- endfor -%}
     </ol>

@@ -4,7 +4,7 @@
 <footer class="site-footer">
   <div class="wrap">
     <div class="footer-col">
-      <h4>{{ brand }}</h4>
+      <h4>{{ brand | escape }}</h4>
       {% if globals.tagline %}<p>{{ globals.tagline }}</p>{% endif %}
     </div>
 
@@ -17,9 +17,9 @@
       {%- for item in footer_nav -%}
         {%- if item.children and item.children.size > 0 -%}
           <div class="footer-col">
-            <h4>{{ item.label }}</h4>
+            <h4>{{ item.label | escape }}</h4>
             {%- for child in item.children -%}
-              <a href="{{ child.url | default: '#' }}">{{ child.label }}</a>
+              <a href="{{ child.url | default: '#' }}">{{ child.label | escape }}</a>
             {%- endfor -%}
           </div>
         {%- endif -%}
@@ -34,7 +34,7 @@
           <h4>Bağlantılar</h4>
           {%- for item in footer_nav -%}
             {%- unless item.children and item.children.size > 0 -%}
-              <a href="{{ item.url | default: '#' }}">{{ item.label }}</a>
+              <a href="{{ item.url | default: '#' }}">{{ item.label | escape }}</a>
             {%- endunless -%}
           {%- endfor -%}
         </div>
@@ -95,7 +95,7 @@
   </div>
 
   <div class="wrap footer-legal">
-    <span>© {{ 'now' | date: '%Y' }} {{ brand }}</span>
+    <span>© {{ 'now' | date: '%Y' }} {{ brand | escape }}</span>
     {%- comment -%} Kurumsal künye (#323) — globals.corporate; yalnız dolu alanlar, hiç yoksa çıkmaz. {%- endcomment -%}
     {%- assign corp = globals.corporate -%}
     {%- assign has_corp = false -%}

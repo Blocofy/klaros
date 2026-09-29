@@ -15,10 +15,10 @@
       {%- if props.eyebrow or props.heading or props.description -%}
         <div class="section__lead" style="margin-bottom: 2rem;">
           {%- if props.eyebrow and props.eyebrow != blank -%}
-            <span class="eyebrow">{{ props.eyebrow }}</span>
+            <span class="eyebrow">{{ props.eyebrow | escape }}</span>
           {%- endif -%}
           {%- if props.heading and props.heading != blank -%}
-            <h2>{{ props.heading }}</h2>
+            <h2>{{ props.heading | escape }}</h2>
           {%- endif -%}
           {%- if props.description and props.description != blank -%}
             <p style="margin-top: 0.5rem; opacity: 0.75;">{{ props.description }}</p>
@@ -36,7 +36,7 @@
         <input type="text" name="_hp" tabindex="-1" autocomplete="off" aria-hidden="true"
                style="position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden">
         <div style="display: flex; align-items: center; gap: 1rem; margin-top: 0.5rem;">
-          <button class="btn btn--primary" type="submit">{{ submit_label }}</button>
+          <button class="btn btn--primary" type="submit">{{ submit_label | escape }}</button>
           <span class="form-status" role="status"></span>
         </div>
       </form>

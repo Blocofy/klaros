@@ -12,10 +12,10 @@
     {%- if props.eyebrow or props.title or props.description -%}
       <div class="section__lead" style="margin-bottom: 2.5rem; {% if alignment == 'center' %}text-align: center; max-width: 42rem; margin-left: auto; margin-right: auto;{% endif %}">
         {%- if props.eyebrow and props.eyebrow != blank -%}
-          <span class="eyebrow">{{ props.eyebrow }}</span>
+          <span class="eyebrow">{{ props.eyebrow | escape }}</span>
         {%- endif -%}
         {%- if props.title and props.title != blank -%}
-          <h2>{{ props.title }}</h2>
+          <h2>{{ props.title | escape }}</h2>
         {%- endif -%}
         {%- if props.description and props.description != blank -%}
           <p style="margin-top: 0.5rem; opacity: 0.75;">{{ props.description }}</p>
@@ -35,7 +35,7 @@
                 <img class="testimonial__avatar" src="{{ block.settings.avatar | image_url: 'width=80&height=80&format=webp' }}" alt="">
               {%- endif -%}
               <div>
-                {%- if block.settings.name -%}<div class="testimonial__name">{{ block.settings.name }}</div>{%- endif -%}
+                {%- if block.settings.name -%}<div class="testimonial__name">{{ block.settings.name | escape }}</div>{%- endif -%}
                 {%- if block.settings.role -%}<div class="testimonial__role">{{ block.settings.role }}</div>{%- endif -%}
               </div>
             </figcaption>

@@ -1,6 +1,6 @@
 <article class="card" style="background:rgba(255,255,255,.06);border-color:rgba(255,255,255,.12)">
   {% if block.settings.meta %}<p class="eyebrow">{{ block.settings.meta }}</p>{% endif %}
-  <h3 style="margin-top:.5rem">{{ block.settings.title }}</h3>
+  <h3 style="margin-top:.5rem">{{ block.settings.title | escape }}</h3>
   <p>{{ block.settings.description }}</p>
 </article>
 

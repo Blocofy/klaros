@@ -1,6 +1,6 @@
 <div class="process__step">
   {%- if block.settings.title and block.settings.title != blank -%}
-    <h3>{{ block.settings.title }}</h3>
+    <h3>{{ block.settings.title | escape }}</h3>
   {%- endif -%}
   {%- if block.settings.description and block.settings.description != blank -%}
     <p>{{ block.settings.description }}</p>

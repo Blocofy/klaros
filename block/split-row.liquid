@@ -21,16 +21,16 @@
   {%- endif -%}
   <div class="split-row__body">
     {%- if block.settings.eyebrow and block.settings.eyebrow != blank -%}
-      <span class="eyebrow" data-yt-bind="eyebrow">{{ block.settings.eyebrow }}</span>
+      <span class="eyebrow" data-yt-bind="eyebrow">{{ block.settings.eyebrow | escape }}</span>
     {%- endif -%}
     {%- if block.settings.heading and block.settings.heading != blank -%}
-      <h3 class="split-row__title" data-yt-bind="heading">{{ block.settings.heading }}</h3>
+      <h3 class="split-row__title" data-yt-bind="heading">{{ block.settings.heading | escape }}</h3>
     {%- endif -%}
     {%- if block.settings.text and block.settings.text != blank -%}
       <div class="split-row__text richtext__body" data-yt-bind="text">{{ block.settings.text | sanitize_html }}</div>
     {%- endif -%}
     {%- if block.settings.link_label and block.settings.link_label != blank -%}
-      <a class="btn btn--secondary" data-yt-bind="link_label" href="{{ block.settings.link_url | default: '#' }}">{{ block.settings.link_label }}</a>
+      <a class="btn btn--secondary" data-yt-bind="link_label" href="{{ block.settings.link_url | default: '#' }}">{{ block.settings.link_label | escape }}</a>
     {%- endif -%}
   </div>
 </div>

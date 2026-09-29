@@ -16,7 +16,7 @@
         <img class="brand-logo" src="{{ logo }}" alt="{{ brand | escape }}"
              style="width:{{ logo_w }}px;max-width:55vw;height:auto;max-height:56px;object-fit:contain">
       {%- else -%}
-        {{ brand }}
+        {{ brand | escape }}
       {%- endif -%}
     </a>
     <input type="checkbox" id="nav-toggle" class="nav-toggle">
@@ -27,15 +27,15 @@
       {%- for item in header_menu -%}
         {%- if item.children and item.children.size > 0 -%}
           <span class="has-children">
-            <a href="{{ item.url | default: '#' }}">{{ item.label }}</a>
+            <a href="{{ item.url | default: '#' }}">{{ item.label | escape }}</a>
             <span class="submenu">
               {%- for child in item.children -%}
-                <a href="{{ child.url | default: '#' }}">{{ child.label }}</a>
+                <a href="{{ child.url | default: '#' }}">{{ child.label | escape }}</a>
               {%- endfor -%}
             </span>
           </span>
         {%- else -%}
-          <a href="{{ item.url | default: '#' }}">{{ item.label }}</a>
+          <a href="{{ item.url | default: '#' }}">{{ item.label | escape }}</a>
         {%- endif -%}
       {%- endfor -%}
       {%- if locale_alternates and locale_alternates.size > 1 -%}
@@ -47,7 +47,7 @@
         </span>
       {%- endif -%}
       {%- if props.cta_label and props.cta_label != blank -%}
-        <a class="btn btn--primary header__cta" href="{{ props.cta_url | default: '#' }}">{{ props.cta_label }}</a>
+        <a class="btn btn--primary header__cta" href="{{ props.cta_url | default: '#' }}">{{ props.cta_label | escape }}</a>
       {%- endif -%}
     </nav>
   </div>

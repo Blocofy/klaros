@@ -14,10 +14,10 @@
   <div class="wrap">
     <div class="richtext richtext--{{ alignment }}">
       {%- if props.eyebrow and props.eyebrow != blank -%}
-        <span class="eyebrow" data-yt-bind="eyebrow">{{ props.eyebrow }}</span>
+        <span class="eyebrow" data-yt-bind="eyebrow">{{ props.eyebrow | escape }}</span>
       {%- endif -%}
       {%- if props.heading and props.heading != blank -%}
-        <h2 data-yt-bind="heading">{{ props.heading }}</h2>
+        <h2 data-yt-bind="heading">{{ props.heading | escape }}</h2>
       {%- endif -%}
       {%- if props.content and props.content != blank -%}
         <div class="richtext__body" data-yt-bind="content">{{ props.content | sanitize_html }}</div>

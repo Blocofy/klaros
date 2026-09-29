@@ -12,8 +12,8 @@
   <div class="wrap">
     {%- if props.eyebrow or props.title or props.description -%}
       <div class="section__lead{% if align == 'center' %} section__lead--center{% endif %}">
-        {%- if props.eyebrow and props.eyebrow != blank -%}<span class="eyebrow" data-yt-bind="eyebrow">{{ props.eyebrow }}</span>{%- endif -%}
-        {%- if props.title and props.title != blank -%}<h2 data-yt-bind="title">{{ props.title }}</h2>{%- endif -%}
+        {%- if props.eyebrow and props.eyebrow != blank -%}<span class="eyebrow" data-yt-bind="eyebrow">{{ props.eyebrow | escape }}</span>{%- endif -%}
+        {%- if props.title and props.title != blank -%}<h2 data-yt-bind="title">{{ props.title | escape }}</h2>{%- endif -%}
         {%- if props.description and props.description != blank -%}<p data-yt-bind="description">{{ props.description }}</p>{%- endif -%}
       </div>
     {%- endif -%}
