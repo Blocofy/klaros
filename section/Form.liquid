@@ -20,7 +20,7 @@
             <h2>{{ props.heading | escape }}</h2>
           {%- endif -%}
           {%- if props.description and props.description != blank -%}
-            <p style="margin-top: 0.5rem; opacity: 0.75;">{{ props.description }}</p>
+            <p style="margin-top: 0.5rem; opacity: 0.75;">{{ props.description | escape }}</p>
           {%- endif -%}
         </div>
       {%- endif -%}

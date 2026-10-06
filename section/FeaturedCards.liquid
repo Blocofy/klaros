@@ -43,7 +43,7 @@
               <h3>{{ block.settings.title | escape }}</h3>
             {%- endif -%}
             {%- if block.settings.description and block.settings.description != blank -%}
-              <p>{{ block.settings.description }}</p>
+              <p>{{ block.settings.description | escape }}</p>
             {%- endif -%}
             {%- if block.settings.cta_label and block.settings.cta_label != blank -%}
               <a class="card__link" href="{{ block.settings.cta_url | default: '#' }}" style="margin-top: 0.5rem; color: var(--color-primary); font-weight: 500; text-decoration: none;">{{ block.settings.cta_label | escape }} →</a>

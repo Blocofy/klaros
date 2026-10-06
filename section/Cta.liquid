@@ -16,7 +16,7 @@
         {%- endif -%}
         <h2 data-yt-bind="heading">{{ props.heading | default: 'Hadi başlayalım' | escape }}</h2>
         {%- if props.body and props.body != blank -%}
-          <p class="cta__body" data-yt-bind="body">{{ props.body }}</p>
+          <p class="cta__body" data-yt-bind="body">{{ props.body | escape }}</p>
         {%- endif -%}
       </div>
 

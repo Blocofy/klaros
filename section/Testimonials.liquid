@@ -18,7 +18,7 @@
           <h2>{{ props.title | escape }}</h2>
         {%- endif -%}
         {%- if props.description and props.description != blank -%}
-          <p style="margin-top: 0.5rem; opacity: 0.75;">{{ props.description }}</p>
+          <p style="margin-top: 0.5rem; opacity: 0.75;">{{ props.description | escape }}</p>
         {%- endif -%}
       </div>
     {%- endif -%}
@@ -28,7 +28,7 @@
         {%- if block.type == 'testimonial' -%}
           <figure class="testimonial">
             {%- if block.settings.quote and block.settings.quote != blank -%}
-              <blockquote class="testimonial__quote">{{ block.settings.quote }}</blockquote>
+              <blockquote class="testimonial__quote">{{ block.settings.quote | escape }}</blockquote>
             {%- endif -%}
             <figcaption class="testimonial__author">
               {%- if block.settings.avatar and block.settings.avatar != blank -%}
@@ -36,7 +36,7 @@
               {%- endif -%}
               <div>
                 {%- if block.settings.name -%}<div class="testimonial__name">{{ block.settings.name | escape }}</div>{%- endif -%}
-                {%- if block.settings.role -%}<div class="testimonial__role">{{ block.settings.role }}</div>{%- endif -%}
+                {%- if block.settings.role -%}<div class="testimonial__role">{{ block.settings.role | escape }}</div>{%- endif -%}
               </div>
             </figcaption>
           </figure>

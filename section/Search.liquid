@@ -12,7 +12,7 @@
       <div class="section__lead section__lead--center"><h2>{{ props.title | escape }}</h2></div>
     {% endif %}
     <form data-site-search class="site-search" role="search">
-      <input type="search" name="q" placeholder="{{ placeholder }}" aria-label="Sitede ara" autocomplete="off" />
+      <input type="search" name="q" placeholder="{{ placeholder | escape }}" aria-label="Sitede ara" autocomplete="off" />
       <button type="submit">{{ button_label | escape }}</button>
     </form>
     <div data-site-search-results class="site-search__results" role="region" aria-live="polite"></div>

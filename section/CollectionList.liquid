@@ -78,12 +78,12 @@
             {% if has_link %}</a>{% else %}</span>{% endif %}
           {% endif %}
           <div class="collection-entry__body">
-            {% if card_badge and card_badge != '' %}<span class="eyebrow">{{ card_badge }}</span>{% endif %}
+            {% if card_badge and card_badge != '' %}<span class="eyebrow">{{ card_badge | strip_html | escape }}</span>{% endif %}
             <h3 class="collection-entry__title">
               {% if has_link %}<a href="{{ href }}">{{ card_title | escape }}</a>{% else %}{{ card_title | escape }}{% endif %}
             </h3>
             {% if card_date and card_date != '' %}<time class="collection-entry__date">{{ card_date | date: "%d.%m.%Y" }}</time>{% endif %}
-            {% if card_sub and card_sub != '' %}<p class="collection-entry__excerpt">{{ card_sub }}</p>{% endif %}
+            {% if card_sub and card_sub != '' %}<p class="collection-entry__excerpt">{{ card_sub | strip_html | escape }}</p>{% endif %}
             {% if has_link %}<a class="collection-entry__more" href="{{ href }}">Yazıyı oku →</a>{% endif %}
           </div>
         </article>

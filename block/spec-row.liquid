@@ -1,7 +1,7 @@
 <div class="spec-row">
   <strong>{{ block.settings.label | escape }}</strong>
-  <span>{{ block.settings.value }}</span>
-  <span style="opacity:.7">{{ block.settings.note }}</span>
+  <span>{{ block.settings.value | escape }}</span>
+  <span style="opacity:.7">{{ block.settings.note | escape }}</span>
 </div>
 
 {% schema %}

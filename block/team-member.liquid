@@ -7,10 +7,10 @@
       <h3 class="team-member__name" data-yt-bind="name">{{ block.settings.name | escape }}</h3>
     {%- endif -%}
     {%- if block.settings.role and block.settings.role != blank -%}
-      <p class="team-member__role" data-yt-bind="role">{{ block.settings.role }}</p>
+      <p class="team-member__role" data-yt-bind="role">{{ block.settings.role | escape }}</p>
     {%- endif -%}
     {%- if block.settings.bio and block.settings.bio != blank -%}
-      <p class="team-member__bio" data-yt-bind="bio">{{ block.settings.bio }}</p>
+      <p class="team-member__bio" data-yt-bind="bio">{{ block.settings.bio | escape }}</p>
     {%- endif -%}
     {%- if block.settings.link_url and block.settings.link_url != blank -%}
       <a class="team-member__link" href="{{ block.settings.link_url }}" rel="noopener" target="_blank">{{ block.settings.link_label | default: 'Profil' | escape }} →</a>

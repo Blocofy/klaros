@@ -4,10 +4,10 @@
          style="aspect-ratio:16/10;object-fit:cover;width:100%">
   {% endif %}
   <div style="padding:1.5rem">
-    {% if block.settings.sector %}<p class="eyebrow">{{ block.settings.sector }}</p>{% endif %}
+    {% if block.settings.sector %}<p class="eyebrow">{{ block.settings.sector | escape }}</p>{% endif %}
     <h3 style="margin-top:.4rem">{{ block.settings.title | escape }}</h3>
-    {% if block.settings.challenge %}<p><strong>Zorluk:</strong> {{ block.settings.challenge }}</p>{% endif %}
-    {% if block.settings.result %}<p><strong>Sonuç:</strong> {{ block.settings.result }}</p>{% endif %}
+    {% if block.settings.challenge %}<p><strong>Zorluk:</strong> {{ block.settings.challenge | escape }}</p>{% endif %}
+    {% if block.settings.result %}<p><strong>Sonuç:</strong> {{ block.settings.result | escape }}</p>{% endif %}
   </div>
 </article>
 

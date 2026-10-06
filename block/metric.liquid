@@ -1,5 +1,5 @@
 <div class="metric">
-  <span class="v">{{ block.settings.value }}</span>
+  <span class="v">{{ block.settings.value | escape }}</span>
   <span class="l">{{ block.settings.label | escape }}</span>
 </div>
 

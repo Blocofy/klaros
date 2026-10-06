@@ -3,7 +3,7 @@
     <h3>{{ block.settings.title | escape }}</h3>
   {%- endif -%}
   {%- if block.settings.description and block.settings.description != blank -%}
-    <p>{{ block.settings.description }}</p>
+    <p>{{ block.settings.description | escape }}</p>
   {%- endif -%}
 </div>
 

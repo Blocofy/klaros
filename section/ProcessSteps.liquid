@@ -19,7 +19,7 @@
           <h2>{{ props.title | escape }}</h2>
         {%- endif -%}
         {%- if props.description and props.description != blank -%}
-          <p style="margin-top: 0.5rem; opacity: 0.75; max-width: 42rem; {% if alignment == 'center' %}margin-left: auto; margin-right: auto;{% endif %}">{{ props.description }}</p>
+          <p style="margin-top: 0.5rem; opacity: 0.75; max-width: 42rem; {% if alignment == 'center' %}margin-left: auto; margin-right: auto;{% endif %}">{{ props.description | escape }}</p>
         {%- endif -%}
       </div>
     {%- endif -%}
@@ -32,7 +32,7 @@
               <h3>{{ block.settings.title | escape }}</h3>
             {%- endif -%}
             {%- if block.settings.description and block.settings.description != blank -%}
-              <p>{{ block.settings.description }}</p>
+              <p>{{ block.settings.description | escape }}</p>
             {%- endif -%}
           </div>
         {%- endif -%}

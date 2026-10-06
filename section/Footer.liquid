@@ -106,7 +106,7 @@
   <div class="wrap footer-legal">
     <span>© {{ 'now' | date: '%Y' }} {{ brand | escape }}</span>
     {%- if props.note and props.note != blank -%}
-      <span class="footer-legal__note">{{ props.note }}</span>
+      <span class="footer-legal__note">{{ props.note | escape }}</span>
     {%- endif -%}
     {%- comment -%} Kurumsal künye — globals.corporate; yalnız dolu alanlar. {%- endcomment -%}
     {%- assign corp = globals.corporate -%}

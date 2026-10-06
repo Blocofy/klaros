@@ -2,9 +2,9 @@
   assign opened = block.settings.open_by_default | default: false
 -%}
 <details{% if opened or index == 1 %} open{% endif %}>
-  <summary>{{ block.settings.question | default: 'Soru başlığı' }}</summary>
+  <summary>{{ block.settings.question | default: 'Soru başlığı' | escape }}</summary>
   {%- if block.settings.answer and block.settings.answer != blank -%}
-    <p>{{ block.settings.answer }}</p>
+    <p>{{ block.settings.answer | escape }}</p>
   {%- endif -%}
 </details>
 

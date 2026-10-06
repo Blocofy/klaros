@@ -28,13 +28,13 @@
                   <a href="{{ r.url }}">{{ card_title | escape }}</a>
                 {%- else -%}{{ card_title | escape }}{%- endif -%}
               </h3>
-              {%- if card_excerpt and card_excerpt != '' -%}<p>{{ card_excerpt }}</p>{%- endif -%}
+              {%- if card_excerpt and card_excerpt != '' -%}<p>{{ card_excerpt | strip_html | escape }}</p>{%- endif -%}
             </div>
           </article>
         {%- endfor -%}
       </div>
     {%- elsif props.empty_text and props.empty_text != blank -%}
-      <p style="opacity:.6">{{ props.empty_text }}</p>
+      <p style="opacity:.6">{{ props.empty_text | escape }}</p>
     {%- endif -%}
   </div>
 </section>

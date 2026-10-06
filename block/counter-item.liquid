@@ -3,7 +3,7 @@
   the schema block that drives the editor fields.
 {%- endcomment -%}
 <div class="counter__item">
-  <div class="counter__value">{{ block.settings.prefix }}{{ block.settings.value }}{{ block.settings.suffix }}</div>
+  <div class="counter__value">{{ block.settings.prefix | escape }}{{ block.settings.value | escape }}{{ block.settings.suffix | escape }}</div>
   {%- if block.settings.label and block.settings.label != blank -%}
     <div class="counter__label">{{ block.settings.label | escape }}</div>
   {%- endif -%}
