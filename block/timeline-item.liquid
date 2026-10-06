@@ -1,6 +1,6 @@
 <li class="timeline-item">
   {%- if block.settings.date and block.settings.date != blank -%}
-    <span class="timeline-item__date" data-yt-bind="date">{{ block.settings.date }}</span>
+    <span class="timeline-item__date" data-yt-bind="date">{{ block.settings.date | escape }}</span>
   {%- endif -%}
   {%- if block.settings.heading and block.settings.heading != blank -%}
     <h3 class="timeline-item__title" data-yt-bind="heading">{{ block.settings.heading | escape }}</h3>

@@ -20,7 +20,7 @@
             <h2>{{ props.title | escape }}</h2>
           {%- endif -%}
           {%- if props.description and props.description != blank -%}
-            <p style="margin-top: 0.5rem; opacity: 0.75;">{{ props.description }}</p>
+            <p style="margin-top: 0.5rem; opacity: 0.75;">{{ props.description | escape }}</p>
           {%- endif -%}
         </div>
       {%- endif -%}
@@ -31,10 +31,10 @@
             {%- assign idx = forloop.index -%}
             {%- assign opened = block.settings.open_by_default | default: false -%}
             <details{% if opened or idx == 1 %} open{% endif %} itemscope itemtype="https://schema.org/Question">
-              <summary itemprop="name">{{ block.settings.question | default: 'Soru başlığı' }}</summary>
+              <summary itemprop="name">{{ block.settings.question | default: 'Soru başlığı' | escape }}</summary>
               {%- if block.settings.answer and block.settings.answer != blank -%}
                 <div itemscope itemtype="https://schema.org/Answer" itemprop="acceptedAnswer">
-                  <p itemprop="text">{{ block.settings.answer }}</p>
+                  <p itemprop="text">{{ block.settings.answer | escape }}</p>
                 </div>
               {%- endif -%}
             </details>

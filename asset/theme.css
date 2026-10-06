@@ -323,6 +323,11 @@ img { max-width: 100%; display: block; height: auto; }
 }
 .richtext__body img { margin: 2rem 0; border-radius: var(--klaros-radius, 6px); }
 .richtext__body hr { border: 0; border-top: var(--klaros-hairline); margin: 2.5rem 0; }
+.richtext__body table { display: block; max-width: 100%; overflow-x: auto; border-collapse: collapse; margin: 0 0 1.15rem; font-size: 0.98rem; }
+.richtext__body caption { text-align: left; font-weight: 600; padding-bottom: 0.5rem; }
+.richtext__body th, .richtext__body td { padding: 0.6rem 0.9rem; border-bottom: var(--klaros-hairline); text-align: left; vertical-align: top; }
+.richtext__body th { font-weight: 600; }
+.richtext__body th p, .richtext__body td p { margin: 0; }
 
 /* --- CTA ------------------------------------------------------------- */
 .cta { display: flex; flex-direction: column; gap: 1.5rem; align-items: center; text-align: center; }

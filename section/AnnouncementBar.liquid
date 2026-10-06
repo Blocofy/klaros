@@ -23,7 +23,7 @@
   <div class="wrap">
     <div class="topbar__contact">
       {%- if props.message and props.message != blank -%}
-        <span class="topbar__message">{{ props.message }}</span>
+        <span class="topbar__message">{{ props.message | escape }}</span>
       {%- endif -%}
       {%- if globals.phone and globals.phone != blank -%}
         <a href="tel:{{ globals.phone | remove: ' ' }}">{{ globals.phone }}</a>

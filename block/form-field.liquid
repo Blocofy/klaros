@@ -4,7 +4,7 @@
 -%}
 {%- if ftype == 'consent' -%}
   <label class="form-consent" style="display:flex;gap:.5rem;align-items:flex-start">
-    <input type="checkbox" name="{{ block.settings.name }}" value="1"{% if req %} required{% endif %}>
+    <input type="checkbox" name="{{ block.settings.name | escape }}" value="1"{% if req %} required{% endif %}>
     <span>{{ block.settings.label | escape }}{% if block.settings.consent_url and block.settings.consent_url != blank %} <a href="{{ block.settings.consent_url }}" target="_blank" rel="noopener">aydınlatma metni</a>{% endif %}{% if req %} *{% endif %}</span>
   </label>
 {%- else -%}
@@ -12,16 +12,16 @@
     <span>{{ block.settings.label | escape }}{% if req %} *{% endif %}</span>
     {%- case ftype -%}
       {%- when 'textarea' -%}
-        <textarea name="{{ block.settings.name }}"{% if req %} required{% endif %}></textarea>
+        <textarea name="{{ block.settings.name | escape }}"{% if req %} required{% endif %}></textarea>
       {%- when 'file' -%}
-        <input type="file" name="{{ block.settings.name }}"{% if req %} required{% endif %}>
+        <input type="file" name="{{ block.settings.name | escape }}"{% if req %} required{% endif %}>
       {%- when 'select' -%}
-        <select name="{{ block.settings.name }}"{% if req %} required{% endif %}>
+        <select name="{{ block.settings.name | escape }}"{% if req %} required{% endif %}>
           <option value="">Seçiniz…</option>
           {%- assign opts = block.settings.options | newline_to_br | split: '<br />' -%}
           {%- for opt in opts -%}
             {%- assign o = opt | strip -%}
-            {%- if o != blank %}<option value="{{ o }}">{{ o }}</option>{% endif -%}
+            {%- if o != blank %}<option value="{{ o | escape }}">{{ o | escape }}</option>{% endif -%}
           {%- endfor -%}
         </select>
       {%- when 'radio' -%}
@@ -31,13 +31,13 @@
             {%- assign o = opt | strip -%}
             {%- if o != blank -%}
               <label style="display:flex;gap:.5rem;align-items:center;font-weight:400">
-                <input type="radio" name="{{ block.settings.name }}" value="{{ o }}"{% if req and forloop.first %} required{% endif %}> {{ o }}
+                <input type="radio" name="{{ block.settings.name | escape }}" value="{{ o | escape }}"{% if req and forloop.first %} required{% endif %}> {{ o | escape }}
               </label>
             {%- endif -%}
           {%- endfor -%}
         </span>
       {%- else -%}
-        <input type="{{ ftype }}" name="{{ block.settings.name }}"{% if req %} required{% endif %}>
+        <input type="{{ ftype }}" name="{{ block.settings.name | escape }}"{% if req %} required{% endif %}>
     {%- endcase -%}
   </label>
 {%- endif -%}
