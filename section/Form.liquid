@@ -39,7 +39,7 @@
           id="{{ section.id }}"
           enctype="multipart/form-data"
           method="post"
-          action="/api/forms/{{ form.key }}/submit"
+          action="/api/forms/{{ form.key | escape }}/submit"
           data-bcf-form
           data-success="{{ form.config.messages.success | default: 'Teşekkürler, mesajınız alındı.' | escape }}"
           data-error="{{ form.config.messages.error | default: 'Gönderilemedi.' | escape }}"
@@ -58,7 +58,7 @@
                   <input type="checkbox" name="_consent_{{ item.key }}" value="1"{% if item.required %} required{% endif %}>
                   <span class="form-consent__text">
                     {%- if item.link_url and item.link_url != blank -%}
-                      <a href="{{ item.link_url }}" target="_blank" rel="noopener">{{ item.label | escape }}</a>
+                      <a href="{{ item.link_url | safe_url }}" target="_blank" rel="noopener">{{ item.label | escape }}</a>
                     {%- else -%}
                       {{ item.label | escape }}
                     {%- endif -%}

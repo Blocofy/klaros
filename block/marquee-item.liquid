@@ -16,7 +16,7 @@
   {%- endif -%}
 {%- endcapture -%}
 {%- if has_link -%}
-  <a class="marquee__item" href="{{ block.settings.link_url }}"{% if dup %} aria-hidden="true" tabindex="-1"{% endif %}>{{ inner }}</a>
+  <a class="marquee__item" href="{{ block.settings.link_url | safe_url }}"{% if dup %} aria-hidden="true" tabindex="-1"{% endif %}>{{ inner }}</a>
 {%- else -%}
   <span class="marquee__item"{% if dup %} aria-hidden="true"{% endif %}>{{ inner }}</span>
 {%- endif -%}

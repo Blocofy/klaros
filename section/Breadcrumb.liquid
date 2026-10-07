@@ -25,7 +25,7 @@
           <li aria-current="page"><span aria-hidden="true">/</span> {{ label | escape }}</li>
         {%- else -%}
           {%- assign label = seg | replace: '-', ' ' | capitalize -%}
-          <li><span aria-hidden="true">/</span> <a href="{{ acc }}">{{ label | escape }}</a></li>
+          <li><span aria-hidden="true">/</span> <a href="{{ acc | safe_url }}">{{ label | escape }}</a></li>
         {%- endif -%}
       {%- endfor -%}
     </ol>

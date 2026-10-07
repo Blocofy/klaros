@@ -35,7 +35,7 @@
       <p class="bento-item__text" data-yt-bind="text">{{ block.settings.text | escape }}</p>
     {%- endif -%}
     {%- if block.settings.link_label and block.settings.link_label != blank -%}
-      <a class="bento-item__link" href="{{ block.settings.link_url | default: '#' }}">{{ block.settings.link_label | escape }} →</a>
+      <a class="bento-item__link" href="{{ block.settings.link_url | default: '#' | safe_url }}">{{ block.settings.link_label | escape }} →</a>
     {%- endif -%}
   </div>
 </article>

@@ -26,10 +26,10 @@
         <span class="topbar__message">{{ props.message | escape }}</span>
       {%- endif -%}
       {%- if globals.phone and globals.phone != blank -%}
-        <a href="tel:{{ globals.phone | remove: ' ' }}">{{ globals.phone }}</a>
+        <a href="tel:{{ globals.phone | remove: ' ' | escape }}">{{ globals.phone }}</a>
       {%- endif -%}
       {%- if globals.email and globals.email != blank -%}
-        <a href="mailto:{{ globals.email }}">{{ globals.email }}</a>
+        <a href="mailto:{{ globals.email | escape }}">{{ globals.email }}</a>
       {%- endif -%}
     </div>
     {%- if show_social and globals.social_links -%}
@@ -37,7 +37,7 @@
       {%- for s in globals.social_links -%}
         {%- unless s[0] == 'whatsapp' or s[0] == 'whatsapp_message' -%}
           {%- if s[1] and s[1] != blank -%}
-            <a href="{{ s[1] }}" target="_blank" rel="noopener" aria-label="{{ s[0] }}">{{ s[0] | capitalize }}</a>
+            <a href="{{ s[1] | safe_url }}" target="_blank" rel="noopener" aria-label="{{ s[0] }}">{{ s[0] | capitalize }}</a>
           {%- endif -%}
         {%- endunless -%}
       {%- endfor -%}

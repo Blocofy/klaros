@@ -6,7 +6,7 @@
 -%}
 {% if label and label != blank %}
   <div class="block-button" style="display:flex;justify-content:{% if align == 'center' %}center{% elsif align == 'right' %}flex-end{% else %}flex-start{% endif %}">
-    <a class="btn btn--{{ style }}" href="{{ url }}"
+    <a class="btn btn--{{ style }}" href="{{ url | safe_url }}"
        {% if block.settings.new_tab %}target="_blank" rel="noopener"{% endif %}>
       {{ label | escape }}
     </a>

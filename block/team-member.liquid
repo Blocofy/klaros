@@ -13,7 +13,7 @@
       <p class="team-member__bio" data-yt-bind="bio">{{ block.settings.bio | escape }}</p>
     {%- endif -%}
     {%- if block.settings.link_url and block.settings.link_url != blank -%}
-      <a class="team-member__link" href="{{ block.settings.link_url }}" rel="noopener" target="_blank">{{ block.settings.link_label | default: 'Profil' | escape }} →</a>
+      <a class="team-member__link" href="{{ block.settings.link_url | safe_url }}" rel="noopener" target="_blank">{{ block.settings.link_label | default: 'Profil' | escape }} →</a>
     {%- endif -%}
   </div>
 </article>

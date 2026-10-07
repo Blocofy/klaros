@@ -35,11 +35,11 @@
             {%- if block.settings.video_url and block.settings.video_url != blank -%}{%- assign has_video = true -%}{%- endif -%}
             <figure class="gallery-item">
               <a class="glightbox gallery-item__link{% if has_video %} gallery-item__link--video{% endif %}"
-                 href="{% if has_video %}{{ block.settings.video_url | escape }}{% else %}{{ full }}{% endif %}"
+                 href="{% if has_video %}{{ block.settings.video_url | safe_url | escape }}{% else %}{{ full | safe_url }}{% endif %}"
                  data-gallery="gal-{{ section.id }}"
                  {% if has_video %}data-type="video"{% endif %}
                  {% if block.settings.caption and block.settings.caption != blank %}data-title="{{ block.settings.caption | escape }}"{% endif %}>
-                <img src="{{ thumb }}" alt="{{ block.settings.alt | default: '' | escape }}" loading="lazy">
+                <img src="{{ thumb | safe_url }}" alt="{{ block.settings.alt | default: '' | escape }}" loading="lazy">
                 {%- if has_video -%}<span class="gallery-item__play" aria-hidden="true"></span>{%- endif -%}
               </a>
               {%- if block.settings.caption and block.settings.caption != blank -%}
