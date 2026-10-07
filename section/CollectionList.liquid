@@ -73,18 +73,18 @@
         {%- assign href = detail_base | append: '/' | append: item.slug -%}
         <article class="collection-entry">
           {% if card_img and card_img != '' %}
-            {% if has_link %}<a class="collection-entry__media" href="{{ href }}">{% else %}<span class="collection-entry__media">{% endif %}
-              <img src="{{ card_img }}" alt="{{ card_title | escape }}" loading="lazy">
+            {% if has_link %}<a class="collection-entry__media" href="{{ href | safe_url }}">{% else %}<span class="collection-entry__media">{% endif %}
+              <img src="{{ card_img | safe_url }}" alt="{{ card_title | escape }}" loading="lazy">
             {% if has_link %}</a>{% else %}</span>{% endif %}
           {% endif %}
           <div class="collection-entry__body">
             {% if card_badge and card_badge != '' %}<span class="eyebrow">{{ card_badge | strip_html | escape }}</span>{% endif %}
             <h3 class="collection-entry__title">
-              {% if has_link %}<a href="{{ href }}">{{ card_title | escape }}</a>{% else %}{{ card_title | escape }}{% endif %}
+              {% if has_link %}<a href="{{ href | safe_url }}">{{ card_title | escape }}</a>{% else %}{{ card_title | escape }}{% endif %}
             </h3>
             {% if card_date and card_date != '' %}<time class="collection-entry__date">{{ card_date | date: "%d.%m.%Y" }}</time>{% endif %}
             {% if card_sub and card_sub != '' %}<p class="collection-entry__excerpt">{{ card_sub | strip_html | escape }}</p>{% endif %}
-            {% if has_link %}<a class="collection-entry__more" href="{{ href }}">Yazıyı oku →</a>{% endif %}
+            {% if has_link %}<a class="collection-entry__more" href="{{ href | safe_url }}">Yazıyı oku →</a>{% endif %}
           </div>
         </article>
       {%- else -%}
@@ -94,11 +94,11 @@
 
     {%- if pages > 1 -%}
     <nav class="pagination" aria-label="Sayfalama">
-      {%- if cur > 1 %}<a href="{{ path }}?page={{ cur | minus: 1 }}" rel="prev" aria-label="Önceki sayfa">‹</a>{% endif -%}
+      {%- if cur > 1 %}<a href="{{ path | safe_url }}?page={{ cur | minus: 1 }}" rel="prev" aria-label="Önceki sayfa">‹</a>{% endif -%}
       {%- for p in (1..pages) -%}
-        {%- if p == cur %}<span aria-current="page">{{ p }}</span>{% else %}<a href="{{ path }}?page={{ p }}">{{ p }}</a>{% endif -%}
+        {%- if p == cur %}<span aria-current="page">{{ p }}</span>{% else %}<a href="{{ path | safe_url }}?page={{ p | escape }}">{{ p }}</a>{% endif -%}
       {%- endfor -%}
-      {%- if cur < pages %}<a href="{{ path }}?page={{ cur | plus: 1 }}" rel="next" aria-label="Sonraki sayfa">›</a>{% endif -%}
+      {%- if cur < pages %}<a href="{{ path | safe_url }}?page={{ cur | plus: 1 }}" rel="next" aria-label="Sonraki sayfa">›</a>{% endif -%}
     </nav>
     {%- endif -%}
   </div>

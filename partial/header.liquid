@@ -13,17 +13,17 @@
     <div class="wrap">
       <div class="topbar__contact">
         {%- if globals.phone and globals.phone != blank -%}
-          <a href="tel:{{ globals.phone | remove: ' ' }}">{{ globals.phone }}</a>
+          <a href="tel:{{ globals.phone | remove: ' ' | escape }}">{{ globals.phone }}</a>
         {%- endif -%}
         {%- if globals.email and globals.email != blank -%}
-          <a href="mailto:{{ globals.email }}">{{ globals.email }}</a>
+          <a href="mailto:{{ globals.email | escape }}">{{ globals.email }}</a>
         {%- endif -%}
       </div>
       {%- if globals.social_links -%}
       <div class="topbar__social">
         {%- for s in globals.social_links -%}
           {%- if s[1] and s[1] != blank -%}
-            <a href="{{ s[1] }}" target="_blank" rel="noopener" aria-label="{{ s[0] }}">{{ s[0] | capitalize }}</a>
+            <a href="{{ s[1] | safe_url }}" target="_blank" rel="noopener" aria-label="{{ s[0] }}">{{ s[0] | capitalize }}</a>
           {%- endif -%}
         {%- endfor -%}
       </div>
@@ -34,7 +34,7 @@
   <div class="wrap header__bar">
     <a class="brand" href="/">
       {%- if logo and logo != blank -%}
-        <img class="brand-logo" src="{{ logo }}" alt="{{ brand | escape }}"
+        <img class="brand-logo" src="{{ logo | safe_url }}" alt="{{ brand | escape }}"
              style="width:{{ logo_w }}px;max-width:55vw;height:auto;max-height:56px;object-fit:contain">
       {%- else -%}
         {{ brand | escape }}
@@ -48,22 +48,22 @@
       {%- for item in nav -%}
         {%- if item.children and item.children.size > 0 -%}
           <span class="has-children">
-            <a href="{{ item.url | default: '#' }}">{{ item.label | escape }}</a>
+            <a href="{{ item.url | default: '#' | safe_url }}">{{ item.label | escape }}</a>
             <span class="submenu">
               {%- for child in item.children -%}
-                <a href="{{ child.url | default: '#' }}">{{ child.label | escape }}</a>
+                <a href="{{ child.url | default: '#' | safe_url }}">{{ child.label | escape }}</a>
               {%- endfor -%}
             </span>
           </span>
         {%- else -%}
-          <a href="{{ item.url | default: '#' }}">{{ item.label | escape }}</a>
+          <a href="{{ item.url | default: '#' | safe_url }}">{{ item.label | escape }}</a>
         {%- endif -%}
       {%- endfor -%}
       {%- if locale_alternates and locale_alternates.size > 1 -%}
         <span class="locale-switcher" aria-label="Dil seçimi">
           {%- for alt in locale_alternates -%}
             <a class="locale-switcher__link{% if alt.current %} is-active{% endif %}"
-               href="{{ alt.url }}" hreflang="{{ alt.locale }}"{% if alt.current %} aria-current="true"{% endif %}>{{ alt.locale | split: '-' | first | upcase }}</a>
+               href="{{ alt.url | safe_url }}" hreflang="{{ alt.locale }}"{% if alt.current %} aria-current="true"{% endif %}>{{ alt.locale | split: '-' | first | upcase }}</a>
           {%- endfor -%}
         </span>
       {%- endif -%}

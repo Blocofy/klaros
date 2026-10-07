@@ -21,7 +21,7 @@
 
     {%- if embed and embed != blank -%}
       <div class="map-embed__frame" style="--map-height: {{ height }}px;">
-        <iframe src="{{ embed | escape }}" title="{{ props.title | default: 'Harita' | escape }}"
+        <iframe src="{{ embed | safe_url | escape }}" title="{{ props.title | default: 'Harita' | escape }}"
                 loading="lazy" referrerpolicy="no-referrer-when-downgrade" allowfullscreen></iframe>
       </div>
     {%- elsif preview -%}

@@ -27,7 +27,7 @@
       {%- endif -%}
 
       <form class="form" id="{{ section.id }}" enctype="multipart/form-data"
-            method="post" action="/api/forms/{{ form_key }}/submit">
+            method="post" action="/api/forms/{{ form_key | escape }}/submit">
         {%- for block in blocks -%}
           {%- if block.type == 'form-field' -%}
             {% render 'block/form-field', block: block %}

@@ -1,6 +1,6 @@
 <article class="card" style="padding:0;overflow:hidden;background:rgba(255,255,255,.06);border-color:rgba(255,255,255,.12)">
   {% if block.settings.imageUrl and block.settings.imageUrl != '' %}
-    <img src="{{ block.settings.imageUrl }}" alt="{{ block.settings.title | escape }}" loading="lazy"
+    <img src="{{ block.settings.imageUrl | safe_url }}" alt="{{ block.settings.title | escape }}" loading="lazy"
          style="aspect-ratio:16/10;object-fit:cover;width:100%">
   {% endif %}
   <div style="padding:1.5rem">

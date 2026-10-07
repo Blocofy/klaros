@@ -30,7 +30,7 @@
       <div class="split-row__text richtext__body" data-yt-bind="text">{{ block.settings.text | sanitize_html }}</div>
     {%- endif -%}
     {%- if block.settings.link_label and block.settings.link_label != blank -%}
-      <a class="btn btn--secondary" data-yt-bind="link_label" href="{{ block.settings.link_url | default: '#' }}">{{ block.settings.link_label | escape }}</a>
+      <a class="btn btn--secondary" data-yt-bind="link_label" href="{{ block.settings.link_url | default: '#' | safe_url }}">{{ block.settings.link_label | escape }}</a>
     {%- endif -%}
   </div>
 </div>

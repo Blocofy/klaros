@@ -8,7 +8,7 @@
           style="margin:0;display:flex;justify-content:{% if align == 'left' %}flex-start{% elsif align == 'right' %}flex-end{% else %}center{% endif %}">
     <div style="max-width:100%;width:{{ block.settings.max_width | default: 100 }}%">
       {% if block.settings.link and block.settings.link != blank %}
-        <a href="{{ block.settings.link }}">
+        <a href="{{ block.settings.link | safe_url }}">
           <img src="{{ src | image_url: 'width=1600&format=webp' }}"
                alt="{{ block.settings.alt | escape }}"
                loading="lazy"

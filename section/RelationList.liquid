@@ -39,16 +39,16 @@
         {%- assign href = detail_base | append: '/' | append: item.slug -%}
         <article class="collection-entry">
           {% if card_img and card_img != '' %}
-            {% if has_link %}<a class="collection-entry__media" href="{{ href }}">{% else %}<span class="collection-entry__media">{% endif %}
-              <img src="{{ card_img }}" alt="{{ card_title | escape }}" loading="lazy">
+            {% if has_link %}<a class="collection-entry__media" href="{{ href | safe_url }}">{% else %}<span class="collection-entry__media">{% endif %}
+              <img src="{{ card_img | safe_url }}" alt="{{ card_title | escape }}" loading="lazy">
             {% if has_link %}</a>{% else %}</span>{% endif %}
           {% endif %}
           <div class="collection-entry__body">
             <h3 class="collection-entry__title">
-              {% if has_link %}<a href="{{ href }}">{{ card_title | escape }}</a>{% else %}{{ card_title | escape }}{% endif %}
+              {% if has_link %}<a href="{{ href | safe_url }}">{{ card_title | escape }}</a>{% else %}{{ card_title | escape }}{% endif %}
             </h3>
             {% if card_sub and card_sub != '' %}<p class="collection-entry__excerpt">{{ card_sub | strip_html | escape }}</p>{% endif %}
-            {% if has_link %}<a class="collection-entry__more" href="{{ href }}">Devamını oku →</a>{% endif %}
+            {% if has_link %}<a class="collection-entry__more" href="{{ href | safe_url }}">Devamını oku →</a>{% endif %}
           </div>
         </article>
       {%- endfor -%}
