@@ -8,5 +8,5 @@
   {% if field.required %}required{% endif %}
   {% if field.validation.minLength %}minlength="{{ field.validation.minLength }}"{% endif %}
   {% if field.validation.maxLength %}maxlength="{{ field.validation.maxLength }}"{% endif %}
->{{ field.prefillValue }}</textarea>
+>{{ field.prefillValue | escape }}</textarea>
 {% if field.help %}<small class="ff__help">{{ field.help }}</small>{% endif %}
